@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Gateway Ltd — Synthesizing Potential, Powering Africa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Geist:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Geist', sans-serif;
+  background: #F8F6F2;
+  color: #1A1714;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ============================================================
+   CSS VARIABLES
+   ============================================================ */
+:root {
+  --red: #C8102E;
+  --red-dark: #8B0A1E;
+  --red-muted: rgba(200,16,46,0.08);
+  --charcoal: #1A1714;
+  --charcoal-soft: #2C2925;
+  --cream: #F8F6F2;
+  --cream-dark: #EDE9E2;
+  --stone: #9B9590;
+  --stone-light: #C8C4BE;
+  --white: #FFFFFF;
+  --border: rgba(26,23,20,0.1);
+  --border-light: rgba(26,23,20,0.06);
+  --nav-h: 72px;
+}
+
+/* ============================================================
+   CUSTOM CURSOR
+   ============================================================ */
+.cursor {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  mix-blend-mode: multiply;
+}
+.cursor-ring {
+  position: fixed;
+  width: 32px; height: 32px;
+  border: 1px solid rgba(200,16,46,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), width 0.3s, height 0.3s, border-color 0.3s;
+}
+body.hovered .cursor { transform: scale(2.5); }
+body.hovered .cursor-ring { width: 48px; height: 48px; border-color: rgba(200,16,46,0.25); }
+
+/* ============================================================
+   TYPOGRAPHY SCALE
+   ============================================================ */
+.display { font-family: 'Cormorant Garamond', serif; }
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  z-index: 1000;
+  transition: background 0.4s ease, border-color 0.4s ease;
+}
+nav.scrolled {
+  background: rgba(248,246,242,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.logo-emblem {
+  width: 36px; height: 36px;
+  position: relative;
+}
+.logo-emblem svg { width: 100%; height: 100%; }
+.logo-wordmark {
+  font-family: 'Geist', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+}
+.logo-wordmark span { color: var(--red); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+}
+.nav-links > li { position: relative; }
+.nav-links a {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 2px;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.nav-links a:hover { color: var(--red); }
+.nav-links a .chevron {
+  width: 10px; height: 10px;
+  transition: transform 0.25s ease;
+  stroke: currentColor;
+}
+.nav-links li:hover .chevron { transform: rotate(180deg); }
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  width: 280px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  overflow: hidden;
+}
+.dropdown::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: 0; right: 0;
+  height: 2px;
+  background: var(--red);
+}
+.nav-links li:hover .dropdown {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(-50%) translateY(0);
+}
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-light);
+  transition: background 0.15s;
+}
+.dropdown-item:last-child { border-bottom: none; }
+.dropdown-item:hover { background: var(--cream); }
+.di-icon {
+  width: 32px; height: 32px;
+  background: var(--cream-dark);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.dropdown-item:hover .di-icon { background: var(--red-muted); }
+.di-icon svg { width: 14px; height: 14px; stroke: var(--charcoal); fill: none; stroke-width: 1.6; }
+.dropdown-item:hover .di-icon svg { stroke: var(--red); }
+.di-text { display: flex; flex-direction: column; }
+.di-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--charcoal);
+  letter-spacing: 0.02em;
+}
+.di-domain {
+  font-size: 10px;
+  color: var(--stone);
+  letter-spacing: 0.04em;
+  margin-top: 1px;
+}
+
+.nav-cta {
+  margin-left: 8px;
+  background: var(--charcoal) !important;
+  color: var(--white) !important;
+  padding: 9px 22px !important;
+  border-radius: 2px !important;
+  font-weight: 500 !important;
+}
+.nav-cta:hover { background: var(--red) !important; color: var(--white) !important; }
+
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+.hero {
+  min-height: 100vh;
+  background: var(--charcoal);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 80px;
+}
+
+/* Grid lines background */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* Large decorative text */
+.hero-bg-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28vw;
+  font-weight: 300;
+  color: rgba(255,255,255,0.025);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+/* Red accent bar */
+.hero-accent-bar {
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 0;
+  background: var(--red);
+  animation: barGrow 1.2s 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+@keyframes barGrow { to { height: 100%; } }
+
+/* Diagonal accent line */
+.hero-diag {
+  position: absolute;
+  right: 120px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255,255,255,0.06);
+  transform: skewX(-8deg);
+}
+.hero-diag-2 {
+  right: 180px;
+  background: rgba(255,255,255,0.03);
+  transform: skewX(-8deg);
+}
+
+/* Dot matrix pattern */
+.hero-dots {
+  position: absolute;
+  right: 0; top: 0;
+  width: 45%; height: 100%;
+  background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0;
+  animation: fadeIn 1.5s 0.5s ease forwards;
+}
+@keyframes fadeIn { to { opacity: 1; } }
+
+/* Red glow circle */
+.hero-glow {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,16,46,0.12) 0%, transparent 70%);
+  right: -100px;
+  bottom: -100px;
+  pointer-events: none;
+}
+
+/* Year counter */
+.hero-year {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  white-space: nowrap;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+  width: 100%;
+}
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: slideUp 0.7s 0.6s ease forwards;
+}
+@keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+.hero-eyebrow-line {
+  width: 40px;
+  height: 1px;
+  background: var(--red);
+}
+.hero-eyebrow-text {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+.hero-eyebrow-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--red);
+}
+
+.hero-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(52px, 7.5vw, 96px);
+  font-weight: 300;
+  line-height: 0.95;
+  color: var(--white);
+  margin-bottom: 32px;
+  letter-spacing: -0.02em;
+}
+.hero-headline-line {
+  display: block;
+  overflow: hidden;
+}
+.hero-headline-line span {
+  display: block;
+  opacity: 0;
+  transform: translateY(100%);
+}
+.hero-headline-line:nth-child(1) span { animation: lineReveal 0.9s 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+.hero-headline-line:nth-child(2) span { animation: lineReveal 0.9s 0.85s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+.hero-headline-line:nth-child(3) span { animation: lineReveal 0.9s 1.0s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+@keyframes lineReveal { to { opacity:1; transform:translateY(0); } }
+
+.hero-headline em {
+  font-style: italic;
+  color: var(--red);
+}
+
+.hero-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+  opacity: 0;
+  animation: slideUp 0.7s 1.2s ease forwards;
+}
+
+.hero-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.85;
+  max-width: 380px;
+  font-weight: 300;
+}
+
+.hero-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+}
+.hero-ctas {
+  display: flex;
+  gap: 10px;
+}
+.btn-primary {
+  background: var(--red);
+  color: var(--white);
+  border: 1px solid var(--red);
+  padding: 13px 28px;
+  font-family: 'Geist', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.2s, color 0.2s;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-primary:hover { background: var(--red-dark); border-color: var(--red-dark); }
+.btn-secondary {
+  background: transparent;
+  color: rgba(255,255,255,0.65);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 13px 28px;
+  font-family: 'Geist', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: border-color 0.2s, color 0.2s;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-secondary:hover { border-color: rgba(255,255,255,0.55); color: var(--white); }
+
+.hero-stats {
+  display: flex;
+  gap: 40px;
+}
+.hero-stat { text-align: right; }
+.hero-stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.hero-stat-num sup { font-size: 14px; color: var(--red); vertical-align: super; }
+.hero-stat-label {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: fadeIn 1s 2s ease forwards;
+  z-index: 3;
+}
+.scroll-indicator span {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+}
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+  animation: scrollPulse 2s 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(0.6); }
+}
+
+/* ============================================================
+   TICKER
+   ============================================================ */
+.ticker-wrap {
+  background: var(--red);
+  overflow: hidden;
+  padding: 13px 0;
+}
+.ticker-track {
+  display: flex;
+  gap: 0;
+  animation: tickerMove 22s linear infinite;
+  width: max-content;
+}
+.ticker-item {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+  white-space: nowrap;
+  padding: 0 48px;
+  font-weight: 400;
+}
+.ticker-sep {
+  color: rgba(255,255,255,0.35);
+  padding-right: 48px;
+  font-size: 10px;
+}
+@keyframes tickerMove { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* ============================================================
+   SECTIONS: SHARED
+   ============================================================ */
+.section-pad { padding: 100px 0; }
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.section-kicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.sk-line { width: 32px; height: 1px; background: var(--red); }
+.sk-text {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 500;
+}
+
+/* ============================================================
+   SUBSIDIARIES SECTION
+   ============================================================ */
+.subsidiaries { background: var(--cream); }
+
+.subs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 56px;
+}
+.subs-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4.5vw, 58px);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--charcoal);
+  max-width: 420px;
+}
+.subs-title em { font-style: italic; color: var(--red); }
+.subs-intro {
+  font-size: 13px;
+  color: var(--stone);
+  line-height: 1.8;
+  max-width: 320px;
+  text-align: right;
+}
+
+/* Bento grid */
+.subs-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto;
+  gap: 16px;
+}
+
+.sub-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.25s;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.25s;
+}
+.sub-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.sub-card:hover { border-color: rgba(200,16,46,0.3); transform: translateY(-4px) !important; }
+
+/* Top border reveal on hover */
+.sub-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sub-card:hover::after { transform: scaleX(1); }
+
+/* Grid placements */
+.sub-card-featured { grid-column: 1 / 8; grid-row: 1 / 3; }
+.sub-card-2 { grid-column: 8 / 13; grid-row: 1; }
+.sub-card-3 { grid-column: 8 / 13; grid-row: 2; }
+.sub-card-4 { grid-column: 1 / 5; grid-row: 3; }
+.sub-card-5 { grid-column: 5 / 9; grid-row: 3; }
+.sub-card-coming { grid-column: 9 / 13; grid-row: 3; background: var(--charcoal); border-color: transparent; }
+
+.sub-card-featured .sub-card-body { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; }
+
+/* Featured card large visual */
+.sub-card-visual {
+  flex: 1;
+  margin: -32px -32px 28px;
+  height: 220px;
+  background: var(--cream-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.sub-card-visual-inner {
+  position: relative;
+  z-index: 1;
+}
+.sub-visual-circle {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  border: 1px solid rgba(200,16,46,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.sub-visual-circle::before {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(200,16,46,0.15);
+}
+.sub-visual-circle svg { width: 36px; height: 36px; stroke: var(--red); fill: none; stroke-width: 1.2; }
+
+.sub-card-icon {
+  width: 40px; height: 40px;
+  border-radius: 4px;
+  background: var(--cream-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: background 0.2s;
+}
+.sub-card:hover .sub-card-icon { background: var(--red-muted); }
+.sub-card-icon svg { width: 18px; height: 18px; stroke: var(--charcoal); fill: none; stroke-width: 1.6; transition: stroke 0.2s; }
+.sub-card:hover .sub-card-icon svg { stroke: var(--red); }
+
+.sub-card-tag {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.sub-card-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--charcoal);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+.sub-card-desc {
+  font-size: 12px;
+  color: var(--stone);
+  line-height: 1.75;
+  flex: 1;
+  margin-bottom: 24px;
+}
+
+.sub-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-light);
+}
+.sub-card-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--red);
+  text-decoration: none;
+  font-weight: 500;
+  transition: gap 0.2s;
+}
+.sub-card:hover .sub-card-link { gap: 10px; }
+.sub-card-link svg { width: 12px; height: 12px; stroke: var(--red); fill: none; stroke-width: 2.2; }
+.sub-domain {
+  font-size: 9px;
+  color: var(--stone-light);
+  letter-spacing: 0.06em;
+}
+
+/* Coming soon card */
+.sub-card-coming .sub-card-tag { color: rgba(255,255,255,0.35); }
+.sub-card-coming .sub-card-name { color: var(--white); }
+.sub-card-coming .sub-card-desc { color: rgba(255,255,255,0.35); }
+.sub-card-coming .sub-card-icon { background: rgba(255,255,255,0.06); }
+.sub-card-coming .sub-card-icon svg { stroke: rgba(255,255,255,0.4); }
+.sub-card-coming .sub-card-footer { border-top-color: rgba(255,255,255,0.08); }
+.sub-card-coming .sub-card-link { color: rgba(255,255,255,0.35); pointer-events: none; }
+.sub-card-coming .sub-card-link svg { stroke: rgba(255,255,255,0.35); }
+.sub-card-coming .sub-domain { color: rgba(255,255,255,0.2); }
+
+/* ============================================================
+   MISSION SECTION
+   ============================================================ */
+.mission { background: var(--charcoal); }
+
+.mission-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.mission-left {}
+.mission-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4vw, 52px);
+  font-weight: 300;
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 28px;
+  letter-spacing: -0.01em;
+}
+.mission-headline em { font-style: italic; color: var(--red); }
+.mission-body {
+  font-size: 14px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.9;
+  font-weight: 300;
+  margin-bottom: 36px;
+}
+.mission-body p + p { margin-top: 16px; }
+
+.mission-pillars {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.mp-item {
+  display: flex;
+  gap: 20px;
+  padding: 22px 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.mp-item:last-child { border-bottom: 1px solid rgba(255,255,255,0.06); }
+.mp-item.visible { opacity: 1; transform: translateX(0); }
+.mp-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  color: var(--red);
+  font-weight: 400;
+  padding-top: 2px;
+  min-width: 28px;
+  letter-spacing: 0.06em;
+}
+.mp-content {}
+.mp-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--white);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.mp-body {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* ============================================================
+   LOCATIONS / FOOTER INFO
+   ============================================================ */
+.info-strip {
+  background: var(--cream-dark);
+  padding: 60px 0;
+  border-top: 1px solid var(--border);
+}
+.info-strip-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+.info-item {}
+.info-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: 6px;
+}
+.info-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--charcoal);
+}
+.info-divider {
+  width: 1px;
+  height: 48px;
+  background: var(--border);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  background: var(--charcoal);
+  padding: 56px 0 36px;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  margin-bottom: 32px;
+}
+.footer-brand {}
+.footer-logo-text {
+  font-family: 'Geist', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+.footer-logo-text span { color: var(--red); }
+.footer-tagline {
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+  line-height: 1.7;
+  max-width: 200px;
+  font-weight: 300;
+}
+.footer-col-title {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 18px;
+  font-weight: 500;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul a {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+  font-weight: 300;
+}
+.footer-col ul a:hover { color: var(--white); }
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-copy {
+  font-size: 11px;
+  color: rgba(255,255,255,0.2);
+  font-weight: 300;
+}
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.2);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.footer-legal a:hover { color: rgba(255,255,255,0.6); }
+
+/* ============================================================
+   SCROLL ANIMATIONS
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 960px) {
+  .subs-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .sub-card-featured { grid-column: 1 / -1; }
+  .sub-card-2, .sub-card-3 { grid-column: span 1; }
+  .sub-card-4, .sub-card-5, .sub-card-coming { grid-column: span 1; }
+
+  .mission-inner { grid-template-columns: 1fr; gap: 48px; }
+  .subs-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .subs-intro { text-align: left; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
+  .info-strip-inner { flex-wrap: wrap; gap: 24px; }
+}
+@media (max-width: 680px) {
+  :root { --nav-h: 60px; }
+  .nav-links { display: none; }
+  .hero-bottom { flex-direction: column; align-items: flex-start; gap: 28px; }
+  .hero-actions { align-items: flex-start; }
+  .hero-stats { flex-wrap: wrap; gap: 24px; }
+  .subs-grid { grid-template-columns: 1fr; }
+  .sub-card-featured, .sub-card-2, .sub-card-3, .sub-card-4, .sub-card-5, .sub-card-coming { grid-column: 1 / -1; }
+  .footer-top { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="logo-emblem">
+        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="36" height="36" rx="4" fill="#C8102E"/>
+          <path d="M18 7L28 12.5V23.5L18 29L8 23.5V12.5L18 7Z" stroke="white" stroke-width="1.4" fill="none"/>
+          <path d="M18 13V23M13.5 16L18 13L22.5 16" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="logo-wordmark">The Gateway <span>Ltd</span></div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#about">About us</a></li>
+      <li>
+        <a href="#subsidiaries">
+          Our subsidiaries
+          <svg class="chevron" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="dropdown">
+          <a class="dropdown-item" href="https://studios.gatewayltd.com">
+            <div class="di-icon">
+              <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            </div>
+            <div class="di-text">
+              <span class="di-name">Gateway Studios</span>
+              <span class="di-domain">studios.gatewayltd.com</span>
+            </div>
+          </a>
+          <a class="dropdown-item" href="https://comms.gatewayltd.com">
+            <div class="di-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div class="di-text">
+              <span class="di-name">Gateway Communications</span>
+              <span class="di-domain">comms.gatewayltd.com</span>
+            </div>
+          </a>
+          <a class="dropdown-item" href="https://academy.gatewayltd.com">
+            <div class="di-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </div>
+            <div class="di-text">
+              <span class="di-name">Gateway Academy</span>
+              <span class="di-domain">academy.gatewayltd.com</span>
+            </div>
+          </a>
+          <a class="dropdown-item" href="https://workspaces.gatewayltd.com">
+            <div class="di-icon">
+              <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+            </div>
+            <div class="di-text">
+              <span class="di-name">Gateway Workspaces</span>
+              <span class="di-domain">workspaces.gatewayltd.com</span>
+            </div>
+          </a>
+          <a class="dropdown-item" href="https://tech.gatewayltd.com">
+            <div class="di-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/></svg>
+            </div>
+            <div class="di-text">
+              <span class="di-name">Gateway Tech</span>
+              <span class="di-domain">tech.gatewayltd.com</span>
+            </div>
+          </a>
+        </div>
+      </li>
+      <li><a href="#mission">Our story</a></li>
+      <li><a href="#contact" class="nav-cta">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-bg-text">G</div>
+  <div class="hero-accent-bar"></div>
+  <div class="hero-diag"></div>
+  <div class="hero-diag hero-diag-2"></div>
+  <div class="hero-dots"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-year">Abuja, Nigeria — Est. 2015</div>
+
+  <div class="hero-content" style="padding-top: var(--nav-h);">
+    <div style="min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 80px; padding-top: 80px;">
+
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-line"></div>
+        <span class="hero-eyebrow-text">The Gateway Group — Nigeria</span>
+        <div class="hero-eyebrow-dot"></div>
+      </div>
+
+      <h1 class="hero-headline">
+        <span class="hero-headline-line"><span>Synthesizing</span></span>
+        <span class="hero-headline-line"><span><em>Potential,</em></span></span>
+        <span class="hero-headline-line"><span>Powering Africa.</span></span>
+      </h1>
+
+      <div class="hero-bottom">
+        <p class="hero-sub">The strategic hub for Nigeria's leading communications, media, and creative innovation — built to move culture forward.</p>
+        <div class="hero-actions">
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <div class="hero-stat-num">5<sup>+</sup></div>
+              <div class="hero-stat-label">Subsidiaries</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-num">10<sup>+</sup></div>
+              <div class="hero-stat-label">Years active</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-num">1K<sup>+</sup></div>
+              <div class="hero-stat-label">Clients served</div>
+            </div>
+          </div>
+          <div class="hero-ctas">
+            <a href="#subsidiaries" class="btn-primary">Explore our companies</a>
+            <a href="#mission" class="btn-secondary">Our story</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- Ticker -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item">Gateway Communications</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Gateway Studios</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Gateway Academy</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Gateway Workspaces</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Gateway Tech Innovation</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Gateway Communications</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Gateway Studios</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Gateway Academy</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Gateway Workspaces</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Gateway Tech Innovation</span><span class="ticker-sep">—</span>
+  </div>
+</div>
+
+<!-- ============================================================
+     SUBSIDIARIES
+     ============================================================ -->
+<section class="subsidiaries section-pad" id="subsidiaries">
+  <div class="container">
+    <div class="subs-header">
+      <div>
+        <div class="section-kicker reveal">
+          <div class="sk-line"></div>
+          <span class="sk-text">The ecosystem</span>
+        </div>
+        <h2 class="subs-title reveal reveal-delay-1">
+          Four experiences.<br><em>One Gateway.</em>
+        </h2>
+      </div>
+      <p class="subs-intro reveal reveal-delay-2">Each subsidiary operates independently, powered by the same strategic infrastructure and shared vision for excellence.</p>
+    </div>
+
+    <div class="subs-grid">
+
+      <!-- Featured: Studios -->
+      <div class="sub-card sub-card-featured">
+        <div class="sub-card-visual">
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg, #EDE9E2 0%, #D8D3CA 100%);"></div>
+          <div style="position:absolute;right:32px;bottom:28px;font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:300;color:rgba(200,16,46,0.06);line-height:1;user-select:none;">01</div>
+          <div class="sub-visual-circle sub-card-visual-inner">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+        </div>
+        <div class="sub-card-body">
+          <p class="sub-card-tag">Primary creative branch</p>
+          <h3 class="sub-card-name">Gateway Studios</h3>
+          <p class="sub-card-desc">Capturing authentic stories through cinematic documentary and filmmaking. Nigeria's foremost creative production house, setting the standard for visual storytelling across Africa.</p>
+          <div class="sub-card-footer">
+            <a href="https://studios.gatewayltd.com" class="sub-card-link">
+              Explore Studios
+              <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <span class="sub-domain">studios.gatewayltd.com</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Communications -->
+      <div class="sub-card sub-card-2">
+        <div class="sub-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <p class="sub-card-tag">Communications</p>
+        <h3 class="sub-card-name">Gateway Communications</h3>
+        <p class="sub-card-desc">Strategic corporate communications delivered by experts. Positioning brands and institutions for influence and long-term relevance.</p>
+        <div class="sub-card-footer">
+          <a href="https://comms.gatewayltd.com" class="sub-card-link">
+            Explore
+            <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <span class="sub-domain">comms.gatewayltd.com</span>
+        </div>
+      </div>
+
+      <!-- Academy -->
+      <div class="sub-card sub-card-3">
+        <div class="sub-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <p class="sub-card-tag">Education</p>
+        <h3 class="sub-card-name">Gateway Academy</h3>
+        <p class="sub-card-desc">Equipping the next generation of creatives with practical, industry-relevant skills. Where talent meets professional discipline.</p>
+        <div class="sub-card-footer">
+          <a href="https://academy.gatewayltd.com" class="sub-card-link">
+            Explore
+            <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <span class="sub-domain">academy.gatewayltd.com</span>
+        </div>
+      </div>
+
+      <!-- Workspaces -->
+      <div class="sub-card sub-card-4">
+        <div class="sub-card-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        </div>
+        <p class="sub-card-tag">Spaces</p>
+        <h3 class="sub-card-name">Gateway Workspaces</h3>
+        <p class="sub-card-desc">Creative environments designed for collaboration, focus, and inspiration.</p>
+        <div class="sub-card-footer">
+          <a href="https://workspaces.gatewayltd.com" class="sub-card-link">
+            Explore
+            <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <span class="sub-domain">workspaces.gatewayltd.com</span>
+        </div>
+      </div>
+
+      <!-- Tech -->
+      <div class="sub-card sub-card-5">
+        <div class="sub-card-icon">
+          <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <p class="sub-card-tag">Technology</p>
+        <h3 class="sub-card-name">Gateway Tech</h3>
+        <p class="sub-card-desc">Digital infrastructure powering the entire Gateway ecosystem — platforms, products, and tech-driven solutions.</p>
+        <div class="sub-card-footer">
+          <a href="https://tech.gatewayltd.com" class="sub-card-link">
+            Explore
+            <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <span class="sub-domain">tech.gatewayltd.com</span>
+        </div>
+      </div>
+
+      <!-- Coming soon -->
+      <div class="sub-card sub-card-coming">
+        <div class="sub-card-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <p class="sub-card-tag">Coming soon</p>
+        <h3 class="sub-card-name">Next Company</h3>
+        <p class="sub-card-desc">The Gateway ecosystem continues to grow. New subsidiaries in development.</p>
+        <div class="sub-card-footer">
+          <span class="sub-card-link">Stay tuned</span>
+          <span class="sub-domain">gatewayltd.com</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MISSION / ABOUT
+     ============================================================ -->
+<section class="mission section-pad" id="mission">
+  <div class="container">
+    <div class="mission-inner">
+      <div class="mission-left">
+        <div class="section-kicker reveal">
+          <div class="sk-line"></div>
+          <span class="sk-text" style="color:rgba(255,255,255,0.4);">Our purpose</span>
+        </div>
+        <h2 class="mission-headline reveal reveal-delay-1">
+          We remove friction between<br><em>creativity, work,</em><br>and growth.
+        </h2>
+        <div class="mission-body reveal reveal-delay-2">
+          <p>The Gateway Ltd exists to design and operate systems that allow individuals, teams, and organizations to think clearly, create freely, and execute effectively.</p>
+          <p>From Abuja to the rest of Africa — we bring structure to creativity, clarity to communication, and direction to growth across every company in the Gateway ecosystem.</p>
+        </div>
+        <a href="#contact" class="btn-primary reveal reveal-delay-3" style="display:inline-block;">Start a conversation</a>
+      </div>
+      <div class="mission-pillars">
+        <div class="mp-item">
+          <div class="mp-num">01</div>
+          <div class="mp-content">
+            <div class="mp-title">Structure</div>
+            <div class="mp-body">Discipline and clarity applied to creative work — so ideas move from vision to execution without losing their power.</div>
+          </div>
+        </div>
+        <div class="mp-item">
+          <div class="mp-num">02</div>
+          <div class="mp-content">
+            <div class="mp-title">Clarity</div>
+            <div class="mp-body">Strategic communication ensuring every message lands with precision, trust, and lasting institutional impact.</div>
+          </div>
+        </div>
+        <div class="mp-item">
+          <div class="mp-num">03</div>
+          <div class="mp-content">
+            <div class="mp-title">Direction</div>
+            <div class="mp-body">From individual creatives to enterprise teams — the strategic direction that unlocks sustainable, measurable growth.</div>
+          </div>
+        </div>
+        <div class="mp-item">
+          <div class="mp-num">04</div>
+          <div class="mp-content">
+            <div class="mp-title">Legacy</div>
+            <div class="mp-body">Building institutions that outlast their founders — systems, cultures, and brands designed to endure.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     INFO STRIP
+     ============================================================ -->
+<div class="info-strip">
+  <div class="container">
+    <div class="info-strip-inner">
+      <div class="info-item">
+        <div class="info-label">Headquarters</div>
+        <div class="info-value">Abuja, Nigeria</div>
+      </div>
+      <div class="info-divider"></div>
+      <div class="info-item">
+        <div class="info-label">Parent company</div>
+        <div class="info-value">The Gateway Ltd</div>
+      </div>
+      <div class="info-divider"></div>
+      <div class="info-item">
+        <div class="info-label">Domain</div>
+        <div class="info-value">gatewayltd.com</div>
+      </div>
+      <div class="info-divider"></div>
+      <div class="info-item">
+        <div class="info-label">Active subsidiaries</div>
+        <div class="info-value">5 Companies</div>
+      </div>
+      <div class="info-divider"></div>
+      <div class="info-item">
+        <div class="info-label">Focus</div>
+        <div class="info-value">Media, Comms & Creative</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer id="contact">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo-text">The Gateway <span>Ltd</span></div>
+        <p class="footer-tagline">Synthesizing potential, powering Africa. Abuja, Nigeria.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Subsidiaries</div>
+        <ul>
+          <li><a href="https://studios.gatewayltd.com">Gateway Studios</a></li>
+          <li><a href="https://comms.gatewayltd.com">Gateway Communications</a></li>
+          <li><a href="https://academy.gatewayltd.com">Gateway Academy</a></li>
+          <li><a href="https://workspaces.gatewayltd.com">Gateway Workspaces</a></li>
+          <li><a href="https://tech.gatewayltd.com">Gateway Tech</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Company</div>
+        <ul>
+          <li><a href="#mission">About us</a></li>
+          <li><a href="#">Our story</a></li>
+          <li><a href="#">Leadership</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Newsroom</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Contact</div>
+        <ul>
+          <li><a href="mailto:hello@gatewayltd.com">hello@gatewayltd.com</a></li>
+          <li><a href="#">Abuja, Nigeria</a></li>
+          <li><a href="#">Media enquiries</a></li>
+          <li><a href="#">Partnerships</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 The Gateway Ltd. All rights reserved. Abuja, Nigeria.</p>
+      <div class="footer-legal">
+        <a href="#">Privacy policy</a>
+        <a href="#">Terms of use</a>
+        <a href="#">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+(function() {
+  /* --- Custom cursor --- */
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = -100, my = -100, rx = -100, ry = -100;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 4 + 'px';
+    cursor.style.top = my - 4 + 'px';
+  });
+
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx - 16 + 'px';
+    ring.style.top = ry - 16 + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, .sub-card').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('hovered'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('hovered'));
+  });
+
+  /* --- Navbar scroll --- */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  /* --- Intersection observer for reveals --- */
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal, .sub-card, .mp-item').forEach(el => {
+    revealObs.observe(el);
+  });
+
+  /* --- Stagger sub-cards --- */
+  const cards = document.querySelectorAll('.sub-card');
+  cards.forEach((card, i) => {
+    card.style.transitionDelay = (i * 0.08) + 's';
+  });
+
+  /* --- Stagger mission pillars --- */
+  document.querySelectorAll('.mp-item').forEach((item, i) => {
+    item.style.transitionDelay = (0.1 + i * 0.12) + 's';
+  });
+
+  /* --- Smooth anchor scrolling --- */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  /* --- Parallax on hero bg text --- */
+  const bgText = document.querySelector('.hero-bg-text');
+  if (bgText) {
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      bgText.style.transform = `translate(-50%, calc(-50% + ${scrolled * 0.25}px))`;
+    }, { passive: true });
+  }
+
+})();
+</script>
+
+</body>
+</html>
