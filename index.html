@@ -6,790 +6,315 @@
 <title>The Gateway Ltd — Synthesizing Potential, Powering Africa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Geist:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ============================================================
-   RESET & BASE
-   ============================================================ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Geist', sans-serif;
-  background: #F8F6F2;
-  color: #1A1714;
-  overflow-x: hidden;
-  cursor: default;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:#F8F6F2;color:#1A1714;overflow-x:hidden;cursor:default;}
+:root{
+  --red:#E51524;--red-dark:#8B0A1E;--red-muted:rgba(229,21,36,0.08);
+  --yellow:#FFAB00;--yellow-dark:#CC8800;--yellow-muted:rgba(255,171,0,0.10);
+  --charcoal:#1A1714;--charcoal-soft:#2C2925;
+  --cream:#F8F6F2;--cream-dark:#EDE9E2;
+  --stone:#9B9590;--stone-light:#C8C4BE;
+  --white:#FFFFFF;--border:rgba(26,23,20,0.1);--border-light:rgba(26,23,20,0.06);
+  --nav-h:72px;
 }
-
-/* ============================================================
-   CSS VARIABLES
-   ============================================================ */
-:root {
-  --red: #C8102E;
-  --red-dark: #8B0A1E;
-  --red-muted: rgba(200,16,46,0.08);
-  --charcoal: #1A1714;
-  --charcoal-soft: #2C2925;
-  --cream: #F8F6F2;
-  --cream-dark: #EDE9E2;
-  --stone: #9B9590;
-  --stone-light: #C8C4BE;
-  --white: #FFFFFF;
-  --border: rgba(26,23,20,0.1);
-  --border-light: rgba(26,23,20,0.06);
-  --nav-h: 72px;
+/* CURSOR */
+.cursor{position:fixed;width:8px;height:8px;background:var(--yellow);border-radius:50%;pointer-events:none;z-index:9999;transition:transform .15s ease;mix-blend-mode:multiply;}
+.cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(229,21,36,0.45);border-radius:50%;pointer-events:none;z-index:9998;transition:transform .4s cubic-bezier(.23,1,.32,1),width .3s,height .3s,border-color .3s;}
+body.hovered .cursor{transform:scale(2.5);}
+body.hovered .cursor-ring{width:48px;height:48px;border-color:rgba(229,21,36,0.2);}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:1000;transition:background .4s ease,border-color .4s ease;}
+nav.scrolled{background:rgba(255,255,255,0.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.nav-inner{max-width:1280px;margin:0 auto;padding:0 40px;height:100%;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-emblem{width:36px;height:36px;}
+.logo-emblem svg{width:100%;height:100%;}
+.logo-wordmark{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--charcoal);}
+.logo-wordmark span{color:var(--red);}
+.nav-links{display:flex;align-items:center;gap:8px;list-style:none;}
+.nav-links>li{position:relative;}
+.nav-links a{font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--charcoal);text-decoration:none;padding:8px 14px;border-radius:2px;transition:color .2s;display:flex;align-items:center;gap:5px;}
+.nav-links a:hover{color:var(--red);}
+.nav-links a .chevron{width:10px;height:10px;transition:transform .25s ease;stroke:currentColor;fill:none;}
+.nav-links li:hover .chevron{transform:rotate(180deg);}
+.dropdown{position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%) translateY(-6px);background:var(--white);border:1px solid var(--border);border-radius:4px;width:290px;opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease;overflow:hidden;}
+.dropdown::before{content:'';position:absolute;top:-1px;left:0;right:0;height:2px;background:var(--red);}
+.nav-links li:hover .dropdown{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0);}
+.dropdown-item{display:flex;align-items:center;gap:14px;padding:13px 18px;text-decoration:none;border-bottom:1px solid var(--border-light);transition:background .15s;}
+.dropdown-item:last-child{border-bottom:none;}
+.dropdown-item:hover{background:var(--cream);}
+.di-icon{width:32px;height:32px;background:var(--cream-dark);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s;}
+.dropdown-item:hover .di-icon{background:var(--red-muted);}
+.di-icon svg{width:14px;height:14px;stroke:var(--charcoal);fill:none;stroke-width:1.6;}
+.dropdown-item:hover .di-icon svg{stroke:var(--red);}
+.di-text{display:flex;flex-direction:column;}
+.di-name{font-size:12px;font-weight:500;color:var(--charcoal);letter-spacing:.02em;}
+.di-domain{font-size:10px;color:var(--stone);letter-spacing:.04em;margin-top:1px;}
+.nav-cta{margin-left:8px;background:var(--red)!important;color:var(--white)!important;padding:9px 22px!important;border-radius:2px!important;font-weight:600!important;}
+.nav-cta:hover{background:var(--red-dark)!important;}
+/* HAMBURGER */
+.hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:40px;height:40px;background:none;border:none;cursor:pointer;padding:6px;z-index:1100;flex-shrink:0;}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--charcoal);transition:transform .3s ease,opacity .3s ease;transform-origin:center;}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+/* MOBILE MENU */
+.mobile-menu{display:none;position:fixed;inset:0;background:var(--cream);z-index:1050;flex-direction:column;overflow-y:auto;opacity:0;transform:translateX(100%);transition:opacity .35s ease,transform .35s cubic-bezier(.23,1,.32,1);}
+.mobile-menu.open{opacity:1;transform:translateX(0);}
+.mobile-menu-header{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:var(--nav-h);border-bottom:1px solid var(--border);flex-shrink:0;}
+.mobile-menu-body{flex:1;padding:28px 24px 48px;display:flex;flex-direction:column;}
+.mob-section{border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:8px;}
+.mob-section:last-of-type{border-bottom:none;}
+.mob-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--stone);padding:16px 0 8px;font-weight:500;}
+.mob-link{display:flex;align-items:center;justify-content:space-between;padding:13px 0;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--charcoal);text-decoration:none;font-weight:400;border-bottom:1px solid var(--border-light);transition:color .2s;}
+.mob-link:last-child{border-bottom:none;}
+.mob-link:hover{color:var(--red);}
+.mob-link svg{width:12px;height:12px;stroke:var(--stone);fill:none;stroke-width:2;flex-shrink:0;}
+.mob-sub-item{display:flex;align-items:center;gap:14px;padding:13px 0;text-decoration:none;border-bottom:1px solid var(--border-light);transition:opacity .2s;}
+.mob-sub-item:last-child{border-bottom:none;}
+.mob-sub-item:hover{opacity:.65;}
+.msi-icon{width:36px;height:36px;background:var(--cream-dark);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.msi-icon svg{width:15px;height:15px;stroke:var(--charcoal);fill:none;stroke-width:1.6;}
+.msi-name{font-size:13px;font-weight:500;color:var(--charcoal);display:block;}
+.msi-domain{font-size:10px;color:var(--stone);letter-spacing:.04em;display:block;margin-top:1px;}
+.mob-cta{display:block;margin-top:28px;background:var(--red);color:var(--white);border:none;padding:15px 28px;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:2px;text-align:center;text-decoration:none;}
+/* HERO */
+.hero{min-height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:80px;background:#fff;}
+.hero-image{position:absolute;inset:0;background-image:url('asset/images/hero_banner.jpg');background-size:cover;background-position:center 30%;z-index:0;}
+.hero-image::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,rgba(255,255,255,0.93) 0%,rgba(255,255,255,0.80) 45%,rgba(255,255,255,0.38) 100%);}
+.hero-grid{position:absolute;inset:0;z-index:1;background-image:linear-gradient(rgba(26,23,20,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(26,23,20,.035) 1px,transparent 1px);background-size:80px 80px;}
+.hero-bg-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Inter',sans-serif;font-size:30vw;font-weight:800;color:rgba(26,23,20,0.04);white-space:nowrap;pointer-events:none;user-select:none;letter-spacing:-.04em;line-height:1;z-index:2;}
+.hero-accent-bar{position:absolute;top:0;left:0;width:4px;height:0;background:var(--yellow);animation:barGrow 1.2s .3s cubic-bezier(.23,1,.32,1) forwards;z-index:3;}
+@keyframes barGrow{to{height:100%;}}
+.hero-diag{position:absolute;right:120px;top:0;bottom:0;width:1px;background:rgba(26,23,20,.06);transform:skewX(-8deg);z-index:2;}
+.hero-diag-2{right:180px;background:rgba(26,23,20,.03);}
+.hero-dots{position:absolute;right:0;top:0;width:45%;height:100%;background-image:radial-gradient(rgba(26,23,20,.06) 1px,transparent 1px);background-size:28px 28px;opacity:0;animation:fadeIn 1.5s .5s ease forwards;z-index:2;}
+@keyframes fadeIn{to{opacity:1;}}
+.hero-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(255,171,0,.07) 0%,transparent 70%);right:-150px;bottom:-150px;pointer-events:none;z-index:2;}
+.hero-glow-red{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(229,21,36,.05) 0%,transparent 70%);left:200px;top:-100px;pointer-events:none;z-index:2;}
+.hero-year{position:absolute;right:40px;top:50%;transform:translateY(-50%) rotate(90deg);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,23,20,.2);white-space:nowrap;z-index:4;}
+.hero-content{position:relative;z-index:5;max-width:1280px;margin:0 auto;padding:0 40px;width:100%;}
+.hero-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:28px;opacity:0;animation:slideUp .7s .6s ease forwards;}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.hero-eyebrow-line{width:40px;height:1px;background:var(--red);}
+.hero-eyebrow-text{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(26,23,20,.45);}
+.hero-eyebrow-dot{width:4px;height:4px;border-radius:50%;background:var(--yellow);}
+.hero-headline{font-family:'Inter',sans-serif;font-size:clamp(48px,7vw,88px);font-weight:800;line-height:.97;color:var(--charcoal);margin-bottom:32px;letter-spacing:-.035em;}
+.hero-headline-line{display:block;overflow:hidden;}
+.hero-headline-line span{display:block;opacity:0;transform:translateY(100%);}
+.hero-headline-line:nth-child(1) span{animation:lineReveal .9s .7s cubic-bezier(.23,1,.32,1) forwards;}
+.hero-headline-line:nth-child(2) span{animation:lineReveal .9s .85s cubic-bezier(.23,1,.32,1) forwards;}
+.hero-headline-line:nth-child(3) span{animation:lineReveal .9s 1.0s cubic-bezier(.23,1,.32,1) forwards;}
+@keyframes lineReveal{to{opacity:1;transform:translateY(0);}}
+.hero-headline em{font-style:italic;color:var(--red);font-weight:300;}
+.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;opacity:0;animation:slideUp .7s 1.2s ease forwards;}
+.hero-sub{font-size:17px;color:rgba(26,23,20,.5);line-height:1.85;max-width:380px;font-weight:300;}
+.hero-actions{display:flex;flex-direction:column;align-items:flex-end;gap:16px;}
+.hero-ctas{display:flex;gap:10px;}
+.btn-primary{background:var(--red);color:var(--white);border:1px solid var(--red);padding:13px 28px;font-family:'Inter',sans-serif;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background .2s,border-color .2s;text-decoration:none;display:inline-block;}
+.btn-primary:hover{background:var(--red-dark);border-color:var(--red-dark);}
+.btn-secondary{background:transparent;color:rgba(26,23,20,.65);border:1px solid rgba(26,23,20,.22);padding:13px 28px;font-family:'Inter',sans-serif;font-size:10px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:border-color .2s,color .2s;text-decoration:none;display:inline-block;}
+.btn-secondary:hover{border-color:rgba(26,23,20,.55);color:var(--charcoal);}
+.hero-stats{display:flex;gap:40px;}
+.hero-stat{text-align:right;}
+.hero-stat-num{font-family:'Inter',sans-serif;font-size:28px;font-weight:800;color:var(--charcoal);line-height:1;margin-bottom:4px;letter-spacing:-.02em;}
+.hero-stat-num sup{font-size:14px;color:var(--yellow);vertical-align:super;}
+.hero-stat-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,23,20,.3);}
+.scroll-indicator{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeIn 1s 2s ease forwards;z-index:6;}
+.scroll-indicator span{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,23,20,.25);}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,rgba(26,23,20,.3),transparent);animation:scrollPulse 2s 2s ease-in-out infinite;}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(1);}50%{opacity:1;transform:scaleY(.6);}}
+/* TICKER — RED */
+.ticker-wrap{background:var(--red);overflow:hidden;padding:13px 0;}
+.ticker-track{display:flex;animation:tickerMove 22s linear infinite;width:max-content;}
+.ticker-item{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.85);white-space:nowrap;padding:0 48px;font-weight:500;}
+.ticker-sep{color:rgba(255,255,255,.35);padding-right:48px;font-size:10px;}
+@keyframes tickerMove{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+/* SHARED */
+.section-pad{padding:100px 0;}
+.container{max-width:1280px;margin:0 auto;padding:0 40px;}
+.section-kicker{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.sk-line{width:32px;height:1px;background:var(--red);}
+.sk-text{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);font-weight:500;}
+/* SUBSIDIARIES */
+.subsidiaries{background:var(--cream);}
+.subs-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;}
+.subs-title{font-family:'Inter',sans-serif;font-size:clamp(32px,4vw,52px);font-weight:800;line-height:1.03;color:var(--charcoal);max-width:420px;letter-spacing:-.03em;}
+.subs-title em{font-style:italic;color:var(--red);font-weight:300;}
+.subs-intro{font-size:13px;color:var(--stone);line-height:1.8;max-width:320px;text-align:right;}
+.subs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.sub-card-4{grid-column:1/2;}
+.sub-card-5{grid-column:2/3;}
+.sub-grid-spacer{grid-column:3/4;}
+/* Cards — YELLOW hover bar */
+.sub-card{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:32px;position:relative;overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease,border-color .25s;}
+.sub-card.visible{opacity:1;transform:translateY(0);}
+.sub-card:hover{border-color:rgba(255,171,0,.45);transform:translateY(-4px)!important;}
+.sub-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--yellow);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.23,1,.32,1);}
+.sub-card:hover::after{transform:scaleX(1);}
+.sub-card-num{position:absolute;bottom:24px;right:28px;font-family:'Inter',sans-serif;font-size:52px;font-weight:800;color:rgba(26,23,20,.04);line-height:1;user-select:none;pointer-events:none;}
+.sub-card-icon{width:40px;height:40px;border-radius:4px;background:var(--cream-dark);display:flex;align-items:center;justify-content:center;margin-bottom:20px;transition:background .2s;}
+.sub-card:hover .sub-card-icon{background:var(--red-muted);}
+.sub-card-icon svg{width:18px;height:18px;stroke:var(--charcoal);fill:none;stroke-width:1.6;transition:stroke .2s;}
+.sub-card:hover .sub-card-icon svg{stroke:var(--red);}
+.sub-card-tag{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:8px;}
+.sub-card-name{font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:var(--charcoal);margin-bottom:10px;line-height:1.2;letter-spacing:-.01em;}
+.sub-card-desc{font-size:12px;color:var(--stone);line-height:1.75;flex:1;margin-bottom:24px;}
+.sub-card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid var(--border-light);margin-top:auto;}
+.sub-card-link{display:flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--red);text-decoration:none;font-weight:600;transition:gap .2s;}
+.sub-card:hover .sub-card-link{gap:10px;}
+.sub-card-link svg{width:12px;height:12px;stroke:var(--red);fill:none;stroke-width:2.2;}
+.sub-domain{font-size:9px;color:var(--stone-light);letter-spacing:.06em;}
+/* GALLERY STRIP */
+.gallery-strip{overflow:hidden;display:flex;gap:3px;height:380px;}
+.gallery-item{flex:1;position:relative;overflow:hidden;opacity:0;transition:opacity .8s ease,flex .5s ease;}
+.gallery-item.visible{opacity:1;}
+.gallery-item:hover{flex:1.8;}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease;filter:saturate(.85);}
+.gallery-item:hover img{transform:scale(1.05);filter:saturate(1);}
+.gallery-item-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,23,20,.7) 0%,transparent 55%);opacity:0;transition:opacity .3s ease;}
+.gallery-item:hover .gallery-item-overlay{opacity:1;}
+.gallery-item-label{position:absolute;bottom:20px;left:20px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--white);font-weight:500;opacity:0;transform:translateY(8px);transition:opacity .3s ease,transform .3s ease;}
+.gallery-item:hover .gallery-item-label{opacity:1;transform:translateY(0);}
+/* MISSION */
+.mission{position:relative;background:var(--charcoal);overflow:hidden;}
+.mission-photo-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1535016120720-40c646be5580?w=1800&q=75&auto=format&fit=crop');background-size:cover;background-position:center;opacity:.12;z-index:0;}
+.mission .container{position:relative;z-index:1;}
+.mission-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.mission-headline{font-family:'Inter',sans-serif;font-size:clamp(32px,3.5vw,48px);font-weight:800;color:var(--white);line-height:1.08;margin-bottom:28px;letter-spacing:-.03em;}
+.mission-headline em{font-style:italic;color:var(--yellow);font-weight:300;}
+.mission-body{font-size:14px;color:rgba(255,255,255,.45);line-height:1.9;font-weight:300;margin-bottom:36px;}
+.mission-body p+p{margin-top:16px;}
+.mission-pillars{display:flex;flex-direction:column;}
+.mp-item{display:flex;gap:20px;padding:22px 0;border-top:1px solid rgba(255,255,255,.06);opacity:0;transform:translateX(20px);transition:opacity .5s ease,transform .5s ease;}
+.mp-item:last-child{border-bottom:1px solid rgba(255,255,255,.06);}
+.mp-item.visible{opacity:1;transform:translateX(0);}
+.mp-num{font-family:'Inter',sans-serif;font-size:12px;color:var(--yellow);font-weight:600;padding-top:2px;min-width:28px;letter-spacing:.06em;}
+.mp-title{font-size:13px;font-weight:600;color:var(--white);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;}
+.mp-body{font-size:12px;color:rgba(255,255,255,.4);line-height:1.7;font-weight:300;}
+/* INFO STRIP */
+.info-strip{background:var(--cream-dark);padding:60px 0;border-top:1px solid var(--border);}
+.info-strip-inner{display:flex;align-items:center;justify-content:space-between;gap:40px;}
+.info-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--stone);margin-bottom:6px;}
+.info-value{font-family:'Inter',sans-serif;font-size:16px;font-weight:700;color:var(--charcoal);letter-spacing:-.01em;}
+.info-divider{width:1px;height:48px;background:var(--border);}
+/* FOOTER */
+footer{background:var(--charcoal);padding:56px 0 36px;}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:32px;}
+.footer-logo-text{font-family:'Inter',sans-serif;font-size:14px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--white);margin-bottom:12px;}
+.footer-logo-text span{color:var(--red);}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,.3);line-height:1.7;max-width:200px;font-weight:300;}
+.footer-col-title{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:18px;font-weight:500;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-col ul a{font-size:12px;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s;font-weight:300;}
+.footer-col ul a:hover{color:var(--white);}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.2);font-weight:300;}
+.footer-legal{display:flex;gap:24px;}
+.footer-legal a{font-size:10px;letter-spacing:.06em;color:rgba(255,255,255,.2);text-decoration:none;text-transform:uppercase;transition:color .2s;}
+.footer-legal a:hover{color:rgba(255,255,255,.6);}
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:.1s;}
+.reveal-delay-2{transition-delay:.2s;}
+.reveal-delay-3{transition-delay:.3s;}
+/* RESPONSIVE */
+@media(max-width:960px){
+  .subs-grid{grid-template-columns:1fr 1fr;}
+  .sub-card-4,.sub-card-5{grid-column:auto;}
+  .sub-grid-spacer{display:none;}
+  .mission-inner{grid-template-columns:1fr;gap:48px;}
+  .subs-header{flex-direction:column;align-items:flex-start;gap:20px;}
+  .subs-intro{text-align:left;}
+  .footer-top{grid-template-columns:1fr 1fr;gap:36px;}
+  .info-strip-inner{flex-wrap:wrap;gap:24px;}
+  .gallery-strip{height:260px;}
 }
-
-/* ============================================================
-   CUSTOM CURSOR
-   ============================================================ */
-.cursor {
-  position: fixed;
-  width: 8px; height: 8px;
-  background: var(--red);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transition: transform 0.15s ease, opacity 0.15s ease;
-  mix-blend-mode: multiply;
-}
-.cursor-ring {
-  position: fixed;
-  width: 32px; height: 32px;
-  border: 1px solid rgba(200,16,46,0.4);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), width 0.3s, height 0.3s, border-color 0.3s;
-}
-body.hovered .cursor { transform: scale(2.5); }
-body.hovered .cursor-ring { width: 48px; height: 48px; border-color: rgba(200,16,46,0.25); }
-
-/* ============================================================
-   NAVIGATION
-   ============================================================ */
-nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: var(--nav-h);
-  z-index: 1000;
-  transition: background 0.4s ease, border-color 0.4s ease;
-}
-nav.scrolled {
-  background: rgba(248,246,242,0.96);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-}
-.nav-inner {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 40px;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.nav-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
-}
-.logo-emblem { width: 36px; height: 36px; }
-.logo-emblem svg { width: 100%; height: 100%; }
-.logo-wordmark {
-  font-family: 'Geist', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--charcoal);
-}
-.logo-wordmark span { color: var(--red); }
-
-/* Desktop nav */
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  list-style: none;
-}
-.nav-links > li { position: relative; }
-.nav-links a {
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--charcoal);
-  text-decoration: none;
-  padding: 8px 14px;
-  border-radius: 2px;
-  transition: color 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-.nav-links a:hover { color: var(--red); }
-.nav-links a .chevron {
-  width: 10px; height: 10px;
-  transition: transform 0.25s ease;
-  stroke: currentColor;
-  fill: none;
-}
-.nav-links li:hover .chevron { transform: rotate(180deg); }
-
-/* Dropdown */
-.dropdown {
-  position: absolute;
-  top: calc(100% + 12px);
-  left: 50%;
-  transform: translateX(-50%) translateY(-6px);
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  width: 290px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  overflow: hidden;
-}
-.dropdown::before {
-  content: '';
-  position: absolute;
-  top: -1px; left: 0; right: 0;
-  height: 2px;
-  background: var(--red);
-}
-.nav-links li:hover .dropdown {
-  opacity: 1;
-  pointer-events: all;
-  transform: translateX(-50%) translateY(0);
-}
-.dropdown-item {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 13px 18px;
-  text-decoration: none;
-  border-bottom: 1px solid var(--border-light);
-  transition: background 0.15s;
-}
-.dropdown-item:last-child { border-bottom: none; }
-.dropdown-item:hover { background: var(--cream); }
-.di-icon {
-  width: 32px; height: 32px;
-  background: var(--cream-dark);
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: background 0.2s;
-}
-.dropdown-item:hover .di-icon { background: var(--red-muted); }
-.di-icon svg { width: 14px; height: 14px; stroke: var(--charcoal); fill: none; stroke-width: 1.6; }
-.dropdown-item:hover .di-icon svg { stroke: var(--red); }
-.di-text { display: flex; flex-direction: column; }
-.di-name { font-size: 12px; font-weight: 500; color: var(--charcoal); letter-spacing: 0.02em; }
-.di-domain { font-size: 10px; color: var(--stone); letter-spacing: 0.04em; margin-top: 1px; }
-
-.nav-cta {
-  margin-left: 8px;
-  background: var(--charcoal) !important;
-  color: var(--white) !important;
-  padding: 9px 22px !important;
-  border-radius: 2px !important;
-  font-weight: 500 !important;
-}
-.nav-cta:hover { background: var(--red) !important; }
-
-/* ============================================================
-   HAMBURGER (mobile only)
-   ============================================================ */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  width: 40px; height: 40px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 6px;
-  z-index: 1100;
-  flex-shrink: 0;
-}
-.hamburger span {
-  display: block;
-  width: 22px; height: 1.5px;
-  background: var(--charcoal);
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  transform-origin: center;
-}
-.hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-.hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-/* ============================================================
-   MOBILE MENU
-   ============================================================ */
-.mobile-menu {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: var(--cream);
-  z-index: 1050;
-  flex-direction: column;
-  overflow-y: auto;
-  opacity: 0;
-  transform: translateX(100%);
-  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.23,1,0.32,1);
-}
-.mobile-menu.open { opacity: 1; transform: translateX(0); }
-
-.mobile-menu-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  height: var(--nav-h);
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-}
-.mobile-menu-body {
-  flex: 1;
-  padding: 28px 24px 48px;
-  display: flex;
-  flex-direction: column;
-}
-.mob-section { border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 8px; }
-.mob-section:last-of-type { border-bottom: none; }
-.mob-label {
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--stone);
-  padding: 16px 0 8px;
-  font-weight: 500;
-}
-.mob-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 13px 0;
-  font-size: 14px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--charcoal);
-  text-decoration: none;
-  font-weight: 400;
-  border-bottom: 1px solid var(--border-light);
-  transition: color 0.2s;
-}
-.mob-link:last-child { border-bottom: none; }
-.mob-link:hover { color: var(--red); }
-.mob-link svg { width: 12px; height: 12px; stroke: var(--stone); fill: none; stroke-width: 2; flex-shrink: 0; }
-
-.mob-sub-item {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 13px 0;
-  text-decoration: none;
-  border-bottom: 1px solid var(--border-light);
-  transition: opacity 0.2s;
-}
-.mob-sub-item:last-child { border-bottom: none; }
-.mob-sub-item:hover { opacity: 0.65; }
-.msi-icon {
-  width: 36px; height: 36px;
-  background: var(--cream-dark);
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.msi-icon svg { width: 15px; height: 15px; stroke: var(--charcoal); fill: none; stroke-width: 1.6; }
-.msi-name { font-size: 13px; font-weight: 500; color: var(--charcoal); display: block; }
-.msi-domain { font-size: 10px; color: var(--stone); letter-spacing: 0.04em; display: block; margin-top: 1px; }
-
-.mob-cta {
-  display: block;
-  margin-top: 28px;
-  background: var(--red);
-  color: var(--white);
-  border: none;
-  padding: 15px 28px;
-  font-family: 'Geist', sans-serif;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  cursor: pointer;
-  border-radius: 2px;
-  text-align: center;
-  text-decoration: none;
-}
-
-/* ============================================================
-   HERO
-   ============================================================ */
-.hero {
-  min-height: 100vh;
-  background: var(--charcoal);
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding-bottom: 80px;
-}
-.hero-grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 80px 80px;
-}
-.hero-bg-text {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 28vw; font-weight: 300;
-  color: rgba(255,255,255,0.025);
-  white-space: nowrap;
-  pointer-events: none; user-select: none;
-  letter-spacing: -0.04em; line-height: 1;
-}
-.hero-accent-bar {
-  position: absolute; top: 0; left: 0;
-  width: 4px; height: 0;
-  background: var(--red);
-  animation: barGrow 1.2s 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-}
-@keyframes barGrow { to { height: 100%; } }
-.hero-diag {
-  position: absolute; right: 120px; top: 0; bottom: 0;
-  width: 1px; background: rgba(255,255,255,0.06);
-  transform: skewX(-8deg);
-}
-.hero-diag-2 { right: 180px; background: rgba(255,255,255,0.03); transform: skewX(-8deg); }
-.hero-dots {
-  position: absolute; right: 0; top: 0; width: 45%; height: 100%;
-  background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
-  background-size: 28px 28px; opacity: 0;
-  animation: fadeIn 1.5s 0.5s ease forwards;
-}
-@keyframes fadeIn { to { opacity: 1; } }
-.hero-glow {
-  position: absolute; width: 600px; height: 600px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(200,16,46,0.12) 0%, transparent 70%);
-  right: -100px; bottom: -100px; pointer-events: none;
-}
-.hero-year {
-  position: absolute; right: 40px; top: 50%;
-  transform: translateY(-50%) rotate(90deg);
-  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(255,255,255,0.25); white-space: nowrap;
-}
-.hero-content {
-  position: relative; z-index: 2;
-  max-width: 1280px; margin: 0 auto;
-  padding: 0 40px; width: 100%;
-}
-.hero-eyebrow {
-  display: flex; align-items: center; gap: 14px;
-  margin-bottom: 28px; opacity: 0;
-  animation: slideUp 0.7s 0.6s ease forwards;
-}
-@keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-.hero-eyebrow-line { width: 40px; height: 1px; background: var(--red); }
-.hero-eyebrow-text { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
-.hero-eyebrow-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--red); }
-
-.hero-headline {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(52px, 7.5vw, 96px); font-weight: 300;
-  line-height: 0.95; color: var(--white);
-  margin-bottom: 32px; letter-spacing: -0.02em;
-}
-.hero-headline-line { display: block; overflow: hidden; }
-.hero-headline-line span { display: block; opacity: 0; transform: translateY(100%); }
-.hero-headline-line:nth-child(1) span { animation: lineReveal 0.9s 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
-.hero-headline-line:nth-child(2) span { animation: lineReveal 0.9s 0.85s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
-.hero-headline-line:nth-child(3) span { animation: lineReveal 0.9s 1.0s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
-@keyframes lineReveal { to { opacity:1; transform:translateY(0); } }
-.hero-headline em { font-style: italic; color: var(--red); }
-
-.hero-bottom {
-  display: flex; align-items: flex-end; justify-content: space-between;
-  gap: 40px; opacity: 0;
-  animation: slideUp 0.7s 1.2s ease forwards;
-}
-.hero-sub { font-size: 20px; color: rgba(255,255,255,0.45); line-height: 1.85; max-width: 380px; font-weight: 300; }
-.hero-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 16px; }
-.hero-ctas { display: flex; gap: 10px; }
-.btn-primary {
-  background: var(--red); color: var(--white); border: 1px solid var(--red);
-  padding: 13px 28px; font-family: 'Geist', sans-serif; font-size: 10px; font-weight: 500;
-  letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; border-radius: 2px;
-  transition: background 0.2s; text-decoration: none; display: inline-block;
-}
-.btn-primary:hover { background: var(--red-dark); border-color: var(--red-dark); }
-.btn-secondary {
-  background: transparent; color: rgba(255,255,255,0.65);
-  border: 1px solid rgba(255,255,255,0.2); padding: 13px 28px;
-  font-family: 'Geist', sans-serif; font-size: 10px; font-weight: 400;
-  letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; border-radius: 2px;
-  transition: border-color 0.2s, color 0.2s; text-decoration: none; display: inline-block;
-}
-.btn-secondary:hover { border-color: rgba(255,255,255,0.55); color: var(--white); }
-.hero-stats { display: flex; gap: 40px; }
-.hero-stat { text-align: right; }
-.hero-stat-num { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: var(--white); line-height: 1; margin-bottom: 4px; }
-.hero-stat-num sup { font-size: 14px; color: var(--red); vertical-align: super; }
-.hero-stat-label { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
-
-.scroll-indicator {
-  position: absolute; bottom: 36px; left: 50%;
-  transform: translateX(-50%); display: flex; flex-direction: column;
-  align-items: center; gap: 8px; opacity: 0;
-  animation: fadeIn 1s 2s ease forwards; z-index: 3;
-}
-.scroll-indicator span { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
-.scroll-line {
-  width: 1px; height: 40px;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
-  animation: scrollPulse 2s 2s ease-in-out infinite;
-}
-@keyframes scrollPulse { 0%,100%{opacity:0.3;transform:scaleY(1);}50%{opacity:1;transform:scaleY(0.6);} }
-
-/* ============================================================
-   TICKER
-   ============================================================ */
-.ticker-wrap { background: var(--red); overflow: hidden; padding: 13px 0; }
-.ticker-track { display: flex; animation: tickerMove 22s linear infinite; width: max-content; }
-.ticker-item { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.85); white-space: nowrap; padding: 0 48px; font-weight: 400; }
-.ticker-sep { color: rgba(255,255,255,0.35); padding-right: 48px; font-size: 10px; }
-@keyframes tickerMove { 0%{transform:translateX(0);}100%{transform:translateX(-50%);} }
-
-/* ============================================================
-   SHARED SECTION STYLES
-   ============================================================ */
-.section-pad { padding: 100px 0; }
-.container { max-width: 1280px; margin: 0 auto; padding: 0 40px; }
-.section-kicker { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-.sk-line { width: 32px; height: 1px; background: var(--red); }
-.sk-text { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); font-weight: 500; }
-
-/* ============================================================
-   SUBSIDIARIES — EQUAL GRID
-   Row 1: 3 equal cards
-   Row 2: 2 cards, left-aligned (spacer holds column 3)
-   ============================================================ */
-.subsidiaries { background: var(--cream); }
-.subs-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 56px; }
-.subs-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 4.5vw, 58px); font-weight: 300; line-height: 1.1; color: var(--charcoal); max-width: 420px; }
-.subs-title em { font-style: italic; color: var(--red); }
-.subs-intro { font-size: 13px; color: var(--stone); line-height: 1.8; max-width: 320px; text-align: right; }
-
-.subs-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-/* Row 2 positioning */
-.sub-card-4 { grid-column: 1 / 2; }
-.sub-card-5 { grid-column: 2 / 3; }
-.sub-grid-spacer { grid-column: 3 / 4; } /* invisible spacer — keeps row 2 left-aligned */
-
-/* All cards — identical treatment, no hierarchy */
-.sub-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 32px;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.25s;
-}
-.sub-card.visible { opacity: 1; transform: translateY(0); }
-.sub-card:hover { border-color: rgba(200,16,46,0.3); transform: translateY(-4px) !important; }
-.sub-card::after {
-  content: ''; position: absolute;
-  top: 0; left: 0; right: 0; height: 2px;
-  background: var(--red); transform: scaleX(0); transform-origin: left;
-  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-}
-.sub-card:hover::after { transform: scaleX(1); }
-
-/* Watermark number */
-.sub-card-num {
-  position: absolute; bottom: 24px; right: 28px;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 52px; font-weight: 300;
-  color: rgba(26,23,20,0.04);
-  line-height: 1; user-select: none; pointer-events: none;
-}
-
-.sub-card-icon {
-  width: 40px; height: 40px; border-radius: 4px;
-  background: var(--cream-dark);
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 20px; transition: background 0.2s;
-}
-.sub-card:hover .sub-card-icon { background: var(--red-muted); }
-.sub-card-icon svg { width: 18px; height: 18px; stroke: var(--charcoal); fill: none; stroke-width: 1.6; transition: stroke 0.2s; }
-.sub-card:hover .sub-card-icon svg { stroke: var(--red); }
-.sub-card-tag { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--red); font-weight: 500; margin-bottom: 8px; }
-.sub-card-name { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--charcoal); margin-bottom: 10px; line-height: 1.2; }
-.sub-card-desc { font-size: 12px; color: var(--stone); line-height: 1.75; flex: 1; margin-bottom: 24px; }
-.sub-card-footer {
-  display: flex; align-items: center; justify-content: space-between;
-  padding-top: 20px; border-top: 1px solid var(--border-light); margin-top: auto;
-}
-.sub-card-link {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--red); text-decoration: none; font-weight: 500; transition: gap 0.2s;
-}
-.sub-card:hover .sub-card-link { gap: 10px; }
-.sub-card-link svg { width: 12px; height: 12px; stroke: var(--red); fill: none; stroke-width: 2.2; }
-.sub-domain { font-size: 9px; color: var(--stone-light); letter-spacing: 0.06em; }
-
-/* ============================================================
-   MISSION
-   ============================================================ */
-.mission { background: var(--charcoal); }
-.mission-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-.mission-headline { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 4vw, 52px); font-weight: 300; color: var(--white); line-height: 1.15; margin-bottom: 28px; letter-spacing: -0.01em; }
-.mission-headline em { font-style: italic; color: var(--red); }
-.mission-body { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.9; font-weight: 300; margin-bottom: 36px; }
-.mission-body p + p { margin-top: 16px; }
-.mission-pillars { display: flex; flex-direction: column; }
-.mp-item { display: flex; gap: 20px; padding: 22px 0; border-top: 1px solid rgba(255,255,255,0.06); opacity: 0; transform: translateX(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
-.mp-item:last-child { border-bottom: 1px solid rgba(255,255,255,0.06); }
-.mp-item.visible { opacity: 1; transform: translateX(0); }
-.mp-num { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: var(--red); font-weight: 400; padding-top: 2px; min-width: 28px; letter-spacing: 0.06em; }
-.mp-title { font-size: 13px; font-weight: 500; color: var(--white); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
-.mp-body { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.7; font-weight: 300; }
-
-/* ============================================================
-   INFO STRIP
-   ============================================================ */
-.info-strip { background: var(--cream-dark); padding: 60px 0; border-top: 1px solid var(--border); }
-.info-strip-inner { display: flex; align-items: center; justify-content: space-between; gap: 40px; }
-.info-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--stone); margin-bottom: 6px; }
-.info-value { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; color: var(--charcoal); }
-.info-divider { width: 1px; height: 48px; background: var(--border); }
-
-/* ============================================================
-   FOOTER
-   ============================================================ */
-footer { background: var(--charcoal); padding: 56px 0 36px; }
-.footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(255,255,255,0.07); margin-bottom: 32px; }
-.footer-logo-text { font-family: 'Geist', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); margin-bottom: 12px; }
-.footer-logo-text span { color: var(--red); }
-.footer-tagline { font-size: 12px; color: rgba(255,255,255,0.3); line-height: 1.7; max-width: 200px; font-weight: 300; }
-.footer-col-title { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; font-weight: 500; }
-.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-.footer-col ul a { font-size: 12px; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; font-weight: 300; }
-.footer-col ul a:hover { color: var(--white); }
-.footer-bottom { display: flex; justify-content: space-between; align-items: center; }
-.footer-copy { font-size: 11px; color: rgba(255,255,255,0.2); font-weight: 300; }
-.footer-legal { display: flex; gap: 24px; }
-.footer-legal a { font-size: 10px; letter-spacing: 0.06em; color: rgba(255,255,255,0.2); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
-.footer-legal a:hover { color: rgba(255,255,255,0.6); }
-
-/* ============================================================
-   SCROLL REVEAL
-   ============================================================ */
-.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
-@media (max-width: 960px) {
-  .subs-grid { grid-template-columns: 1fr 1fr; }
-  .sub-card-4 { grid-column: auto; }
-  .sub-card-5 { grid-column: auto; }
-  .sub-grid-spacer { display: none; }
-  .mission-inner { grid-template-columns: 1fr; gap: 48px; }
-  .subs-header { flex-direction: column; align-items: flex-start; gap: 20px; }
-  .subs-intro { text-align: left; }
-  .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
-  .info-strip-inner { flex-wrap: wrap; gap: 24px; }
-}
-
-@media (max-width: 680px) {
-  :root { --nav-h: 60px; }
-  .nav-links { display: none; }
-  .hamburger { display: flex; }
-  .mobile-menu { display: flex; }
-
-  .hero-content { padding: 0 24px; }
-  .hero-year { display: none; }
-  .hero-bottom { flex-direction: column; align-items: flex-start; gap: 28px; }
-  .hero-actions { align-items: flex-start; }
-  .hero-stats { flex-wrap: wrap; gap: 20px; }
-  .hero-stat { text-align: left; }
-
-  .container { padding: 0 24px; }
-  .section-pad { padding: 72px 0; }
-
-  .subs-grid { grid-template-columns: 1fr; }
-  .sub-card-4, .sub-card-5 { grid-column: 1 / -1; }
-  .sub-grid-spacer { display: none; }
-
-  .footer-top { grid-template-columns: 1fr; }
-  .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
-  .info-strip-inner { gap: 20px; }
-  .footer-legal { flex-wrap: wrap; justify-content: center; gap: 14px; }
+@media(max-width:680px){
+  :root{--nav-h:60px;}
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .mobile-menu{display:flex;}
+  .hero-content{padding:0 24px;}
+  .hero-year{display:none;}
+  .hero-bottom{flex-direction:column;align-items:flex-start;gap:28px;}
+  .hero-actions{align-items:flex-start;}
+  .hero-stats{flex-wrap:wrap;gap:20px;}
+  .hero-stat{text-align:left;}
+  .container{padding:0 24px;}
+  .section-pad{padding:72px 0;}
+  .subs-grid{grid-template-columns:1fr;}
+  .sub-card-4,.sub-card-5{grid-column:1/-1;}
+  .gallery-strip{height:200px;gap:2px;}
+  .footer-top{grid-template-columns:1fr;}
+  .footer-bottom{flex-direction:column;gap:16px;text-align:center;}
+  .info-strip-inner{gap:20px;}
+  .footer-legal{flex-wrap:wrap;justify-content:center;gap:14px;}
 }
 </style>
 </head>
 <body>
-
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
-<!-- ============================================================
-     NAVIGATION
-     ============================================================ -->
 <nav id="navbar">
   <div class="nav-inner">
     <a href="#" class="nav-logo">
       <div class="logo-emblem">
         <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="36" height="36" rx="4" fill="#C8102E"/>
+          <rect width="36" height="36" rx="4" fill="#E51524"/>
           <path d="M18 7L28 12.5V23.5L18 29L8 23.5V12.5L18 7Z" stroke="white" stroke-width="1.4" fill="none"/>
           <path d="M18 13V23M13.5 16L18 13L22.5 16" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
         </svg>
       </div>
       <div class="logo-wordmark">The Gateway <span>Ltd</span></div>
     </a>
-
     <ul class="nav-links">
       <li>
-        <a href="#subsidiaries">
-          Ecosystem
-          <svg class="chevron" viewBox="0 0 10 10"><path d="M2 3.5L5 6.5L8 3.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-        <div class="dropdown">
-          <a class="dropdown-item" href="https://comms.gatewayltd.com">
-            <div class="di-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-            <div class="di-text"><span class="di-name">Gateway Communications</span><span class="di-domain">comms.gatewayltd.com</span></div>
-          </a>
-          <a class="dropdown-item" href="https://studios.gatewayltd.com">
-            <div class="di-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
-            <div class="di-text"><span class="di-name">Gateway Studios</span><span class="di-domain">studios.gatewayltd.com</span></div>
-          </a>
-          <a class="dropdown-item" href="https://academy.gatewayltd.com">
-            <div class="di-icon"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
-            <div class="di-text"><span class="di-name">Gateway Academy</span><span class="di-domain">academy.gatewayltd.com</span></div>
-          </a>
-          <a class="dropdown-item" href="https://spaces.gatewayltd.com">
-            <div class="di-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
-            <div class="di-text"><span class="di-name">Gateway Spaces</span><span class="di-domain">spaces.gatewayltd.com</span></div>
-          </a>
-          <a class="dropdown-item" href="https://photography.gatewayltd.com">
-            <div class="di-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
-            <div class="di-text"><span class="di-name">Gateway Photography</span><span class="di-domain">photography.gatewayltd.com</span></div>
-          </a>
-        </div>
+        <a href="#subsidiaries">Ecosystem</a>
       </li>
       <li><a href="#about">Experiences</a></li>
       <li><a href="#mission">Our story</a></li>
       <li><a href="#contact" class="nav-cta">Contact</a></li>
     </ul>
-
-    <button class="hamburger" id="hamburger" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
-<!-- ============================================================
-     MOBILE MENU
-     ============================================================ -->
 <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
   <div class="mobile-menu-header">
     <a href="#" class="nav-logo" onclick="closeMobileMenu()">
-      <div class="logo-emblem">
-        <svg viewBox="0 0 36 36" fill="none">
-          <rect width="36" height="36" rx="4" fill="#C8102E"/>
-          <path d="M18 7L28 12.5V23.5L18 29L8 23.5V12.5L18 7Z" stroke="white" stroke-width="1.4" fill="none"/>
-          <path d="M18 13V23M13.5 16L18 13L22.5 16" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
-        </svg>
-      </div>
+      <div class="logo-emblem"><svg viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="4" fill="#E51524"/><path d="M18 7L28 12.5V23.5L18 29L8 23.5V12.5L18 7Z" stroke="white" stroke-width="1.4" fill="none"/><path d="M18 13V23M13.5 16L18 13L22.5 16" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg></div>
       <div class="logo-wordmark">The Gateway <span>Ltd</span></div>
     </a>
-    <button class="hamburger open" id="hamburgerClose" aria-label="Close menu">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="hamburger open" id="hamburgerClose" aria-label="Close menu"><span></span><span></span><span></span></button>
   </div>
-
   <div class="mobile-menu-body">
-    <!-- Main navigation -->
     <div class="mob-section">
       <div class="mob-label">Navigate</div>
-      <a class="mob-link" href="#subsidiaries" onclick="closeMobileMenu()">
-        Ecosystem
-        <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <a class="mob-link" href="#about" onclick="closeMobileMenu()">
-        Experiences
-        <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <a class="mob-link" href="#mission" onclick="closeMobileMenu()">
-        Our story
-        <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
+      <a class="mob-link" href="#subsidiaries" onclick="closeMobileMenu()">Ecosystem<svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="mob-link" href="#about" onclick="closeMobileMenu()">Experiences<svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="mob-link" href="#mission" onclick="closeMobileMenu()">Our story<svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
-
-    <!-- Subsidiaries -->
     <div class="mob-section">
       <div class="mob-label">Our subsidiaries</div>
-      <a class="mob-sub-item" href="https://comms.gatewayltd.com">
-        <div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-        <div><span class="msi-name">Gateway Communications</span><span class="msi-domain">comms.gatewayltd.com</span></div>
-      </a>
-      <a class="mob-sub-item" href="https://studios.gatewayltd.com">
-        <div class="msi-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
-        <div><span class="msi-name">Gateway Studios</span><span class="msi-domain">studios.gatewayltd.com</span></div>
-      </a>
-      <a class="mob-sub-item" href="https://academy.gatewayltd.com">
-        <div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
-        <div><span class="msi-name">Gateway Academy</span><span class="msi-domain">academy.gatewayltd.com</span></div>
-      </a>
-      <a class="mob-sub-item" href="https://spaces.gatewayltd.com">
-        <div class="msi-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
-        <div><span class="msi-name">Gateway Spaces</span><span class="msi-domain">spaces.gatewayltd.com</span></div>
-      </a>
-      <a class="mob-sub-item" href="https://photography.gatewayltd.com">
-        <div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
-        <div><span class="msi-name">Gateway Photography</span><span class="msi-domain">photography.gatewayltd.com</span></div>
-      </a>
+      <a class="mob-sub-item" href="https://comms.gatewayltd.com"><div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><span class="msi-name">Gateway Communications</span><span class="msi-domain">comms.gatewayltd.com</span></div></a>
+      <a class="mob-sub-item" href="https://studios.gatewayltd.com"><div class="msi-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div><span class="msi-name">Gateway Studios</span><span class="msi-domain">studios.gatewayltd.com</span></div></a>
+      <a class="mob-sub-item" href="https://academy.gatewayltd.com"><div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div><div><span class="msi-name">Gateway Academy</span><span class="msi-domain">academy.gatewayltd.com</span></div></a>
+      <a class="mob-sub-item" href="https://spaces.gatewayltd.com"><div class="msi-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div><div><span class="msi-name">Gateway Spaces</span><span class="msi-domain">spaces.gatewayltd.com</span></div></a>
+      <a class="mob-sub-item" href="https://photography.gatewayltd.com"><div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div><div><span class="msi-name">Gateway Photography</span><span class="msi-domain">photography.gatewayltd.com</span></div></a>
     </div>
-
     <a href="#contact" class="mob-cta" onclick="closeMobileMenu()">Contact us</a>
   </div>
 </div>
 
-<!-- ============================================================
-     HERO
-     ============================================================ -->
+<!-- HERO -->
 <section class="hero" id="hero">
+  <div class="hero-image"></div>
   <div class="hero-grid"></div>
   <div class="hero-bg-text">G</div>
   <div class="hero-accent-bar"></div>
@@ -797,10 +322,10 @@ footer { background: var(--charcoal); padding: 56px 0 36px; }
   <div class="hero-diag hero-diag-2"></div>
   <div class="hero-dots"></div>
   <div class="hero-glow"></div>
+  <div class="hero-glow-red"></div>
   <div class="hero-year">Abuja, Nigeria — Est. 2015</div>
-
-  <div class="hero-content" style="padding-top: var(--nav-h);">
-    <div style="min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 80px; padding-top: 80px;">
+  <div class="hero-content" style="padding-top:var(--nav-h);">
+    <div style="min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:80px;padding-top:80px;">
       <div class="hero-eyebrow">
         <div class="hero-eyebrow-line"></div>
         <span class="hero-eyebrow-text">The Gateway Group — Nigeria</span>
@@ -815,18 +340,9 @@ footer { background: var(--charcoal); padding: 56px 0 36px; }
         <p class="hero-sub">We build Experiences that power creativity, work and growth</p>
         <div class="hero-actions">
           <div class="hero-stats">
-            <div class="hero-stat">
-              <div class="hero-stat-num">5<sup>+</sup></div>
-              <div class="hero-stat-label">Subsidiaries</div>
-            </div>
-            <div class="hero-stat">
-              <div class="hero-stat-num">10<sup>+</sup></div>
-              <div class="hero-stat-label">Years active</div>
-            </div>
-            <div class="hero-stat">
-              <div class="hero-stat-num">1K<sup>+</sup></div>
-              <div class="hero-stat-label">Clients served</div>
-            </div>
+            <div class="hero-stat"><div class="hero-stat-num">5<sup>+</sup></div><div class="hero-stat-label">Subsidiaries</div></div>
+            <div class="hero-stat"><div class="hero-stat-num">10<sup>+</sup></div><div class="hero-stat-label">Years active</div></div>
+            <div class="hero-stat"><div class="hero-stat-num">1K<sup>+</sup></div><div class="hero-stat-label">Clients served</div></div>
           </div>
           <div class="hero-ctas">
             <a href="#subsidiaries" class="btn-primary">Explore Ecosystem</a>
@@ -836,13 +352,10 @@ footer { background: var(--charcoal); padding: 56px 0 36px; }
       </div>
     </div>
   </div>
-  <div class="scroll-indicator">
-    <span>Scroll</span>
-    <div class="scroll-line"></div>
-  </div>
+  <div class="scroll-indicator"><span>Scroll</span><div class="scroll-line"></div></div>
 </section>
 
-<!-- Ticker -->
+<!-- TICKER RED -->
 <div class="ticker-wrap" aria-hidden="true">
   <div class="ticker-track">
     <span class="ticker-item">Gateway Communications</span><span class="ticker-sep">—</span>
@@ -858,120 +371,59 @@ footer { background: var(--charcoal); padding: 56px 0 36px; }
   </div>
 </div>
 
-<!-- ============================================================
-     SUBSIDIARIES
-     ============================================================ -->
+<!-- SUBSIDIARIES -->
 <section class="subsidiaries section-pad" id="subsidiaries">
   <div class="container">
     <div class="subs-header">
       <div>
-        <div class="section-kicker reveal">
-          <div class="sk-line"></div>
-          <span class="sk-text">The ecosystem</span>
-        </div>
+        <div class="section-kicker reveal"><div class="sk-line"></div><span class="sk-text">The ecosystem</span></div>
         <h2 class="subs-title reveal reveal-delay-1">Five experiences.<br><em>One Gateway.</em></h2>
       </div>
       <p class="subs-intro reveal reveal-delay-2">Each subsidiary operates independently, powered by the same strategic infrastructure and shared vision for excellence.</p>
     </div>
-
     <div class="subs-grid">
-
-      <!-- 1 — Communications -->
-      <div class="sub-card">
-        <div class="sub-card-num">01</div>
-        <div class="sub-card-icon">
-          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        </div>
-        <p class="sub-card-tag">Communications</p>
-        <h3 class="sub-card-name">Gateway Communications</h3>
-        <p class="sub-card-desc">Strategic corporate communications delivered by experts.</p>
-        <div class="sub-card-footer">
-          <a href="https://comms.gatewayltd.com" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          <span class="sub-domain">comms.gatewayltd.com</span>
-        </div>
-      </div>
-
-      <!-- 2 — Studios -->
-      <div class="sub-card">
-        <div class="sub-card-num">02</div>
-        <div class="sub-card-icon">
-          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        </div>
-        <p class="sub-card-tag">Creative production</p>
-        <h3 class="sub-card-name">Gateway Studios</h3>
-        <p class="sub-card-desc">Capturing authentic stories through cinematic documentary &amp; filmmaking.</p>
-        <div class="sub-card-footer">
-          <a href="https://studios.gatewayltd.com" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          <span class="sub-domain">studios.gatewayltd.com</span>
-        </div>
-      </div>
-
-      <!-- 3 — Academy -->
-      <div class="sub-card">
-        <div class="sub-card-num">03</div>
-        <div class="sub-card-icon">
-          <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-        </div>
-        <p class="sub-card-tag">Education</p>
-        <h3 class="sub-card-name">Gateway Academy</h3>
-        <p class="sub-card-desc">Equipping the next generation of creatives with practical, industry-relevant skills.</p>
-        <div class="sub-card-footer">
-          <a href="https://academy.gatewayltd.com" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          <span class="sub-domain">academy.gatewayltd.com</span>
-        </div>
-      </div>
-
-      <!-- 4 — Spaces (row 2, left) -->
-      <div class="sub-card sub-card-4">
-        <div class="sub-card-num">04</div>
-        <div class="sub-card-icon">
-          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-        </div>
-        <p class="sub-card-tag">Spaces</p>
-        <h3 class="sub-card-name">Gateway Spaces</h3>
-        <p class="sub-card-desc">Creative spaces designed for collaboration, focus, and inspiration.</p>
-        <div class="sub-card-footer">
-          <a href="https://spaces.gatewayltd.com" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          <span class="sub-domain">spaces.gatewayltd.com</span>
-        </div>
-      </div>
-
-      <!-- 5 — Photography (row 2, centre) -->
-      <div class="sub-card sub-card-5">
-        <div class="sub-card-num">05</div>
-        <div class="sub-card-icon">
-          <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        </div>
-        <p class="sub-card-tag">Visual arts</p>
-        <h3 class="sub-card-name">Gateway Photography</h3>
-        <p class="sub-card-desc">Authentic visual storytelling — capturing the moments, people, and ideas that define our culture.</p>
-        <div class="sub-card-footer">
-          <a href="https://photography.gatewayltd.com" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          <span class="sub-domain">photography.gatewayltd.com</span>
-        </div>
-      </div>
-
-      <!-- Invisible spacer: keeps row 2 left-aligned in the 3-col grid -->
+      <div class="sub-card"><div class="sub-card-num">01</div><div class="sub-card-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><p class="sub-card-tag">Communications</p><h3 class="sub-card-name">Gateway Communications</h3><p class="sub-card-desc">Strategic corporate communications delivered by experts.</p><div class="sub-card-footer"><a href="https://comms.gatewayltd.com" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">comms.gatewayltd.com</span></div></div>
+      <div class="sub-card"><div class="sub-card-num">02</div><div class="sub-card-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><p class="sub-card-tag">Creative production</p><h3 class="sub-card-name">Gateway Studios</h3><p class="sub-card-desc">Capturing authentic stories through cinematic documentary &amp; filmmaking.</p><div class="sub-card-footer"><a href="https://studios.gatewayltd.com" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">studios.gatewayltd.com</span></div></div>
+      <div class="sub-card"><div class="sub-card-num">03</div><div class="sub-card-icon"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div><p class="sub-card-tag">Education</p><h3 class="sub-card-name">Gateway Academy</h3><p class="sub-card-desc">Equipping the next generation of creatives with practical, industry-relevant skills.</p><div class="sub-card-footer"><a href="https://academy.gatewayltd.com" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">academy.gatewayltd.com</span></div></div>
+      <div class="sub-card sub-card-4"><div class="sub-card-num">04</div><div class="sub-card-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div><p class="sub-card-tag">Spaces</p><h3 class="sub-card-name">Gateway Spaces</h3><p class="sub-card-desc">Creative spaces designed for collaboration, focus, and inspiration.</p><div class="sub-card-footer"><a href="https://spaces.gatewayltd.com" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">spaces.gatewayltd.com</span></div></div>
+      <div class="sub-card sub-card-5"><div class="sub-card-num">05</div><div class="sub-card-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div><p class="sub-card-tag">Visual arts</p><h3 class="sub-card-name">Gateway Photography</h3><p class="sub-card-desc">Authentic visual storytelling — capturing the moments, people, and ideas that define our culture.</p><div class="sub-card-footer"><a href="https://photography.gatewayltd.com" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">photography.gatewayltd.com</span></div></div>
       <div class="sub-grid-spacer" aria-hidden="true"></div>
-
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     MISSION / ABOUT
-     ============================================================ -->
+<!-- GALLERY STRIP — real Unsplash images, creative/media themed -->
+<div class="gallery-strip" id="gallery">
+  <div class="gallery-item">
+    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80&auto=format&fit=crop" alt="Team collaborating" loading="lazy">
+    <div class="gallery-item-overlay"></div><div class="gallery-item-label">Collaboration</div>
+  </div>
+  <div class="gallery-item">
+    <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&q=80&auto=format&fit=crop" alt="Photography session" loading="lazy">
+    <div class="gallery-item-overlay"></div><div class="gallery-item-label">Photography</div>
+  </div>
+  <div class="gallery-item">
+    <img src="https://images.unsplash.com/photo-1598387993441-a364f854c3e1?w=600&q=80&auto=format&fit=crop" alt="Video production" loading="lazy">
+    <div class="gallery-item-overlay"></div><div class="gallery-item-label">Production</div>
+  </div>
+  <div class="gallery-item">
+    <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600&q=80&auto=format&fit=crop" alt="Creative workspace" loading="lazy">
+    <div class="gallery-item-overlay"></div><div class="gallery-item-label">Spaces</div>
+  </div>
+  <div class="gallery-item">
+    <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&q=80&auto=format&fit=crop" alt="Live event" loading="lazy">
+    <div class="gallery-item-overlay"></div><div class="gallery-item-label">Events</div>
+  </div>
+</div>
+
+<!-- MISSION -->
 <section class="mission section-pad" id="mission">
+  <div class="mission-photo-bg"></div>
   <div class="container">
     <div class="mission-inner">
       <div class="mission-left">
-        <div class="section-kicker reveal">
-          <div class="sk-line"></div>
-          <span class="sk-text" style="color:rgba(255,255,255,0.4);">Our purpose</span>
-        </div>
-        <h2 class="mission-headline reveal reveal-delay-1">
-          We remove friction between<br><em>creativity, work,</em><br>and growth.
-        </h2>
+        <div class="section-kicker reveal"><div class="sk-line"></div><span class="sk-text" style="color:rgba(229,21,36,.55);">Our purpose</span></div>
+        <h2 class="mission-headline reveal reveal-delay-1">We remove friction between<br><em>creativity, work,</em><br>and growth.</h2>
         <div class="mission-body reveal reveal-delay-2">
           <p>The Gateway Ltd exists to design and operate systems that allow individuals, teams, and organizations to think clearly, create freely, and execute effectively.</p>
           <p>From Abuja to the rest of Africa — we bring structure to creativity, clarity to communication, and direction to growth across every company in the Gateway ecosystem.</p>
@@ -979,76 +431,33 @@ footer { background: var(--charcoal); padding: 56px 0 36px; }
         <a href="#contact" class="btn-primary reveal reveal-delay-3" style="display:inline-block;">Start a conversation</a>
       </div>
       <div class="mission-pillars">
-        <div class="mp-item">
-          <div class="mp-num">01</div>
-          <div class="mp-content">
-            <div class="mp-title">Structure</div>
-            <div class="mp-body">Discipline and clarity applied to creative work — so ideas move from vision to execution without losing their power.</div>
-          </div>
-        </div>
-        <div class="mp-item">
-          <div class="mp-num">02</div>
-          <div class="mp-content">
-            <div class="mp-title">Clarity</div>
-            <div class="mp-body">Strategic communication ensuring every message lands with precision, trust, and lasting institutional impact.</div>
-          </div>
-        </div>
-        <div class="mp-item">
-          <div class="mp-num">03</div>
-          <div class="mp-content">
-            <div class="mp-title">Direction</div>
-            <div class="mp-body">From individual creatives to enterprise teams — the strategic direction that unlocks sustainable, measurable growth.</div>
-          </div>
-        </div>
-        <div class="mp-item">
-          <div class="mp-num">04</div>
-          <div class="mp-content">
-            <div class="mp-title">Legacy</div>
-            <div class="mp-body">Building experiences that transform organisations and individuals.</div>
-          </div>
-        </div>
+        <div class="mp-item"><div class="mp-num">01</div><div class="mp-content"><div class="mp-title">Structure</div><div class="mp-body">Discipline and clarity applied to creative work — so ideas move from vision to execution without losing their power.</div></div></div>
+        <div class="mp-item"><div class="mp-num">02</div><div class="mp-content"><div class="mp-title">Clarity</div><div class="mp-body">Strategic communication ensuring every message lands with precision, trust, and lasting institutional impact.</div></div></div>
+        <div class="mp-item"><div class="mp-num">03</div><div class="mp-content"><div class="mp-title">Direction</div><div class="mp-body">From individual creatives to enterprise teams — the strategic direction that unlocks sustainable, measurable growth.</div></div></div>
+        <div class="mp-item"><div class="mp-num">04</div><div class="mp-content"><div class="mp-title">Legacy</div><div class="mp-body">Building experiences that transform organisations and individuals.</div></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     INFO STRIP
-     ============================================================ -->
+<!-- INFO STRIP -->
 <div class="info-strip">
   <div class="container">
     <div class="info-strip-inner">
-      <div class="info-item">
-        <div class="info-label">Headquarters</div>
-        <div class="info-value">Abuja, Nigeria</div>
-      </div>
+      <div class="info-item"><div class="info-label">Headquarters</div><div class="info-value">Abuja, Nigeria</div></div>
       <div class="info-divider"></div>
-      <div class="info-item">
-        <div class="info-label">Parent company</div>
-        <div class="info-value">The Gateway Ltd</div>
-      </div>
+      <div class="info-item"><div class="info-label">Parent company</div><div class="info-value">The Gateway Ltd</div></div>
       <div class="info-divider"></div>
-      <div class="info-item">
-        <div class="info-label">Domain</div>
-        <div class="info-value">gatewayltd.com</div>
-      </div>
+      <div class="info-item"><div class="info-label">Domain</div><div class="info-value">gatewayltd.com</div></div>
       <div class="info-divider"></div>
-      <div class="info-item">
-        <div class="info-label">Active subsidiaries</div>
-        <div class="info-value">5 Companies</div>
-      </div>
+      <div class="info-item"><div class="info-label">Active subsidiaries</div><div class="info-value">5 Companies</div></div>
       <div class="info-divider"></div>
-      <div class="info-item">
-        <div class="info-label">Focus</div>
-        <div class="info-value">Media, Comms &amp; Creative</div>
-      </div>
+      <div class="info-item"><div class="info-label">Focus</div><div class="info-value">Media, Comms &amp; Creative</div></div>
     </div>
   </div>
 </div>
 
-<!-- ============================================================
-     FOOTER
-     ============================================================ -->
+<!-- FOOTER -->
 <footer id="contact">
   <div class="container">
     <div class="footer-top">
@@ -1077,7 +486,7 @@ footer { background: var(--charcoal); padding: 56px 0 36px; }
         <div class="footer-col-title">Contact</div>
         <ul>
           <li><a href="mailto:hello@gatewayltd.com">hello@gatewayltd.com</a></li>
-          <li><a href="https://maps.app.goo.gl/7uZ9m9jh6bGJCdau7">Suite 203A, Bahamas Plaza, Joseph Gomwalk St, Gudu, Abuja, Nigeria.</a></li>
+          <li><a href="https://maps.app.goo.gl/7uZ9m9jh6bGJCdau7">Suite 203A, Bahamas Plaza, Joseph Gomwalk St, Gudu, Abuja.</a></li>
           <li><a href="#">Media enquiries</a></li>
           <li><a href="#">Partnerships</a></li>
         </ul>
@@ -1094,91 +503,29 @@ footer { background: var(--charcoal); padding: 56px 0 36px; }
   </div>
 </footer>
 
-<!-- ============================================================
-     JAVASCRIPT
-     ============================================================ -->
 <script>
-(function () {
-
-  /* --- Custom cursor --- */
-  const cursor = document.getElementById('cursor');
-  const ring   = document.getElementById('cursorRing');
-  let mx = -100, my = -100, rx = -100, ry = -100;
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = (mx - 4) + 'px';
-    cursor.style.top  = (my - 4) + 'px';
-  });
-  (function animRing() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.left = (rx - 16) + 'px';
-    ring.style.top  = (ry - 16) + 'px';
-    requestAnimationFrame(animRing);
-  })();
-  document.querySelectorAll('a, button, .sub-card').forEach(el => {
-    el.addEventListener('mouseenter', () => document.body.classList.add('hovered'));
-    el.addEventListener('mouseleave', () => document.body.classList.remove('hovered'));
-  });
-
-  /* --- Navbar scroll --- */
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 40);
-  }, { passive: true });
-
-  /* --- Mobile menu --- */
-  const hamburger      = document.getElementById('hamburger');
-  const hamburgerClose = document.getElementById('hamburgerClose');
-  const mobileMenu     = document.getElementById('mobileMenu');
-
-  function openMobileMenu() {
-    mobileMenu.classList.add('open');
-    mobileMenu.setAttribute('aria-hidden', 'false');
-    hamburger.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  window.closeMobileMenu = function () {
-    mobileMenu.classList.remove('open');
-    mobileMenu.setAttribute('aria-hidden', 'true');
-    hamburger.classList.remove('open');
-    document.body.style.overflow = '';
-  };
-  hamburger.addEventListener('click', () =>
-    mobileMenu.classList.contains('open') ? closeMobileMenu() : openMobileMenu()
-  );
-  hamburgerClose.addEventListener('click', closeMobileMenu);
-
-  /* --- Intersection observer --- */
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal, .sub-card, .mp-item').forEach(el => obs.observe(el));
-
-  /* --- Stagger delays --- */
-  document.querySelectorAll('.sub-card').forEach((c, i) => { c.style.transitionDelay = (i * 0.08) + 's'; });
-  document.querySelectorAll('.mp-item').forEach((m, i) => { m.style.transitionDelay = (0.1 + i * 0.12) + 's'; });
-
-  /* --- Smooth anchors --- */
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const href = a.getAttribute('href');
-      if (href === '#') return;
-      const t = document.querySelector(href);
-      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-    });
-  });
-
-  /* --- Hero parallax --- */
-  const bgText = document.querySelector('.hero-bg-text');
-  if (bgText) {
-    window.addEventListener('scroll', () => {
-      bgText.style.transform = `translate(-50%, calc(-50% + ${window.scrollY * 0.25}px))`;
-    }, { passive: true });
-  }
-
+(function(){
+  const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+  let mx=-100,my=-100,rx=-100,ry=-100;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=(mx-4)+'px';cursor.style.top=(my-4)+'px';});
+  (function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=(rx-16)+'px';ring.style.top=(ry-16)+'px';requestAnimationFrame(animRing);})();
+  document.querySelectorAll('a,button,.sub-card').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('hovered'));el.addEventListener('mouseleave',()=>document.body.classList.remove('hovered'));});
+  const navbar=document.getElementById('navbar');
+  window.addEventListener('scroll',()=>navbar.classList.toggle('scrolled',window.scrollY>40),{passive:true});
+  const hamburger=document.getElementById('hamburger'),hamburgerClose=document.getElementById('hamburgerClose'),mobileMenu=document.getElementById('mobileMenu');
+  function openMobileMenu(){mobileMenu.classList.add('open');mobileMenu.setAttribute('aria-hidden','false');hamburger.classList.add('open');document.body.style.overflow='hidden';}
+  window.closeMobileMenu=function(){mobileMenu.classList.remove('open');mobileMenu.setAttribute('aria-hidden','true');hamburger.classList.remove('open');document.body.style.overflow='';};
+  hamburger.addEventListener('click',()=>mobileMenu.classList.contains('open')?closeMobileMenu():openMobileMenu());
+  hamburgerClose.addEventListener('click',closeMobileMenu);
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.1});
+  document.querySelectorAll('.reveal,.sub-card,.mp-item,.gallery-item').forEach(el=>obs.observe(el));
+  document.querySelectorAll('.sub-card').forEach((c,i)=>{c.style.transitionDelay=(i*.08)+'s';});
+  document.querySelectorAll('.mp-item').forEach((m,i)=>{m.style.transitionDelay=(.1+i*.12)+'s';});
+  document.querySelectorAll('.gallery-item').forEach((g,i)=>{g.style.transitionDelay=(i*.12)+'s';});
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const href=a.getAttribute('href');if(href==='#')return;const t=document.querySelector(href);if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}});});
+  const bgText=document.querySelector('.hero-bg-text');
+  if(bgText){window.addEventListener('scroll',()=>{bgText.style.transform=`translate(-50%,calc(-50% + ${window.scrollY*.25}px))`;},{passive:true});}
 })();
 </script>
-
 </body>
 </html>
