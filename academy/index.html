@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gateway Academy — Equipping the Next Generation of Creatives</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/main.css">
+<style>
+/* ============================================================
+   ACADEMY NAV EXTRAS
+   ============================================================ */
+.logo-sub{font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--stone);margin-top:1px;}
+.nav-parent-link{display:flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);text-decoration:none;padding:6px 10px;border:1px solid var(--border);border-radius:2px;transition:color .2s,border-color .2s;}
+.nav-parent-link:hover{color:var(--red);border-color:rgba(229,21,36,0.3);}
+.nav-parent-link svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2;}
+
+/* ============================================================
+   BUTTON OVERRIDES — academy values differ from main.css
+   ============================================================ */
+.btn-secondary{color:var(--charcoal);font-weight:500;}
+.btn-secondary:hover{border-color:var(--charcoal);color:var(--charcoal);}
+
+/* ============================================================
+   TICKER OVERRIDES — academy values differ from main.css
+   ============================================================ */
+.ticker-track{animation:tickerMove 20s linear infinite;}
+.ticker-item{color:rgba(26,23,20,.88);}
+.ticker-sep{color:rgba(26,23,20,.3);}
+
+/* ============================================================
+   SCROLL REVEAL OVERRIDE — academy uses 24px not 28px
+   ============================================================ */
+.reveal{transform:translateY(24px);}
+.reveal-delay-4{transition-delay:.4s;}
+
+/* ============================================================
+   HERO — white bg + image + white overlay (mirrors parent)
+   ============================================================ */
+.hero{min-height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;background:#fff;}
+
+/* single background image with white gradient overlay — same as parent */
+.hero-image{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1600&q=80&auto=format&fit=crop');background-size:cover;background-position:center 30%;z-index:0;}
+.hero-image::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,rgba(255,255,255,0.95) 0%,rgba(255,255,255,0.82) 45%,rgba(255,255,255,0.40) 100%);}
+
+/* yellow accent bar */
+.hero-accent-bar{position:absolute;top:0;left:0;width:4px;height:0;background:var(--yellow);animation:barGrow 1.2s .3s cubic-bezier(.23,1,.32,1) forwards;z-index:3;}
+
+/* subtle glows */
+.hero-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(255,171,0,.06) 0%,transparent 70%);right:-150px;bottom:-150px;pointer-events:none;z-index:2;}
+.hero-glow-red{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(229,21,36,.04) 0%,transparent 70%);left:200px;top:-100px;pointer-events:none;z-index:2;}
+
+/* faint bg letter */
+.hero-bg-letter{position:absolute;top:50%;right:-2vw;transform:translateY(-50%);font-size:40vw;font-weight:800;color:rgba(26,23,20,.03);pointer-events:none;user-select:none;letter-spacing:-.05em;line-height:1;z-index:2;}
+
+.hero-year-tag{position:absolute;right:40px;top:50%;transform:translateY(-50%) rotate(90deg);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,23,20,.25);white-space:nowrap;z-index:5;}
+
+.hero-content{position:relative;z-index:5;max-width:1280px;margin:0 auto;padding:0 40px;width:100%;padding-top:var(--nav-h);}
+.hero-inner{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:80px 0;}
+
+/* badge — red tint on light bg */
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(229,21,36,.06);border:1px solid rgba(229,21,36,.18);border-radius:2px;padding:6px 14px;margin-bottom:28px;opacity:0;animation:slideUp .6s .4s ease forwards;}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.hero-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--red);animation:pulse 2s ease-in-out infinite;}
+.hero-badge-text{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:600;}
+
+/* headline — dark text on light background */
+.hero-headline{font-family:'Inter',sans-serif;font-size:clamp(42px,5.5vw,76px);font-weight:800;line-height:1.0;color:var(--charcoal);letter-spacing:-.035em;margin-bottom:28px;max-width:780px;}
+.hero-headline-line{display:block;overflow:hidden;}
+.hero-headline-line span{display:block;opacity:0;transform:translateY(100%);}
+.hero-headline-line:nth-child(1) span{animation:lineReveal .9s .5s cubic-bezier(.23,1,.32,1) forwards;}
+.hero-headline-line:nth-child(2) span{animation:lineReveal .9s .65s cubic-bezier(.23,1,.32,1) forwards;}
+.hero-headline-line:nth-child(3) span{animation:lineReveal .9s .8s cubic-bezier(.23,1,.32,1) forwards;}
+.hero-headline em{font-style:normal;color:var(--red);}
+
+/* sub — dark text */
+.hero-sub{font-size:17px;color:rgb(14, 13, 11);line-height:1.8;max-width:520px;font-weight:300;margin-bottom:40px;opacity:0;animation:slideUp .7s .9s ease forwards;}
+
+/* ctas */
+.hero-ctas{display:flex;align-items:center;gap:12px;flex-wrap:wrap;opacity:0;animation:slideUp .7s 1.05s ease forwards;}
+
+/* stats row — dark on light */
+.hero-stats{display:flex;gap:0;margin-top:64px;padding-top:40px;border-top:1px solid rgba(26,23,20,.08);opacity:0;animation:slideUp .7s 1.2s ease forwards;}
+.hero-stat{padding-right:40px;margin-right:40px;border-right:1px solid rgba(26,23,20,.08);}
+.hero-stat:last-child{border-right:none;margin-right:0;padding-right:0;}
+.hero-stat-num{font-family:'Inter',sans-serif;font-size:30px;font-weight:800;color:var(--charcoal);line-height:1;margin-bottom:4px;letter-spacing:-.03em;}
+.hero-stat-num span{color:var(--red);}
+.hero-stat-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,23,20,.35);font-weight:400;}
+
+/* scroll indicator — dark */
+.scroll-indicator{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeIn 1s 2s ease forwards;z-index:6;}
+.scroll-indicator span{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,23,20,.25);}
+.scroll-line{width:1px;height:36px;background:linear-gradient(to bottom,rgba(26,23,20,.3),transparent);animation:scrollPulse 2s 2s ease-in-out infinite;}
+
+/* ============================================================
+   SECTION 2 — THE ACADEMY
+   ============================================================ */
+.about-academy{background:var(--white);}
+.about-inner{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;align-items:center;
+}
+.about-left{}
+.about-headline{
+  font-family:'Inter',sans-serif;
+  font-size:clamp(28px,3.5vw,46px);
+  font-weight:800;line-height:1.05;
+  color:var(--charcoal);
+  letter-spacing:-.03em;
+  margin-bottom:28px;
+}
+.about-headline em{font-style:italic;color:var(--red);font-weight:300;}
+.about-body{font-size:15px;color:#3A3632;line-height:1.85;font-weight:500;}
+.about-body p+p{margin-top:18px;}
+
+.about-right{display:flex;flex-direction:column;gap:16px;}
+.about-card{
+  background:var(--cream);
+  border:1px solid var(--border);
+  border-radius:4px;padding:24px 28px;
+  display:flex;align-items:flex-start;gap:16px;
+  transition:border-color .2s,transform .25s;
+  opacity:0;transform:translateX(20px);
+  transition:opacity .6s ease,transform .6s ease,border-color .2s;
+}
+.about-card.visible{opacity:1;transform:translateX(0);}
+.about-card:hover{border-color:rgba(229,21,36,.25);transform:translateX(4px) !important;}
+.about-card-icon{
+  width:40px;height:40px;border-radius:4px;
+  background:var(--cream-dark);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background .2s;
+}
+.about-card:hover .about-card-icon{background:var(--red-muted);}
+.about-card-icon svg{width:18px;height:18px;stroke:var(--charcoal);fill:none;stroke-width:1.6;transition:stroke .2s;}
+.about-card:hover .about-card-icon svg{stroke:var(--red);}
+.about-card-title{font-size:13px;font-weight:700;color:var(--charcoal);margin-bottom:4px;letter-spacing:-.01em;}
+.about-card-text{font-size:14px;color:#3A3632;line-height:1.65;font-weight:500;}
+
+/* ============================================================
+   SECTION 3 — NOW ENROLLING
+   ============================================================ */
+.programs{background:var(--cream);}
+.programs-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;}
+.programs-title{font-family:'Inter',sans-serif;font-size:clamp(28px,3.5vw,46px);font-weight:800;line-height:1.05;color:var(--charcoal);letter-spacing:-.03em;}
+.programs-title em{font-style:italic;color:var(--red);font-weight:300;}
+.programs-note{font-size:14px;color:#3A3632;line-height:1.7;max-width:280px;text-align:right;font-weight:500;}
+
+/* featured program card */
+.prog-featured{
+  background:var(--charcoal);
+  border-radius:6px;
+  padding:52px;
+  position:relative;
+  overflow:hidden;
+  margin-bottom:16px;
+  display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .7s ease,transform .7s ease;
+}
+.prog-featured.visible{opacity:1;transform:translateY(0);}
+.prog-featured-bg{
+  position:absolute;inset:0;
+  background-image:url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=70&auto=format&fit=crop');
+  background-size:cover;background-position:center;
+  opacity:.12;z-index:0;transition:opacity .4s ease;
+}
+.prog-featured:hover .prog-featured-bg{opacity:.18;}
+.prog-featured-glow{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(255,171,0,.1) 0%,transparent 60%);right:-100px;top:-100px;z-index:0;pointer-events:none;}
+.prog-featured-content{position:relative;z-index:1;}
+.prog-featured::after{
+  content:'';position:absolute;top:0;left:0;bottom:0;width:4px;
+  background:var(--yellow);border-radius:4px 0 0 4px;z-index:2;
+}
+.prog-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,171,0,.15);border:1px solid rgba(255,171,0,.3);
+  border-radius:2px;padding:5px 12px;margin-bottom:16px;
+}
+.prog-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--yellow);animation:pulse 2s ease-in-out infinite;}
+.prog-badge-text{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--yellow);font-weight:600;}
+.prog-featured-name{
+  font-family:'Inter',sans-serif;font-size:clamp(26px,3vw,40px);
+  font-weight:800;color:var(--white);letter-spacing:-.03em;
+  margin-bottom:12px;line-height:1.05;
+}
+.prog-featured-desc{
+  font-size:15px;color:rgba(255,255,255,.88);
+  line-height:1.75;max-width:480px;font-weight:400;
+  margin-bottom:28px;
+}
+.prog-featured-meta{display:flex;gap:24px;margin-bottom:32px;flex-wrap:wrap;}
+.prog-meta-item{display:flex;align-items:center;gap:7px;}
+.prog-meta-item svg{width:13px;height:13px;stroke:var(--yellow);fill:none;stroke-width:2;}
+.prog-meta-text{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.04em;}
+.prog-featured-cta{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:12px;}
+.prog-featured-number{
+  font-family:'Inter',sans-serif;font-size:80px;font-weight:800;
+  color:rgba(255,255,255,.04);line-height:1;
+  position:absolute;right:52px;bottom:20px;letter-spacing:-.05em;
+  user-select:none;pointer-events:none;z-index:0;
+}
+
+/* closed program cards */
+.prog-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+.prog-card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:4px;padding:28px;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .6s ease,transform .6s ease,border-color .2s;
+}
+.prog-card.visible{opacity:1;transform:translateY(0);}
+.prog-card:hover{border-color:rgba(26,23,20,.2);}
+.prog-card-icon{width:36px;height:36px;border-radius:4px;background:var(--cream-dark);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.prog-card-icon svg{width:17px;height:17px;stroke:var(--stone);fill:none;stroke-width:1.6;}
+.prog-card-name{font-size:16px;font-weight:700;color:var(--charcoal);margin-bottom:8px;letter-spacing:-.01em;}
+.prog-card-desc{font-size:14px;color:#3A3632;line-height:1.65;flex:1;margin-bottom:20px;font-weight:500;}
+.prog-card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid var(--border-light);}
+.prog-status{display:inline-flex;align-items:center;gap:5px;font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;}
+.prog-status-dot{width:5px;height:5px;border-radius:50%;}
+.status-closed .prog-status-dot{background:#C8C4BE;}
+.status-closed{color:var(--stone);}
+.prog-card-num{font-size:10px;color:var(--stone-light);letter-spacing:.06em;}
+
+/* ============================================================
+   SECTION 4 — OUR FACILITY
+   ============================================================ */
+.facility{background:var(--charcoal);position:relative;overflow:hidden;}
+.facility-bg-photo{
+  position:absolute;inset:0;
+  background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1800&q=70&auto=format&fit=crop');
+  background-size:cover;background-position:center;
+  opacity:.1;z-index:0;
+}
+.facility .container{position:relative;z-index:1;}
+.facility-inner{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;align-items:center;
+}
+.facility-left{}
+.facility-headline{
+  font-family:'Inter',sans-serif;
+  font-size:clamp(28px,3.5vw,46px);
+  font-weight:800;color:var(--white);
+  line-height:1.05;letter-spacing:-.03em;margin-bottom:16px;
+}
+.facility-headline em{font-style:italic;color:var(--yellow);font-weight:300;}
+.facility-body{font-size:15px;color:rgba(255,255,255,.88);line-height:1.8;font-weight:400;margin-bottom:32px;}
+
+.facility-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.facility-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:18px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:4px;
+  transition:background .25s,border-color .25s;
+  opacity:0;transform:translateY(16px);
+  transition:opacity .5s ease,transform .5s ease,background .25s;
+}
+.facility-item.visible{opacity:1;transform:translateY(0);}
+.facility-item:hover{background:rgba(255,255,255,.07);border-color:rgba(255,171,0,.2);}
+.facility-check{
+  width:20px;height:20px;border-radius:50%;
+  background:rgba(255,171,0,.15);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;
+}
+.facility-check svg{width:10px;height:10px;stroke:var(--yellow);fill:none;stroke-width:2.5;}
+.facility-item-text{font-size:14px;color:rgba(255,255,255,.78);line-height:1.5;font-weight:400;}
+
+.facility-right{
+  position:relative;
+  display:grid;grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  gap:8px;
+  height:420px;
+}
+.facility-photo{border-radius:4px;overflow:hidden;background-size:cover;background-position:center;}
+.fp-1{background-image:url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=600&q=70&auto=format&fit=crop');grid-column:1/2;grid-row:1/3;}
+.fp-2{background-image:url('https://images.unsplash.com/photo-1497366754035-f200968a7db3?w=600&q=70&auto=format&fit=crop');}
+.fp-3{background-image:url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=600&q=70&auto=format&fit=crop');}
+
+/* ============================================================
+   SECTION 5 — TRAINERS
+   ============================================================ */
+.trainers{background:var(--white);}
+.trainers-header{margin-bottom:48px;}
+.trainers-title{font-family:'Inter',sans-serif;font-size:clamp(28px,3.5vw,46px);font-weight:800;color:var(--charcoal);letter-spacing:-.03em;margin-bottom:8px;}
+.trainers-sub{font-size:15px;color:#3A3632;font-weight:500;max-width:480px;line-height:1.7;}
+
+/* horizontal scroll track */
+.trainers-scroll-wrapper{
+  position:relative;
+  margin:0 -40px;
+  padding:0 40px;
+}
+.trainers-scroll-wrapper::after{
+  content:'';
+  position:absolute;top:0;right:0;bottom:0;width:120px;
+  background:linear-gradient(to right,transparent,var(--white));
+  pointer-events:none;z-index:2;
+}
+.trainers-track{
+  display:flex;gap:20px;
+  overflow-x:auto;
+  padding-bottom:24px;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.trainers-track::-webkit-scrollbar{display:none;}
+
+.trainer-card{
+  flex-shrink:0;
+  width:280px;
+  background:var(--cream);
+  border:1px solid var(--border);
+  border-radius:6px;
+  overflow:hidden;
+  scroll-snap-align:start;
+  transition:transform .3s ease,border-color .2s;
+  position:relative;
+}
+.trainer-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--yellow);transform:scaleX(0);transform-origin:left;
+  transition:transform .35s cubic-bezier(.23,1,.32,1);
+}
+.trainer-card:hover{transform:translateY(-5px);border-color:rgba(229,21,36,.2);}
+.trainer-card:hover::after{transform:scaleX(1);}
+.trainer-photo{
+  width:100%;height:200px;
+  background-size:cover;background-position:center top;
+  position:relative;
+}
+.trainer-photo::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:50%;
+  background:linear-gradient(to top,rgba(248,246,242,1),transparent);
+}
+.trainer-info{padding:20px 24px 24px;}
+.trainer-name{font-size:16px;font-weight:700;color:var(--charcoal);letter-spacing:-.01em;margin-bottom:3px;}
+.trainer-role{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:12px;}
+.trainer-bio{font-size:14px;color:#3A3632;line-height:1.65;font-weight:500;}
+
+/* scroll nav buttons */
+.trainers-nav{display:flex;gap:8px;margin-top:24px;}
+.t-nav-btn{
+  width:36px;height:36px;border-radius:2px;
+  border:1px solid var(--border);background:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:background .2s,border-color .2s;
+}
+.t-nav-btn:hover{background:var(--charcoal);border-color:var(--charcoal);}
+.t-nav-btn:hover svg{stroke:var(--white);}
+.t-nav-btn svg{width:14px;height:14px;stroke:var(--charcoal);fill:none;stroke-width:2;transition:stroke .2s;}
+
+/* ============================================================
+   SECTION 6 — CTA BANNER
+   ============================================================ */
+.cta-banner{
+  background:var(--charcoal);
+  position:relative;overflow:hidden;
+  padding:100px 0;
+}
+.cta-banner-bg{
+  position:absolute;inset:0;
+  background-image:url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1600&q=70&auto=format&fit=crop');
+  background-size:cover;background-position:center;
+  opacity:.08;z-index:0;
+}
+.cta-banner-glow{position:absolute;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(229,21,36,.08) 0%,transparent 60%);left:50%;top:50%;transform:translate(-50%,-50%);z-index:0;pointer-events:none;}
+.cta-banner .container{position:relative;z-index:1;text-align:center;}
+.cta-banner-kicker{display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;}
+.cta-banner-kicker-line{width:24px;height:1px;background:var(--yellow);}
+.cta-banner-kicker-text{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--yellow);font-weight:500;}
+.cta-banner-headline{
+  font-family:'Inter',sans-serif;
+  font-size:clamp(28px,4vw,52px);
+  font-weight:800;color:var(--white);
+  letter-spacing:-.03em;line-height:1.08;
+  margin-bottom:16px;
+}
+.cta-banner-sub{font-size:16px;color:rgba(255,255,255,.88);line-height:1.7;font-weight:400;max-width:440px;margin:0 auto 36px;}
+.cta-banner-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
+.cta-banner-note{font-size:11px;color:rgba(255,255,255,.25);margin-top:14px;letter-spacing:.04em;}
+
+/* ============================================================
+   FOOTER OVERRIDES — academy values differ from main.css
+   ============================================================ */
+.footer-top{grid-template-columns:1.6fr 1fr 1fr 1fr;}
+.footer-logo-text{font-size:13px;margin-bottom:4px;}
+.footer-tagline{max-width:220px;line-height:1.75;}
+.footer-col ul a{font-size:13px;}
+.footer-logo-sub{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);margin-bottom:16px;}
+.footer-socials{display:flex;gap:10px;margin-top:4px;}
+.social-link{width:34px;height:34px;border-radius:2px;border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:background .2s,border-color .2s;}
+.social-link:hover{background:var(--red);border-color:var(--red);}
+.social-link svg{width:14px;height:14px;stroke:rgba(255,255,255,.5);fill:none;stroke-width:1.8;transition:stroke .2s;}
+.social-link:hover svg{stroke:var(--white);}
+.footer-parent-link{display:flex;align-items:center;gap:6px;font-size:10px;color:rgba(255,255,255,.2);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s;}
+.footer-parent-link:hover{color:rgba(255,255,255,.5);}
+.footer-parent-link svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2;}
+
+/* ============================================================
+   RESPONSIVE — PAGE SPECIFIC
+   ============================================================ */
+@media(max-width:960px){
+  .about-inner{grid-template-columns:1fr;gap:52px;}
+  .prog-grid{grid-template-columns:1fr 1fr;}
+  .facility-inner{grid-template-columns:1fr;gap:52px;}
+  .facility-right{height:280px;}
+  .programs-header{flex-direction:column;align-items:flex-start;gap:16px;}
+  .programs-note{text-align:left;}
+}
+@media(max-width:680px){
+  .hero-content{padding-left:24px;padding-right:24px;}
+  .hero-year-tag{display:none;}
+  .hero-stats{flex-wrap:wrap;gap:20px;}
+  .hero-stat{border-right:none;margin-right:0;padding-right:0;}
+  .prog-featured{grid-template-columns:1fr;padding:32px;}
+  .prog-featured-cta{align-items:flex-start;}
+  .prog-grid{grid-template-columns:1fr;}
+  .facility-grid{grid-template-columns:1fr;}
+  .facility-right{display:none;}
+  .footer-legal{gap:12px;}
+  .trainers-scroll-wrapper{margin:0 -24px;padding:0 24px;}
+  .cta-banner{padding:72px 0;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="logo-emblem">
+        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="36" height="36" rx="4" fill="#E51524"/>
+          <path d="M18 7L28 12.5V23.5L18 29L8 23.5V12.5L18 7Z" stroke="white" stroke-width="1.4" fill="none"/>
+          <path d="M18 13V23M13.5 16L18 13L22.5 16" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="logo-wordmark">Gateway <span>Academy</span></div>
+        <div class="logo-sub">A Gateway Ltd Company</div>
+      </div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#programs">Programs</a></li>
+      <li><a href="#">Resources</a></li>
+      <li><a href="admissions.html">Admissions</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li>
+        <a href="../index.html" class="nav-parent-link">
+          <svg viewBox="0 0 10 10"><path d="M5 1L1 5l4 4M1 5h8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Gateway Ltd
+        </a>
+      </li>
+      <li><a href="admissions.html" class="nav-cta">Apply Now</a></li>
+    </ul>
+
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-header">
+    <a href="#" class="nav-logo" onclick="closeMobileMenu()">
+      <div class="logo-emblem">
+        <svg viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="4" fill="#E51524"/><path d="M18 7L28 12.5V23.5L18 29L8 23.5V12.5L18 7Z" stroke="white" stroke-width="1.4" fill="none"/><path d="M18 13V23M13.5 16L18 13L22.5 16" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </div>
+      <div class="logo-wordmark">Gateway <span>Academy</span></div>
+    </a>
+    <button class="hamburger open" id="hamburgerClose" aria-label="Close menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu-body">
+    <div class="mob-section">
+      <div class="mob-label">Navigate</div>
+      <a class="mob-link" href="#programs" onclick="closeMobileMenu()">Programs <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="mob-link" href="#" onclick="closeMobileMenu()">Resources <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="mob-link" href="admissions.html" onclick="closeMobileMenu()">Admissions <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="mob-link" href="#contact" onclick="closeMobileMenu()">Contact <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+    <div class="mob-section">
+      <div class="mob-label">Part of the Gateway Ecosystem</div>
+      <a class="mob-link" href="../index.html">Gateway Ltd (Parent) <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+    <a href="admissions.html" class="mob-cta">Apply Now</a>
+  </div>
+</div>
+
+<!-- ============================================================
+     SECTION 1 — HERO
+     ============================================================ -->
+<section class="hero" id="hero">
+  <div class="hero-image"></div>
+  <div class="hero-accent-bar"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow-red"></div>
+  <div class="hero-bg-letter">A</div>
+  <div class="hero-year-tag">Gateway Academy — Abuja, Nigeria</div>
+
+  <div class="hero-content">
+    <div class="hero-inner">
+
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        <span class="hero-badge-text">Now enrolling — Media Production 2025</span>
+      </div>
+
+      <h1 class="hero-headline">
+        <span class="hero-headline-line"><span>Equipping young</span></span>
+        <span class="hero-headline-line"><span>Nigerians to <em>create,</em></span></span>
+        <span class="hero-headline-line"><span>lead and shape the future.</span></span>
+      </h1>
+
+      <p class="hero-sub">The Gateway Academy is a modern learning environment designed for focused, practical and industry-relevant training across creative and technology disciplines.</p>
+
+      <div class="hero-ctas">
+        <a href="admissions.html" class="btn-yellow">Apply for Media Production</a>
+        <a href="#about" class="btn-secondary" style="color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.2);">Learn more</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">4<span>+</span></div>
+          <div class="hero-stat-label">Programs</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">500<span>+</span></div>
+          <div class="hero-stat-label">Students trained</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">20<span>+</span></div>
+          <div class="hero-stat-label">Industry trainers</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">100<span>%</span></div>
+          <div class="hero-stat-label">Practical curriculum</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="scroll-indicator"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item">Media Production</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Web Development</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Data Analysis</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Cyber Security</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Gateway Academy</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Abuja, Nigeria</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Media Production</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Web Development</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Data Analysis</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Cyber Security</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Gateway Academy</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Abuja, Nigeria</span><span class="ticker-sep">—</span>
+  </div>
+</div>
+
+<!-- ============================================================
+     SECTION 2 — THE ACADEMY
+     ============================================================ -->
+<section class="about-academy section-pad" id="about">
+  <div class="container">
+    <div class="about-inner">
+
+      <div class="about-left">
+        <div class="section-kicker reveal">
+          <div class="sk-line"></div>
+          <span class="sk-text">The Academy</span>
+        </div>
+        <h2 class="about-headline reveal reveal-delay-1">
+          More than learning.<br><em>A place to grow.</em>
+        </h2>
+        <div class="about-body reveal reveal-delay-2">
+          <p>The Gateway Academy equips young people with practical skills, creative confidence and the discipline to make meaningful impact in the world around them.</p>
+          <p>Talent grows best in environments designed for focus, collaboration and real-world learning. That is why we have built a learning experience that combines expert-led training, modern infrastructure and a community of driven learners.</p>
+          <p>From creativity to technology, our goal is to raise a new generation of builders, storytellers and problem-solvers prepared for the future.</p>
+        </div>
+      </div>
+
+      <div class="about-right">
+        <div class="about-card">
+          <div class="about-card-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          </div>
+          <div>
+            <div class="about-card-title">Expert-Led Training</div>
+            <div class="about-card-text">Every program is taught by practitioners actively working in their fields — not just academics. Real knowledge from real experience.</div>
+          </div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <div>
+            <div class="about-card-title">Modern Infrastructure</div>
+            <div class="about-card-text">Solar-powered, air-conditioned, fiber-connected spaces built for deep focus and professional-grade creative output.</div>
+          </div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <div class="about-card-title">A Driven Community</div>
+            <div class="about-card-text">You will learn alongside ambitious peers, building the network and the mindset that carries you beyond the classroom.</div>
+          </div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon">
+            <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div>
+            <div class="about-card-title">Industry-Relevant Curriculum</div>
+            <div class="about-card-text">Programs are designed around what employers and clients actually need — keeping you ahead of the curve from day one.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 3 — NOW ENROLLING (PROGRAMS)
+     ============================================================ -->
+<section class="programs section-pad" id="programs">
+  <div class="container">
+    <div class="programs-header">
+      <div>
+        <div class="section-kicker reveal">
+          <div class="sk-line"></div>
+          <span class="sk-text">Now enrolling</span>
+        </div>
+        <h2 class="programs-title reveal reveal-delay-1">
+          Our programs.<br><em>Your future.</em>
+        </h2>
+      </div>
+      <p class="programs-note reveal reveal-delay-2">One program currently open for applications. Additional programs opening in coming cohorts.</p>
+    </div>
+
+    <!-- Featured: Media Production -->
+    <div class="prog-featured reveal">
+      <div class="prog-featured-bg"></div>
+      <div class="prog-featured-glow"></div>
+      <div class="prog-featured-content">
+        <div class="prog-badge">
+          <div class="prog-badge-dot"></div>
+          <span class="prog-badge-text">Open for applications</span>
+        </div>
+        <div class="prog-featured-name">Media Production</div>
+        <div class="prog-featured-desc">A comprehensive, hands-on program covering the full production pipeline — from concept development and scripting to cinematography, editing and final delivery. Designed for aspiring filmmakers, content creators and visual storytellers.</div>
+        <div class="prog-featured-meta">
+          <div class="prog-meta-item">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span class="prog-meta-text">12 weeks intensive</span>
+          </div>
+          <div class="prog-meta-item">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            <span class="prog-meta-text">Limited cohort — 20 students</span>
+          </div>
+          <div class="prog-meta-item">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span class="prog-meta-text">Abuja, Nigeria</span>
+          </div>
+        </div>
+        <a href="admissions.html" class="btn-yellow">Apply Now</a>
+      </div>
+      <div class="prog-featured-cta">
+        <div style="text-align:center;padding:28px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:4px;min-width:180px;">
+          <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:12px;">Application deadline</div>
+          <div style="font-family:'Inter',sans-serif;font-size:22px;font-weight:800;color:var(--white);letter-spacing:-.02em;margin-bottom:4px;">Aug 30</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.35);">2025</div>
+        </div>
+        <div style="text-align:center;padding:20px 28px;background:rgba(255,171,0,.08);border:1px solid rgba(255,171,0,.15);border-radius:4px;min-width:180px;">
+          <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,171,0,.6);margin-bottom:8px;">Program starts</div>
+          <div style="font-family:'Inter',sans-serif;font-size:22px;font-weight:800;color:var(--yellow);letter-spacing:-.02em;">Sep 2025</div>
+        </div>
+      </div>
+      <div class="prog-featured-number">01</div>
+    </div>
+
+    <!-- Closed programs -->
+    <div class="prog-grid">
+
+      <div class="prog-card">
+        <div class="prog-card-icon">
+          <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <div class="prog-card-name">Web Development</div>
+        <div class="prog-card-desc">Full-stack web development covering HTML, CSS, JavaScript, React and backend fundamentals. Build real products from day one.</div>
+        <div class="prog-card-footer">
+          <div class="prog-status status-closed">
+            <div class="prog-status-dot"></div>
+            Admissions closed
+          </div>
+          <div class="prog-card-num">02</div>
+        </div>
+      </div>
+
+      <div class="prog-card">
+        <div class="prog-card-icon">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <div class="prog-card-name">Data Analysis</div>
+        <div class="prog-card-desc">Learn to collect, clean, analyse and visualise data using industry-standard tools. Turn numbers into decisions that matter.</div>
+        <div class="prog-card-footer">
+          <div class="prog-status status-closed">
+            <div class="prog-status-dot"></div>
+            Admissions closed
+          </div>
+          <div class="prog-card-num">03</div>
+        </div>
+      </div>
+
+      <div class="prog-card">
+        <div class="prog-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="prog-card-name">Cyber Security</div>
+        <div class="prog-card-desc">Understand threats, vulnerabilities and defences. Gain the practical skills to protect systems, networks and digital assets.</div>
+        <div class="prog-card-footer">
+          <div class="prog-status status-closed">
+            <div class="prog-status-dot"></div>
+            Admissions closed
+          </div>
+          <div class="prog-card-num">04</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 4 — OUR FACILITY
+     ============================================================ -->
+<section class="facility section-pad">
+  <div class="facility-bg-photo"></div>
+  <div class="container">
+    <div class="facility-inner">
+
+      <div class="facility-left">
+        <div class="section-kicker reveal">
+          <div class="sk-line" style="background:var(--yellow);"></div>
+          <span class="sk-text" style="color:rgba(255,255,255,.4);">Our facility</span>
+        </div>
+        <h2 class="facility-headline reveal reveal-delay-1">
+          Built for<br><em>serious learners.</em>
+        </h2>
+        <p class="facility-body reveal reveal-delay-2">Every element of the Gateway Academy facility has been designed to remove distraction and enable deep, focused, professional-grade learning.</p>
+
+        <div class="facility-grid">
+          <div class="facility-item">
+            <div class="facility-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="facility-item-text">24-hour solar-powered electricity</span>
+          </div>
+          <div class="facility-item">
+            <div class="facility-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="facility-item-text">Ultra-fast fibre internet</span>
+          </div>
+          <div class="facility-item">
+            <div class="facility-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="facility-item-text">Fully air-conditioned learning spaces</span>
+          </div>
+          <div class="facility-item">
+            <div class="facility-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="facility-item-text">Serene, distraction-free workspaces</span>
+          </div>
+          <div class="facility-item">
+            <div class="facility-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="facility-item-text">Relaxation lounge</span>
+          </div>
+          <div class="facility-item">
+            <div class="facility-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="facility-item-text">Practical, hands-on learning environment</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="facility-right reveal reveal-delay-2">
+        <div class="facility-photo fp-1"></div>
+        <div class="facility-photo fp-2"></div>
+        <div class="facility-photo fp-3"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 5 — TRAINERS
+     ============================================================ -->
+<section class="trainers section-pad">
+  <div class="container">
+    <div class="trainers-header">
+      <div class="section-kicker reveal">
+        <div class="sk-line"></div>
+        <span class="sk-text">Our trainers</span>
+      </div>
+      <h2 class="trainers-title reveal reveal-delay-1">Learn from the best<br>in the field.</h2>
+      <p class="trainers-sub reveal reveal-delay-2">Every trainer at Gateway Academy is a practitioner — currently active in their industry, bringing real projects, real insights and real standards to the classroom.</p>
+    </div>
+
+    <div class="trainers-scroll-wrapper">
+      <div class="trainers-track" id="trainersTrack">
+
+        <div class="trainer-card">
+          <div class="trainer-photo" style="background-image:url('https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=70&auto=format&fit=crop&face=true');"></div>
+          <div class="trainer-info">
+            <div class="trainer-name">Chukwuemeka Obi</div>
+            <div class="trainer-role">Lead — Media Production</div>
+            <div class="trainer-bio">Award-winning documentary filmmaker with 12 years of experience producing content for major broadcasters across West Africa. Specialises in cinematic storytelling and directing.</div>
+          </div>
+        </div>
+
+        <div class="trainer-card">
+          <div class="trainer-photo" style="background-image:url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=70&auto=format&fit=crop&face=true');"></div>
+          <div class="trainer-info">
+            <div class="trainer-name">Adaeze Nwosu</div>
+            <div class="trainer-role">Trainer — Web Development</div>
+            <div class="trainer-bio">Full-stack engineer and founder of a Lagos-based tech agency. Has built digital products used by thousands across Nigeria. Passionate about teaching practical, modern web skills.</div>
+          </div>
+        </div>
+
+        <div class="trainer-card">
+          <div class="trainer-photo" style="background-image:url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=70&auto=format&fit=crop&face=true');"></div>
+          <div class="trainer-info">
+            <div class="trainer-name">Ibrahim Sule</div>
+            <div class="trainer-role">Trainer — Data Analysis</div>
+            <div class="trainer-bio">Data scientist with experience in financial services and government consulting. Helps students transform raw data into clear, actionable insights using Python, SQL and Power BI.</div>
+          </div>
+        </div>
+
+        <div class="trainer-card">
+          <div class="trainer-photo" style="background-image:url('https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=70&auto=format&fit=crop&face=true');"></div>
+          <div class="trainer-info">
+            <div class="trainer-name">Funmilayo Adeyemi</div>
+            <div class="trainer-role">Trainer — Cyber Security</div>
+            <div class="trainer-bio">Certified ethical hacker and cybersecurity consultant with experience securing enterprise systems across banking and telecoms in Nigeria. Former NITDA advisor.</div>
+          </div>
+        </div>
+
+        <div class="trainer-card">
+          <div class="trainer-photo" style="background-image:url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=70&auto=format&fit=crop&face=true');"></div>
+          <div class="trainer-info">
+            <div class="trainer-name">Tunde Babatunde</div>
+            <div class="trainer-role">Trainer — Video Editing & Post</div>
+            <div class="trainer-bio">Post-production specialist and editor with credits on three feature films and dozens of branded content campaigns. Teaches Premiere Pro, DaVinci Resolve and storytelling through the edit.</div>
+          </div>
+        </div>
+
+        <div class="trainer-card">
+          <div class="trainer-photo" style="background-image:url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=70&auto=format&fit=crop&face=true');"></div>
+          <div class="trainer-info">
+            <div class="trainer-name">Ngozi Eze</div>
+            <div class="trainer-role">Trainer — Creative Direction</div>
+            <div class="trainer-bio">Creative director and brand strategist with over a decade building visual identities for startups and NGOs across Africa. Brings an editorial eye and strategic mind to every class.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="trainers-nav">
+      <button class="t-nav-btn" id="tNavLeft" aria-label="Scroll left">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="t-nav-btn" id="tNavRight" aria-label="Scroll right">
+        <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 6 — CTA BANNER
+     ============================================================ -->
+<section class="cta-banner">
+  <div class="cta-banner-bg"></div>
+  <div class="cta-banner-glow"></div>
+  <div class="container">
+    <div class="cta-banner-kicker reveal">
+      <div class="cta-banner-kicker-line"></div>
+      <span class="cta-banner-kicker-text">Begin your journey</span>
+      <div class="cta-banner-kicker-line"></div>
+    </div>
+    <h2 class="cta-banner-headline reveal reveal-delay-1">Ready to begin your<br>creative journey?</h2>
+    <p class="cta-banner-sub reveal reveal-delay-2">Applications for Media Production 2025 are open. Take the first step toward a future built on skill, discipline and creative excellence.</p>
+    <div class="cta-banner-actions reveal reveal-delay-3">
+      <a href="admissions.html" class="btn-yellow">Apply Now</a>
+      <a href="#programs" class="btn-secondary" style="color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.2);">View Programs</a>
+    </div>
+    <p class="cta-banner-note reveal reveal-delay-4">Limited to 20 students per cohort — applications close August 30, 2025</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer id="contact">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo-text">Gateway <span>Academy</span></div>
+        <div class="footer-logo-sub">A Gateway Ltd Company</div>
+        <p class="footer-tagline">Equipping young Nigerians to create, lead and shape the future.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Programs</div>
+        <ul>
+          <li><a href="#programs">Media Production</a></li>
+          <li><a href="#programs">Web Development</a></li>
+          <li><a href="#programs">Data Analysis</a></li>
+          <li><a href="#programs">Cyber Security</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Admissions</div>
+        <ul>
+          <li><a href="admissions.html">How to apply</a></li>
+          <li><a href="admissions.html">Requirements</a></li>
+          <li><a href="admissions.html">Fees & funding</a></li>
+          <li><a href="admissions.html">FAQs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Contact</div>
+        <ul>
+          <li><a href="mailto:academy@gatewayltd.com">academy@gatewayltd.com</a></li>
+          <li><a href="https://maps.app.goo.gl/7uZ9m9jh6bGJCdau7">Suite 203A, Bahamas Plaza,<br>Joseph Gomwalk St, Gudu, Abuja</a></li>
+        </ul>
+        <div style="margin-top:20px;">
+          <div class="footer-col-title">Follow us</div>
+          <div class="footer-socials">
+            <a href="#" class="social-link" aria-label="Instagram">
+              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="#" class="social-link" aria-label="Twitter / X">
+              <svg viewBox="0 0 24 24"><path d="M4 4l16 16M4 20L20 4"/></svg>
+            </a>
+            <a href="#" class="social-link" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 Gateway Academy — A Gateway Ltd Company. Abuja, Nigeria.</p>
+      <a href="../index.html" class="footer-parent-link">
+        <svg viewBox="0 0 10 10"><path d="M5 1L1 5l4 4M1 5h8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Back to Gateway Ltd
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+(function(){
+
+  /* cursor */
+  const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+  let mx=-100,my=-100,rx=-100,ry=-100;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=(mx-4)+'px';cursor.style.top=(my-4)+'px';});
+  (function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=(rx-16)+'px';ring.style.top=(ry-16)+'px';requestAnimationFrame(animRing);})();
+  document.querySelectorAll('a,button,.trainer-card,.prog-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('hovered'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('hovered'));
+  });
+
+  /* navbar scroll */
+  const navbar=document.getElementById('navbar');
+  window.addEventListener('scroll',()=>navbar.classList.toggle('scrolled',window.scrollY>40),{passive:true});
+
+  /* mobile menu */
+  const hamburger=document.getElementById('hamburger'),hamburgerClose=document.getElementById('hamburgerClose'),mobileMenu=document.getElementById('mobileMenu');
+  function openMobileMenu(){mobileMenu.classList.add('open');mobileMenu.setAttribute('aria-hidden','false');hamburger.classList.add('open');document.body.style.overflow='hidden';}
+  window.closeMobileMenu=function(){mobileMenu.classList.remove('open');mobileMenu.setAttribute('aria-hidden','true');hamburger.classList.remove('open');document.body.style.overflow='';};
+  hamburger.addEventListener('click',()=>mobileMenu.classList.contains('open')?closeMobileMenu():openMobileMenu());
+  hamburgerClose.addEventListener('click',closeMobileMenu);
+
+  /* intersection observer — reveals */
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+  },{threshold:.1});
+  document.querySelectorAll('.reveal,.prog-featured,.prog-card,.about-card,.facility-item').forEach(el=>obs.observe(el));
+
+  /* stagger prog cards */
+  document.querySelectorAll('.prog-card').forEach((c,i)=>{c.style.transitionDelay=(i*.1)+'s';});
+  document.querySelectorAll('.facility-item').forEach((f,i)=>{f.style.transitionDelay=(i*.07)+'s';});
+  document.querySelectorAll('.about-card').forEach((a,i)=>{a.style.transitionDelay=(i*.1)+'s';});
+
+  /* smooth anchors */
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      const href=a.getAttribute('href');
+      if(href==='#')return;
+      const t=document.querySelector(href);
+      if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+    });
+  });
+
+  /* trainers scroll buttons */
+  const track=document.getElementById('trainersTrack');
+  document.getElementById('tNavLeft').addEventListener('click',()=>track.scrollBy({left:-300,behavior:'smooth'}));
+  document.getElementById('tNavRight').addEventListener('click',()=>track.scrollBy({left:300,behavior:'smooth'}));
+
+  /* hero bg text parallax */
+  const bgLetter=document.querySelector('.hero-bg-letter');
+  if(bgLetter){window.addEventListener('scroll',()=>{bgLetter.style.transform=`translateY(calc(-50% + ${window.scrollY*.2}px))`;},{passive:true});}
+
+})();
+</script>
+</body>
+</html>

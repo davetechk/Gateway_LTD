@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admissions — Gateway Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/main.css">
+<style>
+/* ============================================================
+   ACADEMY NAV EXTRAS
+   ============================================================ */
+.logo-sub{font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--stone);margin-top:1px;}
+.nav-parent-link{display:flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);text-decoration:none;padding:6px 10px;border:1px solid var(--border);border-radius:2px;transition:color .2s,border-color .2s;}
+.nav-parent-link:hover{color:var(--red);border-color:rgba(229,21,36,0.3);}
+.nav-parent-link svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2;}
+
+/* ============================================================
+   BUTTON OVERRIDES
+   ============================================================ */
+.btn-secondary{color:var(--charcoal);font-weight:500;}
+.btn-secondary:hover{border-color:var(--charcoal);color:var(--charcoal);}
+
+/* ============================================================
+   TICKER OVERRIDES
+   ============================================================ */
+.ticker-track{animation:tickerMove 20s linear infinite;}
+.ticker-item{color:rgba(26,23,20,.88);}
+.ticker-sep{color:rgba(26,23,20,.3);}
+
+/* ============================================================
+   SCROLL REVEAL OVERRIDE
+   ============================================================ */
+.reveal{transform:translateY(24px);}
+.reveal-delay-4{transition-delay:.4s;}
+.reveal-delay-5{transition-delay:.5s;}
+.reveal-delay-6{transition-delay:.6s;}
+
+/* ============================================================
+   HERO — admissions
+   ============================================================ */
+.hero{min-height:60vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;background:#fff;}
+.hero-image{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1600&q=80&auto=format&fit=crop');background-size:cover;background-position:center 40%;z-index:0;}
+.hero-image::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,rgba(255,255,255,0.96) 0%,rgba(255,255,255,0.85) 50%,rgba(255,255,255,0.45) 100%);}
+.hero-accent-bar{position:absolute;top:0;left:0;width:4px;height:0;background:var(--yellow);animation:barGrow 1.2s .3s cubic-bezier(.23,1,.32,1) forwards;z-index:3;}
+.hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,171,0,.06) 0%,transparent 70%);right:-100px;bottom:-100px;pointer-events:none;z-index:2;}
+.hero-content{position:relative;z-index:5;max-width:1280px;margin:0 auto;padding:0 40px;width:100%;padding-top:var(--nav-h);}
+.hero-inner{min-height:60vh;display:flex;flex-direction:column;justify-content:center;padding:80px 0 60px;}
+
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(229,21,36,.06);border:1px solid rgba(229,21,36,.18);border-radius:2px;padding:6px 14px;margin-bottom:28px;opacity:0;animation:slideUp .6s .3s ease forwards;}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.hero-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--red);animation:pulse 2s ease-in-out infinite;}
+.hero-badge-text{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:600;}
+
+.hero-headline{font-family:'Inter',sans-serif;font-size:clamp(38px,5vw,72px);font-weight:800;line-height:1.0;color:var(--charcoal);letter-spacing:-.035em;margin-bottom:24px;max-width:680px;}
+.hero-headline-line{display:block;overflow:hidden;}
+.hero-headline-line span{display:block;opacity:0;transform:translateY(100%);}
+.hero-headline-line:nth-child(1) span{animation:lineReveal .9s .4s cubic-bezier(.23,1,.32,1) forwards;}
+.hero-headline-line:nth-child(2) span{animation:lineReveal .9s .55s cubic-bezier(.23,1,.32,1) forwards;}
+.hero-headline em{font-style:normal;color:var(--red);}
+
+.hero-sub{font-size:17px;color:rgba(26,23,20,.6);line-height:1.8;max-width:540px;font-weight:300;margin-bottom:40px;opacity:0;animation:slideUp .7s .75s ease forwards;}
+.hero-ctas{display:flex;align-items:center;gap:12px;flex-wrap:wrap;opacity:0;animation:slideUp .7s .9s ease forwards;}
+
+/* ============================================================
+   STEPS — 4-step admissions process
+   ============================================================ */
+.steps{background:var(--cream);}
+.steps-header{margin-bottom:56px;}
+.steps-title{font-family:'Inter',sans-serif;font-size:clamp(28px,3.5vw,46px);font-weight:800;color:var(--charcoal);letter-spacing:-.03em;margin-bottom:8px;}
+.steps-title em{font-style:italic;color:var(--red);font-weight:300;}
+.steps-sub{font-size:15px;color:#3A3632;max-width:480px;line-height:1.7;font-weight:500;}
+
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.step-card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:32px 28px;
+  position:relative;
+  overflow:hidden;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .6s ease,transform .6s ease,border-color .2s;
+}
+.step-card.visible{opacity:1;transform:translateY(0);}
+.step-card:hover{border-color:rgba(255,171,0,.4);}
+.step-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--yellow);transform:scaleX(0);transform-origin:left;
+  transition:transform .4s cubic-bezier(.23,1,.32,1);
+}
+.step-card:hover::after{transform:scaleX(1);}
+.step-num{font-family:'Inter',sans-serif;font-size:48px;font-weight:800;color:rgba(26,23,20,.04);line-height:1;margin-bottom:20px;letter-spacing:-.04em;}
+.step-icon{width:44px;height:44px;border-radius:4px;background:var(--cream-dark);display:flex;align-items:center;justify-content:center;margin-bottom:18px;transition:background .2s;}
+.step-card:hover .step-icon{background:var(--red-muted);}
+.step-icon svg{width:20px;height:20px;stroke:var(--charcoal);fill:none;stroke-width:1.6;transition:stroke .2s;}
+.step-card:hover .step-icon svg{stroke:var(--red);}
+.step-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:8px;}
+.step-title{font-family:'Inter',sans-serif;font-size:18px;font-weight:700;color:var(--charcoal);margin-bottom:10px;letter-spacing:-.01em;}
+.step-body{font-size:14px;color:#3A3632;line-height:1.7;font-weight:500;}
+
+/* ============================================================
+   REQUIREMENTS
+   ============================================================ */
+.requirements{background:var(--white);}
+.req-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.req-left{}
+.req-headline{font-family:'Inter',sans-serif;font-size:clamp(28px,3.5vw,46px);font-weight:800;line-height:1.05;color:var(--charcoal);letter-spacing:-.03em;margin-bottom:20px;}
+.req-headline em{font-style:italic;color:var(--red);font-weight:300;}
+.req-body{font-size:15px;color:#3A3632;line-height:1.85;font-weight:500;margin-bottom:32px;}
+
+.req-right{display:flex;flex-direction:column;gap:14px;}
+.req-item{
+  display:flex;align-items:flex-start;gap:16px;
+  padding:20px 24px;
+  background:var(--cream);
+  border:1px solid var(--border);
+  border-radius:4px;
+  opacity:0;transform:translateX(20px);
+  transition:opacity .5s ease,transform .5s ease,border-color .2s;
+}
+.req-item.visible{opacity:1;transform:translateX(0);}
+.req-item:hover{border-color:rgba(255,171,0,.3);}
+.req-check{
+  width:24px;height:24px;border-radius:50%;
+  background:rgba(255,171,0,.15);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;
+}
+.req-check svg{width:11px;height:11px;stroke:var(--yellow);fill:none;stroke-width:2.5;}
+.req-item-title{font-size:14px;font-weight:700;color:var(--charcoal);margin-bottom:3px;letter-spacing:-.01em;}
+.req-item-text{font-size:13px;color:#3A3632;line-height:1.6;font-weight:500;}
+
+/* ============================================================
+   FEES
+   ============================================================ */
+.fees{background:var(--charcoal);position:relative;overflow:hidden;}
+.fees-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1600&q=70&auto=format&fit=crop');background-size:cover;background-position:center;opacity:.08;z-index:0;}
+.fees .container{position:relative;z-index:1;}
+.fees-header{margin-bottom:48px;}
+.fees-title{font-family:'Inter',sans-serif;font-size:clamp(28px,3.5vw,46px);font-weight:800;color:var(--white);letter-spacing:-.03em;margin-bottom:8px;}
+.fees-title em{font-style:italic;color:var(--yellow);font-weight:300;}
+.fees-note{font-size:14px;color:rgba(255,255,255,.45);line-height:1.7;max-width:420px;font-weight:300;}
+.fees-placeholder-note{display:inline-flex;align-items:center;gap:8px;background:rgba(255,171,0,.1);border:1px solid rgba(255,171,0,.25);border-radius:2px;padding:6px 14px;margin-top:16px;}
+.fees-placeholder-text{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,171,0,.8);font-weight:600;}
+
+.fees-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.fee-card{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:4px;
+  padding:32px;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .6s ease,transform .6s ease,border-color .25s,background .2s;
+}
+.fee-card.visible{opacity:1;transform:translateY(0);}
+.fee-card:hover{background:rgba(255,255,255,.08);border-color:rgba(255,171,0,.3);}
+.fee-card-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,171,0,.6);font-weight:600;margin-bottom:12px;}
+.fee-card-name{font-size:16px;font-weight:700;color:var(--white);margin-bottom:20px;letter-spacing:-.01em;}
+.fee-amount{font-family:'Inter',sans-serif;font-size:clamp(28px,3vw,40px);font-weight:800;color:var(--yellow);letter-spacing:-.03em;margin-bottom:4px;line-height:1;}
+.fee-amount-note{font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.04em;margin-bottom:20px;}
+.fee-divider{height:1px;background:rgba(255,255,255,.06);margin-bottom:20px;}
+.fee-includes{display:flex;flex-direction:column;gap:10px;}
+.fee-include-item{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.6);font-weight:300;}
+.fee-include-item svg{width:12px;height:12px;stroke:var(--yellow);fill:none;stroke-width:2;flex-shrink:0;}
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+.faq{background:var(--cream);}
+.faq-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.faq-left{}
+.faq-title{font-family:'Inter',sans-serif;font-size:clamp(28px,3.5vw,46px);font-weight:800;color:var(--charcoal);letter-spacing:-.03em;margin-bottom:16px;}
+.faq-title em{font-style:italic;color:var(--red);font-weight:300;}
+.faq-body{font-size:15px;color:#3A3632;line-height:1.85;font-weight:500;margin-bottom:32px;}
+.faq-cta-note{font-size:13px;color:var(--stone);line-height:1.7;font-weight:400;}
+.faq-cta-note a{color:var(--red);text-decoration:none;}
+.faq-cta-note a:hover{text-decoration:underline;}
+
+.faq-right{display:flex;flex-direction:column;gap:0;}
+.faq-item{
+  border-top:1px solid var(--border);
+  padding:0;
+  opacity:0;transform:translateY(16px);
+  transition:opacity .5s ease,transform .5s ease;
+}
+.faq-item.visible{opacity:1;transform:translateY(0);}
+.faq-item:last-child{border-bottom:1px solid var(--border);}
+.faq-question{
+  width:100%;background:none;border:none;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 0;
+  font-family:'Inter',sans-serif;font-size:14px;font-weight:600;
+  color:var(--charcoal);text-align:left;
+  cursor:pointer;gap:16px;
+  transition:color .2s;
+}
+.faq-question:hover{color:var(--red);}
+.faq-icon{width:20px;height:20px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s,border-color .2s;}
+.faq-icon svg{width:10px;height:10px;stroke:var(--charcoal);fill:none;stroke-width:2;transition:transform .3s ease,stroke .2s;}
+.faq-item.open .faq-icon{background:var(--red);border-color:var(--red);}
+.faq-item.open .faq-icon svg{stroke:var(--white);transform:rotate(45deg);}
+.faq-answer{
+  font-size:14px;color:#3A3632;line-height:1.75;font-weight:500;
+  max-height:0;overflow:hidden;
+  transition:max-height .4s ease,padding .3s ease;
+  padding-bottom:0;
+}
+.faq-item.open .faq-answer{max-height:300px;padding-bottom:20px;}
+
+/* ============================================================
+   CTA BANNER
+   ============================================================ */
+.cta-banner{
+  background:var(--charcoal);
+  position:relative;overflow:hidden;
+  padding:100px 0;
+}
+.cta-banner-bg{
+  position:absolute;inset:0;
+  background-image:url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1600&q=70&auto=format&fit=crop');
+  background-size:cover;background-position:center;
+  opacity:.07;z-index:0;
+}
+.cta-banner-glow{position:absolute;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(229,21,36,.08) 0%,transparent 60%);left:50%;top:50%;transform:translate(-50%,-50%);z-index:0;pointer-events:none;}
+.cta-banner .container{position:relative;z-index:1;text-align:center;}
+.cta-banner-kicker{display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;}
+.cta-banner-kicker-line{width:24px;height:1px;background:var(--yellow);}
+.cta-banner-kicker-text{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--yellow);font-weight:500;}
+.cta-banner-headline{font-family:'Inter',sans-serif;font-size:clamp(28px,4vw,52px);font-weight:800;color:var(--white);letter-spacing:-.03em;line-height:1.08;margin-bottom:16px;}
+.cta-banner-sub{font-size:16px;color:rgba(255,255,255,.88);line-height:1.7;font-weight:400;max-width:440px;margin:0 auto 36px;}
+.cta-banner-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
+.cta-banner-note{font-size:11px;color:rgba(255,255,255,.25);margin-top:14px;letter-spacing:.04em;}
+
+/* ============================================================
+   FOOTER OVERRIDES
+   ============================================================ */
+.footer-top{grid-template-columns:1.6fr 1fr 1fr 1fr;}
+.footer-logo-text{font-size:13px;margin-bottom:4px;}
+.footer-tagline{max-width:220px;line-height:1.75;}
+.footer-col ul a{font-size:13px;}
+.footer-logo-sub{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);margin-bottom:16px;}
+.footer-socials{display:flex;gap:10px;margin-top:4px;}
+.social-link{width:34px;height:34px;border-radius:2px;border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:background .2s,border-color .2s;}
+.social-link:hover{background:var(--red);border-color:var(--red);}
+.social-link svg{width:14px;height:14px;stroke:rgba(255,255,255,.5);fill:none;stroke-width:1.8;transition:stroke .2s;}
+.social-link:hover svg{stroke:var(--white);}
+.footer-parent-link{display:flex;align-items:center;gap:6px;font-size:10px;color:rgba(255,255,255,.2);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s;}
+.footer-parent-link:hover{color:rgba(255,255,255,.5);}
+.footer-parent-link svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2;}
+
+/* ============================================================
+   RESPONSIVE — PAGE SPECIFIC
+   ============================================================ */
+@media(max-width:960px){
+  .steps-grid{grid-template-columns:1fr 1fr;}
+  .req-inner{grid-template-columns:1fr;gap:52px;}
+  .fees-grid{grid-template-columns:1fr 1fr;}
+  .faq-inner{grid-template-columns:1fr;gap:52px;}
+}
+@media(max-width:680px){
+  .hero-content{padding-left:24px;padding-right:24px;}
+  .hero-inner{min-height:50vh;padding:60px 0 40px;}
+  .steps-grid{grid-template-columns:1fr;}
+  .fees-grid{grid-template-columns:1fr;}
+  .footer-legal{gap:12px;}
+  .cta-banner{padding:72px 0;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-emblem">
+        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="36" height="36" rx="4" fill="#E51524"/>
+          <path d="M18 7L28 12.5V23.5L18 29L8 23.5V12.5L18 7Z" stroke="white" stroke-width="1.4" fill="none"/>
+          <path d="M18 13V23M13.5 16L18 13L22.5 16" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="logo-wordmark">Gateway <span>Academy</span></div>
+        <div class="logo-sub">A Gateway Ltd Company</div>
+      </div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html#programs">Programs</a></li>
+      <li><a href="#">Resources</a></li>
+      <li><a href="admissions.html">Admissions</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li>
+        <a href="../index.html" class="nav-parent-link">
+          <svg viewBox="0 0 10 10"><path d="M5 1L1 5l4 4M1 5h8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Gateway Ltd
+        </a>
+      </li>
+      <li><a href="#apply" class="nav-cta">Apply Now</a></li>
+    </ul>
+
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-header">
+    <a href="index.html" class="nav-logo" onclick="closeMobileMenu()">
+      <div class="logo-emblem">
+        <svg viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="4" fill="#E51524"/><path d="M18 7L28 12.5V23.5L18 29L8 23.5V12.5L18 7Z" stroke="white" stroke-width="1.4" fill="none"/><path d="M18 13V23M13.5 16L18 13L22.5 16" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </div>
+      <div class="logo-wordmark">Gateway <span>Academy</span></div>
+    </a>
+    <button class="hamburger open" id="hamburgerClose" aria-label="Close menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu-body">
+    <div class="mob-section">
+      <div class="mob-label">Navigate</div>
+      <a class="mob-link" href="index.html#programs" onclick="closeMobileMenu()">Programs <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="mob-link" href="#" onclick="closeMobileMenu()">Resources <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="mob-link" href="admissions.html" onclick="closeMobileMenu()">Admissions <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="mob-link" href="index.html#contact" onclick="closeMobileMenu()">Contact <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+    <div class="mob-section">
+      <div class="mob-label">Part of the Gateway Ecosystem</div>
+      <a class="mob-link" href="../index.html">Gateway Ltd (Parent) <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+    <a href="#apply" class="mob-cta" onclick="closeMobileMenu()">Apply Now</a>
+  </div>
+</div>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="hero">
+  <div class="hero-image"></div>
+  <div class="hero-accent-bar"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        <span class="hero-badge-text">Admissions open — Media Production 2025</span>
+      </div>
+      <h1 class="hero-headline">
+        <span class="hero-headline-line"><span>How to <em>Apply</em></span></span>
+        <span class="hero-headline-line"><span>to Gateway Academy.</span></span>
+      </h1>
+      <p class="hero-sub">Everything you need to know about our admissions process, requirements, fees and frequently asked questions. Applications for Media Production 2025 are now open.</p>
+      <div class="hero-ctas">
+        <a href="#apply" class="btn-yellow">Start Your Application</a>
+        <a href="#faq" class="btn-secondary">Read the FAQs</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item">Apply Online</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Attend Interview</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Receive Offer</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Pay Deposit</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Gateway Academy</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Abuja, Nigeria</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Apply Online</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Attend Interview</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Receive Offer</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Pay Deposit</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Gateway Academy</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Abuja, Nigeria</span><span class="ticker-sep">—</span>
+  </div>
+</div>
+
+<!-- ============================================================
+     SECTION 1 — THE PROCESS
+     ============================================================ -->
+<section class="steps section-pad" id="process">
+  <div class="container">
+    <div class="steps-header">
+      <div class="section-kicker reveal">
+        <div class="sk-line"></div>
+        <span class="sk-text">The process</span>
+      </div>
+      <h2 class="steps-title reveal reveal-delay-1">Four steps.<br><em>One journey.</em></h2>
+      <p class="steps-sub reveal reveal-delay-2">Our admissions process is designed to be straightforward. From your first application to your first day, here is exactly what to expect.</p>
+    </div>
+    <div class="steps-grid">
+
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <div class="step-label">Step one</div>
+        <div class="step-title">Apply Online</div>
+        <div class="step-body">Complete our online application form. Tell us about yourself, your background and why you want to join the Gateway Academy. No prior experience required.</div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="step-label">Step two</div>
+        <div class="step-title">Attend Interview</div>
+        <div class="step-body">Shortlisted applicants are invited for a brief interview — in-person or virtual. We want to understand your passion, your goals and your commitment to the program.</div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div class="step-label">Step three</div>
+        <div class="step-title">Receive Offer</div>
+        <div class="step-body">Successful applicants receive a formal offer letter within 5 working days of their interview. The offer outlines your program, start date and full fee breakdown.</div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        </div>
+        <div class="step-label">Step four</div>
+        <div class="step-title">Pay Deposit</div>
+        <div class="step-body">Secure your place by paying the non-refundable deposit within 7 days of receiving your offer. The balance is due one week before the program start date.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 2 — REQUIREMENTS
+     ============================================================ -->
+<section class="requirements section-pad" id="requirements">
+  <div class="container">
+    <div class="req-inner">
+
+      <div class="req-left">
+        <div class="section-kicker reveal">
+          <div class="sk-line"></div>
+          <span class="sk-text">Requirements</span>
+        </div>
+        <h2 class="req-headline reveal reveal-delay-1">
+          Who can <em>apply?</em>
+        </h2>
+        <div class="req-body reveal reveal-delay-2">
+          <p>Gateway Academy is designed to be accessible to anyone with genuine passion and commitment. We do not require a formal background in media or technology. What matters most is your drive to learn and grow.</p>
+        </div>
+        <a href="#apply" class="btn-primary reveal reveal-delay-3">Apply Now</a>
+      </div>
+
+      <div class="req-right">
+        <div class="req-item">
+          <div class="req-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div>
+            <div class="req-item-title">Age 17 and above</div>
+            <div class="req-item-text">Applicants must be at least 17 years old at the time of program commencement. There is no upper age limit.</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div>
+            <div class="req-item-title">No prior experience needed</div>
+            <div class="req-item-text">You do not need previous experience in media, tech or creative fields. Our programs are built for beginners as well as those looking to formalise existing skills.</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div>
+            <div class="req-item-title">Passion for the discipline</div>
+            <div class="req-item-text">We are looking for individuals who are genuinely excited about creating, building and learning. Curiosity and commitment matter far more than credentials.</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div>
+            <div class="req-item-title">Laptop recommended</div>
+            <div class="req-item-text">Students are encouraged to bring a personal laptop. Shared devices are available at the facility, but having your own ensures a smoother learning experience.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 3 — FEES
+     ============================================================ -->
+<section class="fees section-pad" id="fees">
+  <div class="fees-bg"></div>
+  <div class="container">
+    <div class="fees-header">
+      <div class="section-kicker reveal">
+        <div class="sk-line" style="background:var(--yellow);"></div>
+        <span class="sk-text" style="color:rgba(255,171,0,.6);">Fees &amp; funding</span>
+      </div>
+      <h2 class="fees-title reveal reveal-delay-1">
+        Invest in your<br><em>future.</em>
+      </h2>
+      <p class="fees-note reveal reveal-delay-2">Our program fees are structured to be accessible. Payment plans are available on request. Fees below are indicative placeholders pending official confirmation.</p>
+      <div class="fees-placeholder-note reveal reveal-delay-3">
+        <span class="fees-placeholder-text">⚠ Placeholder fees — confirm with admissions before applying</span>
+      </div>
+    </div>
+
+    <div class="fees-grid">
+
+      <div class="fee-card">
+        <div class="fee-card-label">Registration</div>
+        <div class="fee-card-name">Application Fee</div>
+        <div class="fee-amount">₦10,000</div>
+        <div class="fee-amount-note">Non-refundable · Paid at application</div>
+        <div class="fee-divider"></div>
+        <div class="fee-includes">
+          <div class="fee-include-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Application review</div>
+          <div class="fee-include-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Interview invitation</div>
+          <div class="fee-include-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Offer letter processing</div>
+        </div>
+      </div>
+
+      <div class="fee-card">
+        <div class="fee-card-label">Enrolment</div>
+        <div class="fee-card-name">Acceptance Deposit</div>
+        <div class="fee-amount">₦50,000</div>
+        <div class="fee-amount-note">Non-refundable · Due within 7 days of offer</div>
+        <div class="fee-divider"></div>
+        <div class="fee-includes">
+          <div class="fee-include-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Secures your cohort place</div>
+          <div class="fee-include-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Deducted from tuition balance</div>
+          <div class="fee-include-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Welcome kit dispatched</div>
+        </div>
+      </div>
+
+      <div class="fee-card">
+        <div class="fee-card-label">Tuition</div>
+        <div class="fee-card-name">Full Program Fee</div>
+        <div class="fee-amount">₦350,000</div>
+        <div class="fee-amount-note">Balance due 1 week before start date</div>
+        <div class="fee-divider"></div>
+        <div class="fee-includes">
+          <div class="fee-include-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>12 weeks full-time training</div>
+          <div class="fee-include-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>All learning materials included</div>
+          <div class="fee-include-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Certificate of completion</div>
+          <div class="fee-include-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Payment plans available</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 4 — FAQ
+     ============================================================ -->
+<section class="faq section-pad" id="faq">
+  <div class="container">
+    <div class="faq-inner">
+
+      <div class="faq-left">
+        <div class="section-kicker reveal">
+          <div class="sk-line"></div>
+          <span class="sk-text">FAQ</span>
+        </div>
+        <h2 class="faq-title reveal reveal-delay-1">
+          Questions<br>we get <em>asked.</em>
+        </h2>
+        <p class="faq-body reveal reveal-delay-2">
+          Here are the most common questions we receive about the admissions process. If your question is not answered here, please reach out directly.
+        </p>
+        <p class="faq-cta-note reveal reveal-delay-3">
+          Still have questions? Email us at <a href="mailto:academy@gatewayltd.com">academy@gatewayltd.com</a> and we will get back to you within 24 hours.
+        </p>
+      </div>
+
+      <div class="faq-right">
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Do I need a degree or formal qualification to apply?
+            <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </button>
+          <div class="faq-answer">No. Gateway Academy does not require any formal academic qualifications. We are focused on your passion, potential and commitment to learning. People from all educational backgrounds are welcome to apply.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            How long does the admissions process take?
+            <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </button>
+          <div class="faq-answer">From submission to offer, the process typically takes 2–3 weeks. Applications are reviewed on a rolling basis, so earlier submissions tend to receive faster responses. We recommend applying well before the deadline.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Are payment plans available for the tuition fee?
+            <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </button>
+          <div class="faq-answer">Yes. We understand that the full tuition may be challenging to pay upfront. Flexible payment arrangements can be discussed after you receive your offer letter. Contact our admissions team to explore options.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Is the program in-person or can I attend remotely?
+            <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </button>
+          <div class="faq-answer">The Media Production program is delivered entirely in-person at our Abuja facility. This is essential to the hands-on, practical nature of the training. Remote options may be available for future programs.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            What happens after I complete the program?
+            <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </button>
+          <div class="faq-answer">Graduates receive a Certificate of Completion from Gateway Academy. Our alumni network provides continued support, and we actively connect graduates with opportunities through our industry partnerships across the Gateway ecosystem.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            How many students are accepted per cohort?
+            <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </button>
+          <div class="faq-answer">Each cohort is intentionally limited to 20 students. This small class size ensures every student receives individual attention from our trainers and benefits from a close-knit learning community.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA BANNER — APPLY NOW
+     ============================================================ -->
+<section class="cta-banner" id="apply">
+  <div class="cta-banner-bg"></div>
+  <div class="cta-banner-glow"></div>
+  <div class="container">
+    <div class="cta-banner-kicker reveal">
+      <div class="cta-banner-kicker-line"></div>
+      <span class="cta-banner-kicker-text">Begin your journey</span>
+      <div class="cta-banner-kicker-line"></div>
+    </div>
+    <h2 class="cta-banner-headline reveal reveal-delay-1">Ready to take<br>the first step?</h2>
+    <p class="cta-banner-sub reveal reveal-delay-2">Applications for Media Production 2025 are open now. Spaces are limited to 20 students — don't miss your place.</p>
+    <div class="cta-banner-actions reveal reveal-delay-3">
+      <a href="mailto:academy@gatewayltd.com?subject=Application%20Enquiry%20—%20Media%20Production%202025" class="btn-yellow">Apply Now</a>
+      <a href="index.html" class="btn-secondary" style="color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.2);">Back to Academy</a>
+    </div>
+    <p class="cta-banner-note reveal reveal-delay-4">Application deadline: August 30, 2025 · Program starts: September 2025</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer id="contact">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo-text">Gateway <span>Academy</span></div>
+        <div class="footer-logo-sub">A Gateway Ltd Company</div>
+        <p class="footer-tagline">Equipping young Nigerians to create, lead and shape the future.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Programs</div>
+        <ul>
+          <li><a href="index.html#programs">Media Production</a></li>
+          <li><a href="index.html#programs">Web Development</a></li>
+          <li><a href="index.html#programs">Data Analysis</a></li>
+          <li><a href="index.html#programs">Cyber Security</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Admissions</div>
+        <ul>
+          <li><a href="admissions.html">How to apply</a></li>
+          <li><a href="#requirements">Requirements</a></li>
+          <li><a href="#fees">Fees &amp; funding</a></li>
+          <li><a href="#faq">FAQs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Contact</div>
+        <ul>
+          <li><a href="mailto:academy@gatewayltd.com">academy@gatewayltd.com</a></li>
+          <li><a href="https://maps.app.goo.gl/7uZ9m9jh6bGJCdau7">Suite 203A, Bahamas Plaza,<br>Joseph Gomwalk St, Gudu, Abuja</a></li>
+        </ul>
+        <div style="margin-top:20px;">
+          <div class="footer-col-title">Follow us</div>
+          <div class="footer-socials">
+            <a href="#" class="social-link" aria-label="Instagram">
+              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="#" class="social-link" aria-label="Twitter / X">
+              <svg viewBox="0 0 24 24"><path d="M4 4l16 16M4 20L20 4"/></svg>
+            </a>
+            <a href="#" class="social-link" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 Gateway Academy — A Gateway Ltd Company. Abuja, Nigeria.</p>
+      <a href="../index.html" class="footer-parent-link">
+        <svg viewBox="0 0 10 10"><path d="M5 1L1 5l4 4M1 5h8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Back to Gateway Ltd
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+
+  /* cursor */
+  const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+  let mx=-100,my=-100,rx=-100,ry=-100;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=(mx-4)+'px';cursor.style.top=(my-4)+'px';});
+  (function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=(rx-16)+'px';ring.style.top=(ry-16)+'px';requestAnimationFrame(animRing);})();
+  document.querySelectorAll('a,button,.step-card,.req-item,.fee-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('hovered'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('hovered'));
+  });
+
+  /* navbar scroll */
+  const navbar=document.getElementById('navbar');
+  window.addEventListener('scroll',()=>navbar.classList.toggle('scrolled',window.scrollY>40),{passive:true});
+
+  /* mobile menu */
+  const hamburger=document.getElementById('hamburger'),hamburgerClose=document.getElementById('hamburgerClose'),mobileMenu=document.getElementById('mobileMenu');
+  function openMobileMenu(){mobileMenu.classList.add('open');mobileMenu.setAttribute('aria-hidden','false');hamburger.classList.add('open');document.body.style.overflow='hidden';}
+  window.closeMobileMenu=function(){mobileMenu.classList.remove('open');mobileMenu.setAttribute('aria-hidden','true');hamburger.classList.remove('open');document.body.style.overflow='';};
+  hamburger.addEventListener('click',()=>mobileMenu.classList.contains('open')?closeMobileMenu():openMobileMenu());
+  hamburgerClose.addEventListener('click',closeMobileMenu);
+
+  /* intersection observer */
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+  },{threshold:.1});
+  document.querySelectorAll('.reveal,.step-card,.req-item,.fee-card,.faq-item').forEach(el=>obs.observe(el));
+
+  /* stagger cards */
+  document.querySelectorAll('.step-card').forEach((c,i)=>{c.style.transitionDelay=(i*.1)+'s';});
+  document.querySelectorAll('.req-item').forEach((r,i)=>{r.style.transitionDelay=(i*.1)+'s';});
+  document.querySelectorAll('.fee-card').forEach((f,i)=>{f.style.transitionDelay=(i*.1)+'s';});
+  document.querySelectorAll('.faq-item').forEach((f,i)=>{f.style.transitionDelay=(i*.07)+'s';});
+
+  /* FAQ accordion */
+  document.querySelectorAll('.faq-question').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const item=btn.closest('.faq-item');
+      const isOpen=item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el=>el.classList.remove('open'));
+      if(!isOpen)item.classList.add('open');
+      btn.setAttribute('aria-expanded',!isOpen);
+    });
+  });
+
+  /* smooth anchors */
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      const href=a.getAttribute('href');
+      if(href==='#')return;
+      const t=document.querySelector(href);
+      if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+    });
+  });
+
+})();
+</script>
+</body>
+</html>

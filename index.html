@@ -7,113 +7,25 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/main.css">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:'Inter',sans-serif;background:#F8F6F2;color:#1A1714;overflow-x:hidden;cursor:default;}
-:root{
-  --red:#E51524;--red-dark:#8B0A1E;--red-muted:rgba(229,21,36,0.08);
-  --yellow:#FFAB00;--yellow-dark:#CC8800;--yellow-muted:rgba(255,171,0,0.10);
-  --charcoal:#1A1714;--charcoal-soft:#2C2925;
-  --cream:#F8F6F2;--cream-dark:#EDE9E2;
-  --stone:#9B9590;--stone-light:#C8C4BE;
-  --white:#FFFFFF;--border:rgba(26,23,20,0.1);--border-light:rgba(26,23,20,0.06);
-  --nav-h:72px;
-}
-
-/* ============================================================
-   CURSOR
-   ============================================================ */
-.cursor{position:fixed;width:8px;height:8px;background:var(--yellow);border-radius:50%;pointer-events:none;z-index:9999;transition:transform .15s ease;mix-blend-mode:multiply;}
-.cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(229,21,36,0.45);border-radius:50%;pointer-events:none;z-index:9998;transition:transform .4s cubic-bezier(.23,1,.32,1),width .3s,height .3s,border-color .3s;}
-body.hovered .cursor{transform:scale(2.5);}
-body.hovered .cursor-ring{width:48px;height:48px;border-color:rgba(229,21,36,0.2);}
-
-/* ============================================================
-   NAV
-   ============================================================ */
-nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:1000;transition:background .4s ease,border-color .4s ease;}
-nav.scrolled{background:rgba(255,255,255,0.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
-.nav-inner{max-width:1280px;margin:0 auto;padding:0 40px;height:100%;display:flex;align-items:center;justify-content:space-between;}
-.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
-.logo-emblem{width:36px;height:36px;}
-.logo-emblem svg{width:100%;height:100%;}
-.logo-wordmark{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--charcoal);}
-.logo-wordmark span{color:var(--red);}
-.nav-links{display:flex;align-items:center;gap:8px;list-style:none;}
-.nav-links>li{position:relative;}
-.nav-links a{font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--charcoal);text-decoration:none;padding:8px 14px;border-radius:2px;transition:color .2s;display:flex;align-items:center;gap:5px;}
-.nav-links a:hover{color:var(--red);}
-.nav-links a .chevron{width:10px;height:10px;transition:transform .25s ease;stroke:currentColor;fill:none;}
-.nav-links li:hover .chevron{transform:rotate(180deg);}
-.dropdown{position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%) translateY(-6px);background:var(--white);border:1px solid var(--border);border-radius:4px;width:290px;opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease;overflow:hidden;}
-.dropdown::before{content:'';position:absolute;top:-1px;left:0;right:0;height:2px;background:var(--red);}
-.nav-links li:hover .dropdown{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0);}
-.dropdown-item{display:flex;align-items:center;gap:14px;padding:13px 18px;text-decoration:none;border-bottom:1px solid var(--border-light);transition:background .15s;}
-.dropdown-item:last-child{border-bottom:none;}
-.dropdown-item:hover{background:var(--cream);}
-.di-icon{width:32px;height:32px;background:var(--cream-dark);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s;}
-.dropdown-item:hover .di-icon{background:var(--red-muted);}
-.di-icon svg{width:14px;height:14px;stroke:var(--charcoal);fill:none;stroke-width:1.6;}
-.dropdown-item:hover .di-icon svg{stroke:var(--red);}
-.di-text{display:flex;flex-direction:column;}
-.di-name{font-size:12px;font-weight:500;color:var(--charcoal);letter-spacing:.02em;}
-.di-domain{font-size:10px;color:var(--stone);letter-spacing:.04em;margin-top:1px;}
-.nav-cta{margin-left:8px;background:var(--red)!important;color:var(--white)!important;padding:9px 22px!important;border-radius:2px!important;font-weight:600!important;}
-.nav-cta:hover{background:var(--red-dark)!important;}
-
-/* ============================================================
-   HAMBURGER
-   ============================================================ */
-.hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:40px;height:40px;background:none;border:none;cursor:pointer;padding:6px;z-index:1100;flex-shrink:0;}
-.hamburger span{display:block;width:22px;height:1.5px;background:var(--charcoal);transition:transform .3s ease,opacity .3s ease;transform-origin:center;}
-.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
-.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
-.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
-
-/* ============================================================
-   MOBILE MENU
-   ============================================================ */
-.mobile-menu{display:none;position:fixed;inset:0;background:var(--cream);z-index:1050;flex-direction:column;overflow-y:auto;opacity:0;transform:translateX(100%);transition:opacity .35s ease,transform .35s cubic-bezier(.23,1,.32,1);}
-.mobile-menu.open{opacity:1;transform:translateX(0);}
-.mobile-menu-header{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:var(--nav-h);border-bottom:1px solid var(--border);flex-shrink:0;}
-.mobile-menu-body{flex:1;padding:28px 24px 48px;display:flex;flex-direction:column;}
-.mob-section{border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:8px;}
-.mob-section:last-of-type{border-bottom:none;}
-.mob-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--stone);padding:16px 0 8px;font-weight:500;}
-.mob-link{display:flex;align-items:center;justify-content:space-between;padding:13px 0;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--charcoal);text-decoration:none;font-weight:400;border-bottom:1px solid var(--border-light);transition:color .2s;}
-.mob-link:last-child{border-bottom:none;}
-.mob-link:hover{color:var(--red);}
-.mob-link svg{width:12px;height:12px;stroke:var(--stone);fill:none;stroke-width:2;flex-shrink:0;}
-.mob-sub-item{display:flex;align-items:center;gap:14px;padding:13px 0;text-decoration:none;border-bottom:1px solid var(--border-light);transition:opacity .2s;}
-.mob-sub-item:last-child{border-bottom:none;}
-.mob-sub-item:hover{opacity:.65;}
-.msi-icon{width:36px;height:36px;background:var(--cream-dark);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.msi-icon svg{width:15px;height:15px;stroke:var(--charcoal);fill:none;stroke-width:1.6;}
-.msi-name{font-size:13px;font-weight:500;color:var(--charcoal);display:block;}
-.msi-domain{font-size:10px;color:var(--stone);letter-spacing:.04em;display:block;margin-top:1px;}
-.mob-cta{display:block;margin-top:28px;background:var(--red);color:var(--white);border:none;padding:15px 28px;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:2px;text-align:center;text-decoration:none;}
-
 /* ============================================================
    HERO
    ============================================================ */
 .hero{min-height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:80px;background:#fff;}
-.hero-image{position:absolute;inset:0;background-image:url('asset/images/hero_banner.jpg');background-size:cover;background-position:center 30%;z-index:0;}
+.hero-image{position:absolute;inset:0;background-image:url('assets/images/hero_banner.jpg');background-size:cover;background-position:center 30%;z-index:0;}
 .hero-image::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,rgba(255,255,255,0.93) 0%,rgba(255,255,255,0.80) 45%,rgba(255,255,255,0.38) 100%);}
 .hero-grid{position:absolute;inset:0;z-index:1;background-image:linear-gradient(rgba(26,23,20,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(26,23,20,.035) 1px,transparent 1px);background-size:80px 80px;}
 .hero-bg-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Inter',sans-serif;font-size:30vw;font-weight:800;color:rgba(26,23,20,0.04);white-space:nowrap;pointer-events:none;user-select:none;letter-spacing:-.04em;line-height:1;z-index:2;}
 .hero-accent-bar{position:absolute;top:0;left:0;width:4px;height:0;background:var(--yellow);animation:barGrow 1.2s .3s cubic-bezier(.23,1,.32,1) forwards;z-index:3;}
-@keyframes barGrow{to{height:100%;}}
 .hero-diag{position:absolute;right:120px;top:0;bottom:0;width:1px;background:rgba(26,23,20,.06);transform:skewX(-8deg);z-index:2;}
 .hero-diag-2{right:180px;background:rgba(26,23,20,.03);}
 .hero-dots{position:absolute;right:0;top:0;width:45%;height:100%;background-image:radial-gradient(rgba(26,23,20,.06) 1px,transparent 1px);background-size:28px 28px;opacity:0;animation:fadeIn 1.5s .5s ease forwards;z-index:2;}
-@keyframes fadeIn{to{opacity:1;}}
 .hero-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(255,171,0,.07) 0%,transparent 70%);right:-150px;bottom:-150px;pointer-events:none;z-index:2;}
 .hero-glow-red{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(229,21,36,.05) 0%,transparent 70%);left:200px;top:-100px;pointer-events:none;z-index:2;}
 .hero-year{position:absolute;right:40px;top:50%;transform:translateY(-50%) rotate(90deg);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgb(14, 13, 11);white-space:nowrap;z-index:4;}
 .hero-content{position:relative;z-index:5;max-width:1280px;margin:0 auto;padding:0 40px;width:100%;}
 .hero-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:28px;opacity:0;animation:slideUp .7s .6s ease forwards;}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 .hero-eyebrow-line{width:40px;height:1px;background:var(--red);}
 .hero-eyebrow-text{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgb(14, 13, 11);}
 .hero-eyebrow-dot{width:4px;height:4px;border-radius:50%;background:var(--yellow);}
@@ -123,16 +35,11 @@ nav.scrolled{background:rgba(255,255,255,0.97);backdrop-filter:blur(16px);border
 .hero-headline-line:nth-child(1) span{animation:lineReveal .9s .7s cubic-bezier(.23,1,.32,1) forwards;}
 .hero-headline-line:nth-child(2) span{animation:lineReveal .9s .85s cubic-bezier(.23,1,.32,1) forwards;}
 .hero-headline-line:nth-child(3) span{animation:lineReveal .9s 1.0s cubic-bezier(.23,1,.32,1) forwards;}
-@keyframes lineReveal{to{opacity:1;transform:translateY(0);}}
 .hero-headline em{font-style:italic;color:var(--red);font-weight:300;}
 .hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;opacity:0;animation:slideUp .7s 1.2s ease forwards;}
 .hero-sub{font-size:17px;color:rgb(14, 13, 11);line-height:1.85;max-width:380px;font-weight:300;}
 .hero-actions{display:flex;flex-direction:column;align-items:flex-end;gap:16px;}
 .hero-ctas{display:flex;gap:10px;}
-.btn-primary{background:var(--red);color:var(--white);border:1px solid var(--red);padding:13px 28px;font-family:'Inter',sans-serif;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background .2s,border-color .2s;text-decoration:none;display:inline-block;}
-.btn-primary:hover{background:var(--red-dark);border-color:var(--red-dark);}
-.btn-secondary{background:transparent;color:rgba(26,23,20,.65);border:1px solid rgba(26,23,20,.22);padding:13px 28px;font-family:'Inter',sans-serif;font-size:10px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:border-color .2s,color .2s;text-decoration:none;display:inline-block;}
-.btn-secondary:hover{border-color:rgba(26,23,20,.55);color:var(--charcoal);}
 .hero-stats{display:flex;gap:40px;}
 .hero-stat{text-align:right;}
 .hero-stat-num{font-family:'Inter',sans-serif;font-size:28px;font-weight:800;color:var(--charcoal);line-height:1;margin-bottom:4px;letter-spacing:-.02em;}
@@ -141,25 +48,6 @@ nav.scrolled{background:rgba(255,255,255,0.97);backdrop-filter:blur(16px);border
 .scroll-indicator{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeIn 1s 2s ease forwards;z-index:6;}
 .scroll-indicator span{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,23,20,.25);}
 .scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,rgba(26,23,20,.3),transparent);animation:scrollPulse 2s 2s ease-in-out infinite;}
-@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(1);}50%{opacity:1;transform:scaleY(.6);}}
-
-/* ============================================================
-   TICKER
-   ============================================================ */
-.ticker-wrap{background:var(--red);overflow:hidden;padding:13px 0;}
-.ticker-track{display:flex;animation:tickerMove 22s linear infinite;width:max-content;}
-.ticker-item{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.85);white-space:nowrap;padding:0 48px;font-weight:500;}
-.ticker-sep{color:rgba(255,255,255,.35);padding-right:48px;font-size:10px;}
-@keyframes tickerMove{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
-
-/* ============================================================
-   SHARED
-   ============================================================ */
-.section-pad{padding:100px 0;}
-.container{max-width:1280px;margin:0 auto;padding:0 40px;}
-.section-kicker{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
-.sk-line{width:32px;height:1px;background:var(--red);}
-.sk-text{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);font-weight:500;}
 
 /* ============================================================
    SUBSIDIARIES
@@ -225,7 +113,7 @@ nav.scrolled{background:rgba(255,255,255,0.97);backdrop-filter:blur(16px);border
 .sub-card:hover .sub-card-icon svg{stroke:var(--red);}
 .sub-card-tag{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:8px;position:relative;z-index:1;}
 .sub-card-name{font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:var(--charcoal);margin-bottom:10px;line-height:1.2;letter-spacing:-.01em;position:relative;z-index:1;}
-.sub-card-desc{font-size:12px;color:var(--stone);line-height:1.75;flex:1;margin-bottom:24px;position:relative;z-index:1;}
+.sub-card-desc{font-size:14px;color:#3A3632;line-height:1.75;flex:1;margin-bottom:24px;position:relative;z-index:1;font-weight:500;}
 .sub-card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid var(--border-light);margin-top:auto;position:relative;z-index:1;}
 .sub-card-link{display:flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--red);text-decoration:none;font-weight:600;transition:gap .2s;}
 .sub-card:hover .sub-card-link{gap:10px;}
@@ -241,7 +129,7 @@ nav.scrolled{background:rgba(255,255,255,0.97);backdrop-filter:blur(16px);border
 .mission-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
 .mission-headline{font-family:'Inter',sans-serif;font-size:clamp(32px,3.5vw,48px);font-weight:800;color:var(--white);line-height:1.08;margin-bottom:28px;letter-spacing:-.03em;}
 .mission-headline em{font-style:italic;color:var(--yellow);font-weight:300;}
-.mission-body{font-size:14px;color:rgba(255,255,255,.45);line-height:1.9;font-weight:300;margin-bottom:36px;}
+.mission-body{font-size:15px;color:rgba(255,255,255,.88);line-height:1.9;font-weight:400;margin-bottom:36px;}
 .mission-body p+p{margin-top:16px;}
 .mission-pillars{display:flex;flex-direction:column;}
 .mp-item{display:flex;gap:20px;padding:22px 0;border-top:1px solid rgba(255,255,255,.06);opacity:0;transform:translateX(20px);transition:opacity .5s ease,transform .5s ease;}
@@ -249,46 +137,10 @@ nav.scrolled{background:rgba(255,255,255,0.97);backdrop-filter:blur(16px);border
 .mp-item.visible{opacity:1;transform:translateX(0);}
 .mp-num{font-family:'Inter',sans-serif;font-size:12px;color:var(--yellow);font-weight:600;padding-top:2px;min-width:28px;letter-spacing:.06em;}
 .mp-title{font-size:13px;font-weight:600;color:var(--white);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;}
-.mp-body{font-size:12px;color:rgba(255,255,255,.4);line-height:1.7;font-weight:300;}
+.mp-body{font-size:14px;color:rgba(255,255,255,.78);line-height:1.7;font-weight:400;}
 
 /* ============================================================
-   INFO STRIP
-   ============================================================ */
-.info-strip{background:var(--cream-dark);padding:60px 0;border-top:1px solid var(--border);}
-.info-strip-inner{display:flex;align-items:center;justify-content:space-between;gap:40px;}
-.info-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--stone);margin-bottom:6px;}
-.info-value{font-family:'Inter',sans-serif;font-size:16px;font-weight:700;color:var(--charcoal);letter-spacing:-.01em;}
-.info-divider{width:1px;height:48px;background:var(--border);}
-
-/* ============================================================
-   FOOTER
-   ============================================================ */
-footer{background:var(--charcoal);padding:56px 0 36px;}
-.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:32px;}
-.footer-logo-text{font-family:'Inter',sans-serif;font-size:14px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--white);margin-bottom:12px;}
-.footer-logo-text span{color:var(--red);}
-.footer-tagline{font-size:12px;color:rgba(255,255,255,.3);line-height:1.7;max-width:200px;font-weight:300;}
-.footer-col-title{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:18px;font-weight:500;}
-.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
-.footer-col ul a{font-size:12px;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s;font-weight:300;}
-.footer-col ul a:hover{color:var(--white);}
-.footer-bottom{display:flex;justify-content:space-between;align-items:center;}
-.footer-copy{font-size:11px;color:rgba(255,255,255,.2);font-weight:300;}
-.footer-legal{display:flex;gap:24px;}
-.footer-legal a{font-size:10px;letter-spacing:.06em;color:rgba(255,255,255,.2);text-decoration:none;text-transform:uppercase;transition:color .2s;}
-.footer-legal a:hover{color:rgba(255,255,255,.6);}
-
-/* ============================================================
-   SCROLL REVEAL
-   ============================================================ */
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
-.reveal.visible{opacity:1;transform:translateY(0);}
-.reveal-delay-1{transition-delay:.1s;}
-.reveal-delay-2{transition-delay:.2s;}
-.reveal-delay-3{transition-delay:.3s;}
-
-/* ============================================================
-   RESPONSIVE
+   RESPONSIVE — PAGE SPECIFIC
    ============================================================ */
 @media(max-width:960px){
   .subs-grid{grid-template-columns:1fr 1fr;}
@@ -297,28 +149,16 @@ footer{background:var(--charcoal);padding:56px 0 36px;}
   .mission-inner{grid-template-columns:1fr;gap:48px;}
   .subs-header{flex-direction:column;align-items:flex-start;gap:20px;}
   .subs-intro{text-align:left;}
-  .footer-top{grid-template-columns:1fr 1fr;gap:36px;}
-  .info-strip-inner{flex-wrap:wrap;gap:24px;}
 }
 @media(max-width:680px){
-  :root{--nav-h:60px;}
-  .nav-links{display:none;}
-  .hamburger{display:flex;}
-  .mobile-menu{display:flex;}
   .hero-content{padding:0 24px;}
   .hero-year{display:none;}
   .hero-bottom{flex-direction:column;align-items:flex-start;gap:28px;}
   .hero-actions{align-items:flex-start;}
   .hero-stats{flex-wrap:wrap;gap:20px;}
   .hero-stat{text-align:left;}
-  .container{padding:0 24px;}
-  .section-pad{padding:72px 0;}
   .subs-grid{grid-template-columns:1fr;}
   .sub-card-4,.sub-card-5{grid-column:1/-1;}
-  .footer-top{grid-template-columns:1fr;}
-  .footer-bottom{flex-direction:column;gap:16px;text-align:center;}
-  .info-strip-inner{gap:20px;}
-  .footer-legal{flex-wrap:wrap;justify-content:center;gap:14px;}
 }
 </style>
 </head>
@@ -367,11 +207,11 @@ footer{background:var(--charcoal);padding:56px 0 36px;}
     </div>
     <div class="mob-section">
       <div class="mob-label">Our subsidiaries</div>
-      <a class="mob-sub-item" href="https://comms.gatewayltd.com"><div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><span class="msi-name">Gateway Communications</span><span class="msi-domain">comms.gatewayltd.com</span></div></a>
-      <a class="mob-sub-item" href="https://studios.gatewayltd.com"><div class="msi-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div><span class="msi-name">Gateway Studios</span><span class="msi-domain">studios.gatewayltd.com</span></div></a>
-      <a class="mob-sub-item" href="https://academy.gatewayltd.com"><div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div><div><span class="msi-name">Gateway Academy</span><span class="msi-domain">academy.gatewayltd.com</span></div></a>
-      <a class="mob-sub-item" href="https://spaces.gatewayltd.com"><div class="msi-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div><div><span class="msi-name">Gateway Spaces</span><span class="msi-domain">spaces.gatewayltd.com</span></div></a>
-      <a class="mob-sub-item" href="https://photography.gatewayltd.com"><div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div><div><span class="msi-name">Gateway Photography</span><span class="msi-domain">photography.gatewayltd.com</span></div></a>
+      <a class="mob-sub-item" href="comms/index.html"><div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><span class="msi-name">Gateway Communications</span><span class="msi-domain">comms.gatewayltd.com</span></div></a>
+      <a class="mob-sub-item" href="studios/index.html"><div class="msi-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div><span class="msi-name">Gateway Studios</span><span class="msi-domain">studios.gatewayltd.com</span></div></a>
+      <a class="mob-sub-item" href="academy/index.html"><div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div><div><span class="msi-name">Gateway Academy</span><span class="msi-domain">academy.gatewayltd.com</span></div></a>
+      <a class="mob-sub-item" href="spaces/index.html"><div class="msi-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div><div><span class="msi-name">Gateway Spaces</span><span class="msi-domain">spaces.gatewayltd.com</span></div></a>
+      <a class="mob-sub-item" href="photography/index.html"><div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div><div><span class="msi-name">Gateway Photography</span><span class="msi-domain">photography.gatewayltd.com</span></div></a>
     </div>
     <a href="#contact" class="mob-cta" onclick="closeMobileMenu()">Contact us</a>
   </div>
@@ -389,7 +229,7 @@ footer{background:var(--charcoal);padding:56px 0 36px;}
   <div class="hero-glow-red"></div>
   <div class="hero-year">Abuja, Nigeria — Est. 2019</div>
   <div class="hero-content" style="padding-top:var(--nav-h);">
-    <div style="min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:80px;padding-top:80px;">
+    <div style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-bottom:60px;padding-top:60px;">
       <div class="hero-eyebrow">
         <div class="hero-eyebrow-line"></div>
         <span class="hero-eyebrow-text">The Gateway Group — Nigeria</span>
@@ -479,7 +319,7 @@ footer{background:var(--charcoal);padding:56px 0 36px;}
         <p class="sub-card-tag">Communications</p>
         <h3 class="sub-card-name">Gateway Communications</h3>
         <p class="sub-card-desc">Strategic corporate communications delivered by experts.</p>
-        <div class="sub-card-footer"><a href="https://comms.gatewayltd.com" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">comms.gatewayltd.com</span></div>
+        <div class="sub-card-footer"><a href="comms/index.html" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">comms.gatewayltd.com</span></div>
       </div>
 
       <!-- 02 Studios -->
@@ -490,7 +330,7 @@ footer{background:var(--charcoal);padding:56px 0 36px;}
         <p class="sub-card-tag">Creative production</p>
         <h3 class="sub-card-name">Gateway Studios</h3>
         <p class="sub-card-desc">Capturing authentic stories through cinematic documentary &amp; filmmaking.</p>
-        <div class="sub-card-footer"><a href="https://studios.gatewayltd.com" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">studios.gatewayltd.com</span></div>
+        <div class="sub-card-footer"><a href="studios/index.html" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">studios.gatewayltd.com</span></div>
       </div>
 
       <!-- 03 Academy -->
@@ -501,7 +341,7 @@ footer{background:var(--charcoal);padding:56px 0 36px;}
         <p class="sub-card-tag">Education</p>
         <h3 class="sub-card-name">Gateway Academy</h3>
         <p class="sub-card-desc">Equipping the next generation of creatives with practical, industry-relevant skills.</p>
-        <div class="sub-card-footer"><a href="https://academy.gatewayltd.com" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">academy.gatewayltd.com</span></div>
+        <div class="sub-card-footer"><a href="academy/index.html" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">academy.gatewayltd.com</span></div>
       </div>
 
       <!-- 04 Spaces -->
@@ -512,7 +352,7 @@ footer{background:var(--charcoal);padding:56px 0 36px;}
         <p class="sub-card-tag">Spaces</p>
         <h3 class="sub-card-name">Gateway Spaces</h3>
         <p class="sub-card-desc">Creative spaces designed for collaboration, focus, and inspiration.</p>
-        <div class="sub-card-footer"><a href="https://spaces.gatewayltd.com" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">spaces.gatewayltd.com</span></div>
+        <div class="sub-card-footer"><a href="spaces/index.html" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">spaces.gatewayltd.com</span></div>
       </div>
 
       <!-- 05 Photography -->
@@ -523,7 +363,7 @@ footer{background:var(--charcoal);padding:56px 0 36px;}
         <p class="sub-card-tag">Visual arts</p>
         <h3 class="sub-card-name">Gateway Photography</h3>
         <p class="sub-card-desc">Authentic visual storytelling — capturing the moments, people, and ideas that define our culture.</p>
-        <div class="sub-card-footer"><a href="https://photography.gatewayltd.com" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">photography.gatewayltd.com</span></div>
+        <div class="sub-card-footer"><a href="photography/index.html" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">photography.gatewayltd.com</span></div>
       </div>
 
       <div class="sub-grid-spacer" aria-hidden="true"></div>
@@ -559,11 +399,11 @@ footer{background:var(--charcoal);padding:56px 0 36px;}
       <div class="footer-col">
         <div class="footer-col-title">Subsidiaries</div>
         <ul>
-          <li><a href="https://comms.gatewayltd.com">Gateway Communications</a></li>
-          <li><a href="https://studios.gatewayltd.com">Gateway Studios</a></li>
-          <li><a href="https://academy.gatewayltd.com">Gateway Academy</a></li>
-          <li><a href="https://spaces.gatewayltd.com">Gateway Spaces</a></li>
-          <li><a href="https://photography.gatewayltd.com">Gateway Photography</a></li>
+          <li><a href="comms/index.html">Gateway Communications</a></li>
+          <li><a href="studios/index.html">Gateway Studios</a></li>
+          <li><a href="academy/index.html">Gateway Academy</a></li>
+          <li><a href="spaces/index.html">Gateway Spaces</a></li>
+          <li><a href="photography/index.html">Gateway Photography</a></li>
         </ul>
       </div>
       <div class="footer-col">
