@@ -16,7 +16,6 @@
 .hero-image{position:absolute;inset:0;background-image:url('assets/images/hero_banner.jpg');background-size:cover;background-position:center 30%;z-index:0;}
 .hero-image::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,rgba(255,255,255,0.93) 0%,rgba(255,255,255,0.80) 45%,rgba(255,255,255,0.38) 100%);}
 .hero-grid{position:absolute;inset:0;z-index:1;background-image:linear-gradient(rgba(26,23,20,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(26,23,20,.035) 1px,transparent 1px);background-size:80px 80px;}
-.hero-bg-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Inter',sans-serif;font-size:30vw;font-weight:800;color:rgba(26,23,20,0.04);white-space:nowrap;pointer-events:none;user-select:none;letter-spacing:-.04em;line-height:1;z-index:2;}
 .hero-accent-bar{position:absolute;top:0;left:0;width:4px;height:0;background:var(--yellow);animation:barGrow 1.2s .3s cubic-bezier(.23,1,.32,1) forwards;z-index:3;}
 .hero-diag{position:absolute;right:120px;top:0;bottom:0;width:1px;background:rgba(26,23,20,.06);transform:skewX(-8deg);z-index:2;}
 .hero-diag-2{right:180px;background:rgba(26,23,20,.03);}
@@ -220,7 +219,6 @@
 <!-- HERO -->
 <section class="hero" id="hero">
   <div class="hero-image"></div>
-  <div class="hero-bg-text">G</div>
   <div class="hero-accent-bar"></div>
   <div class="hero-diag"></div>
   <div class="hero-diag hero-diag-2"></div>
@@ -454,8 +452,6 @@
   document.querySelectorAll('.mp-item').forEach((m,i)=>{m.style.transitionDelay=(.1+i*.12)+'s';});
   document.querySelectorAll('.gallery-item').forEach((g,i)=>{g.style.transitionDelay=(i*.12)+'s';});
   document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const href=a.getAttribute('href');if(href==='#')return;const t=document.querySelector(href);if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}});});
-  const bgText=document.querySelector('.hero-bg-text');
-  if(bgText){window.addEventListener('scroll',()=>{bgText.style.transform=`translate(-50%,calc(-50% + ${window.scrollY*.25}px))`;},{passive:true});}
 })();
 </script>
 </body>

@@ -160,4 +160,10 @@ footer{background:var(--charcoal);padding:56px 0 36px;}
   .footer-bottom{flex-direction:column;gap:16px;text-align:center;}
   .info-strip-inner{gap:20px;}
   .footer-legal{flex-wrap:wrap;justify-content:center;gap:14px;}
+  /* Hide custom cursor on mobile — touch screens have no mouse pointer */
+  .cursor,.cursor-ring{display:none;}
+}
+/* Also hide on any coarse-pointer device (tablets, phones) regardless of width */
+@media(pointer:coarse){
+  .cursor,.cursor-ring{display:none;}
 }
