@@ -235,14 +235,10 @@
 .cta-banner-note{font-size:11px;color:rgba(255,255,255,.25);margin-top:14px;letter-spacing:.04em;}
 
 /* ============================================================
-   FOOTER OVERRIDES
+   FOOTER — ACADEMY ADDITIONS (base layout comes from main.css)
    ============================================================ */
-.footer-top{grid-template-columns:1.6fr 1fr 1fr 1fr;}
-.footer-logo-text{font-size:13px;margin-bottom:4px;}
-.footer-tagline{max-width:220px;line-height:1.75;}
-.footer-col ul a{font-size:13px;}
 .footer-logo-sub{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);margin-bottom:16px;}
-.footer-socials{display:flex;gap:10px;margin-top:4px;}
+.footer-socials{display:flex;gap:10px;margin-top:16px;}
 .social-link{width:34px;height:34px;border-radius:2px;border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:background .2s,border-color .2s;}
 .social-link:hover{background:var(--red);border-color:var(--red);}
 .social-link svg{width:14px;height:14px;stroke:rgba(255,255,255,.5);fill:none;stroke-width:1.8;transition:stroke .2s;}
@@ -261,12 +257,26 @@
   .faq-inner{grid-template-columns:1fr;gap:52px;}
 }
 @media(max-width:680px){
-  .hero-content{padding-left:24px;padding-right:24px;}
-  .hero-inner{min-height:50vh;padding:60px 0 40px;}
+  /* Prevent all page-level horizontal overflow */
+  html,body{overflow-x:hidden;}
+  /* Hero */
+  .hero-content{padding:var(--nav-h) 24px 0;}
+  .hero-inner{min-height:auto;padding:60px 0;}
+  .hero-ctas{flex-direction:column;align-items:flex-start;}
+  /* Collapse all multi-column grids to single column */
   .steps-grid{grid-template-columns:1fr;}
+  .req-inner{grid-template-columns:1fr;gap:36px;}
   .fees-grid{grid-template-columns:1fr;}
+  .faq-inner{grid-template-columns:1fr;gap:36px;}
+  /* FAQ overflow guard */
+  .faq-question{word-break:break-word;}
+  /* Reduce section vertical padding */
+  .section-pad{padding:60px 0;}
+  .cta-banner{padding:60px 0;}
+  /* Footer */
   .footer-legal{gap:12px;}
-  .cta-banner{padding:72px 0;}
+  /* Clip any stray overflow at section level */
+  .hero,.steps,.requirements,.fees,.faq,.cta-banner{overflow-x:hidden;}
 }
 </style>
 </head>
@@ -689,31 +699,23 @@
       <div class="footer-col">
         <div class="footer-col-title">Admissions</div>
         <ul>
-          <li><a href="admissions.html">How to apply</a></li>
-          <li><a href="#requirements">Requirements</a></li>
-          <li><a href="#fees">Fees &amp; funding</a></li>
-          <li><a href="#faq">FAQs</a></li>
+          <li><a href="#">How to apply</a></li>
+          <li><a href="#">Requirements</a></li>
+          <li><a href="#">Fees &amp; funding</a></li>
+          <li><a href="#">FAQs</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <div class="footer-col-title">Contact</div>
         <ul>
           <li><a href="mailto:academy@gatewayltd.com">academy@gatewayltd.com</a></li>
-          <li><a href="https://maps.app.goo.gl/7uZ9m9jh6bGJCdau7">Suite 203A, Bahamas Plaza,<br>Joseph Gomwalk St, Gudu, Abuja</a></li>
+          <li><a href="https://maps.app.goo.gl/7uZ9m9jh6bGJCdau7">Suite 203A, Bahamas Plaza, Joseph Gomwalk St, Gudu, Abuja</a></li>
         </ul>
-        <div style="margin-top:20px;">
-          <div class="footer-col-title">Follow us</div>
-          <div class="footer-socials">
-            <a href="#" class="social-link" aria-label="Instagram">
-              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-            </a>
-            <a href="#" class="social-link" aria-label="Twitter / X">
-              <svg viewBox="0 0 24 24"><path d="M4 4l16 16M4 20L20 4"/></svg>
-            </a>
-            <a href="#" class="social-link" aria-label="LinkedIn">
-              <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-            </a>
-          </div>
+        <div class="footer-col-title" style="margin-top:20px;">Follow us</div>
+        <div class="footer-socials">
+          <a href="#" class="social-link" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
         </div>
       </div>
     </div>
