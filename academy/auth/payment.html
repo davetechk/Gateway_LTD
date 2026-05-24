@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complete Payment — Gateway Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <style>
+    html,body{min-height:100vh;overflow-x:hidden;}
+    .pay-page{min-height:100vh;background:var(--cream);display:flex;flex-direction:column;}
+
+    /* ---- Top bar ---- */
+    .pay-topbar{background:var(--charcoal);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+    .pay-topbar-logo{text-decoration:none;display:flex;align-items:center;gap:10px;}
+    .pay-topbar-wordmark{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.9);}
+    .pay-topbar-wordmark span{color:var(--red);}
+    .pay-topbar-sep{width:1px;height:16px;background:rgba(255,255,255,.15);margin:0 4px;}
+    .pay-topbar-sub{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35);}
+    .pay-topbar-secure{display:flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+    .pay-topbar-secure svg{width:13px;height:13px;stroke:rgba(255,255,255,.4);fill:none;stroke-width:2;}
+
+    /* ---- Main layout ---- */
+    .pay-main{flex:1;max-width:1100px;margin:0 auto;width:100%;padding:56px 40px;display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:start;}
+
+    /* ---- Order summary (left) ---- */
+    .order-card{background:var(--white);border:1px solid var(--border);border-radius:4px;overflow:hidden;position:sticky;top:80px;}
+    .order-header{background:var(--charcoal);padding:28px 32px;}
+    .order-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,171,0,.12);border:1px solid rgba(255,171,0,.25);border-radius:2px;padding:4px 12px;margin-bottom:16px;}
+    .order-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--yellow);animation:pulse 2s ease-in-out infinite;}
+    .order-badge-text{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--yellow);font-weight:600;}
+    .order-prog-name{font-size:clamp(18px,2.2vw,26px);font-weight:800;color:var(--white);letter-spacing:-.02em;margin-bottom:6px;}
+    .order-prog-meta{font-size:12px;color:rgba(255,255,255,.4);font-weight:300;}
+
+    .order-body{padding:28px 32px;}
+    .order-line{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border-light);}
+    .order-line:last-of-type{border-bottom:none;}
+    .order-line-label{font-size:12px;color:var(--stone);font-weight:400;}
+    .order-line-value{font-size:12px;color:var(--charcoal);font-weight:500;text-align:right;}
+
+    .order-total{margin-top:20px;padding-top:20px;border-top:2px solid var(--border);display:flex;justify-content:space-between;align-items:baseline;}
+    .order-total-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);font-weight:600;}
+    .order-total-amount{font-size:28px;font-weight:800;color:var(--charcoal);letter-spacing:-.03em;}
+    .order-total-currency{font-size:14px;font-weight:500;color:var(--stone);margin-right:4px;}
+
+    .order-includes{margin-top:24px;padding:18px 20px;background:var(--cream);border-radius:2px;}
+    .order-includes-title{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);font-weight:600;margin-bottom:12px;}
+    .order-include-item{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--charcoal);padding:5px 0;font-weight:400;}
+    .order-include-item svg{width:13px;height:13px;stroke:#16a34a;fill:none;stroke-width:2.5;flex-shrink:0;}
+
+    /* ---- Payment form (right) ---- */
+    .payment-card{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:36px 32px;}
+    .payment-title{font-size:22px;font-weight:800;color:var(--charcoal);letter-spacing:-.02em;margin-bottom:6px;}
+    .payment-subtitle{font-size:13px;color:var(--stone);font-weight:300;line-height:1.6;margin-bottom:32px;}
+
+    .pay-field{margin-bottom:18px;}
+    .pay-label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--charcoal);font-weight:600;margin-bottom:8px;}
+    .pay-input{width:100%;background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:12px 16px;font-family:'Inter',sans-serif;font-size:14px;color:var(--charcoal);outline:none;transition:border-color .2s;}
+    .pay-input:focus{border-color:var(--red);background:var(--white);}
+
+    .pay-select{width:100%;background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:12px 16px;font-family:'Inter',sans-serif;font-size:14px;color:var(--charcoal);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239B9590' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;}
+    .pay-select:focus{border-color:var(--red);background-color:var(--white);}
+
+    .pay-note{font-size:11px;color:var(--stone);line-height:1.6;margin-top:6px;}
+
+    .pay-btn{width:100%;background:var(--red);color:var(--white);border:none;border-radius:2px;padding:15px 28px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:background .2s;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:10px;}
+    .pay-btn:hover:not(:disabled){background:var(--red-dark);}
+    .pay-btn:disabled{opacity:.55;cursor:not-allowed;}
+    .pay-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;}
+
+    .pay-security-note{display:flex;align-items:flex-start;gap:10px;margin-top:20px;padding:14px 16px;background:var(--cream);border-radius:2px;}
+    .pay-security-note svg{width:14px;height:14px;stroke:var(--stone);fill:none;stroke-width:1.8;flex-shrink:0;margin-top:1px;}
+    .pay-security-note-text{font-size:11px;color:var(--stone);line-height:1.6;font-weight:300;}
+
+    /* Status messages */
+    .pay-error{display:none;background:rgba(229,21,36,.06);border:1px solid rgba(229,21,36,.2);border-radius:2px;padding:12px 16px;font-size:13px;color:var(--red);margin-bottom:16px;line-height:1.5;}
+    .pay-success{display:none;text-align:center;padding:32px 0;}
+    .pay-success-icon{width:64px;height:64px;border-radius:50%;background:rgba(22,163,74,.1);border:1px solid rgba(22,163,74,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
+    .pay-success-icon svg{width:28px;height:28px;stroke:#16a34a;fill:none;stroke-width:2;}
+    .pay-success-title{font-size:22px;font-weight:800;color:var(--charcoal);letter-spacing:-.02em;margin-bottom:10px;}
+    .pay-success-desc{font-size:14px;color:var(--stone);line-height:1.75;font-weight:300;margin-bottom:28px;}
+    .pay-success-ref{font-size:11px;color:var(--stone-light);font-family:monospace;margin-bottom:24px;}
+
+    .pay-poweredby{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:24px;font-size:10px;color:var(--stone-light);letter-spacing:.06em;}
+    .pay-poweredby svg{width:14px;height:14px;stroke:var(--stone-light);fill:none;stroke-width:1.8;}
+
+    /* Responsive */
+    @media(max-width:860px){
+      .pay-main{grid-template-columns:1fr;padding:40px 24px;}
+      .order-card{position:static;}
+    }
+    @media(max-width:500px){
+      .pay-topbar{padding:0 20px;}
+      .pay-topbar-sep,.pay-topbar-sub{display:none;}
+      .payment-card{padding:28px 20px;}
+      .order-body,.order-header{padding:24px 20px;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="pay-topbar">
+  <a href="../../index.html" class="pay-topbar-logo">
+    <span class="pay-topbar-wordmark">GATEWAY <span>LTD</span></span>
+    <span class="pay-topbar-sep"></span>
+    <span class="pay-topbar-sub">Academy</span>
+  </a>
+  <div class="pay-topbar-secure">
+    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    Secure checkout
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="pay-main">
+
+  <!-- ORDER SUMMARY -->
+  <div class="order-card">
+    <div class="order-header">
+      <div class="order-badge">
+        <span class="order-badge-dot"></span>
+        <span class="order-badge-text">Enrolment</span>
+      </div>
+      <h2 class="order-prog-name" id="order-prog-name">Film &amp; Video Production</h2>
+      <p class="order-prog-meta" id="order-prog-meta">Gateway Academy · 2025 Cohort</p>
+    </div>
+    <div class="order-body">
+      <div class="order-line">
+        <span class="order-line-label">Programme fee</span>
+        <span class="order-line-value" id="order-base-fee">₦150,000</span>
+      </div>
+      <div class="order-line">
+        <span class="order-line-label">Processing fee</span>
+        <span class="order-line-value">₦0</span>
+      </div>
+      <div class="order-total">
+        <span class="order-total-label">Total due</span>
+        <div>
+          <span class="order-total-currency">₦</span>
+          <span class="order-total-amount" id="order-total-amount">150,000</span>
+        </div>
+      </div>
+
+      <div class="order-includes">
+        <p class="order-includes-title">What's included</p>
+        <div class="order-include-item">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Practical, industry-led curriculum
+        </div>
+        <div class="order-include-item">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Access to professional studio equipment
+        </div>
+        <div class="order-include-item">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Mentorship from experienced trainers
+        </div>
+        <div class="order-include-item">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Certificate of completion
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT FORM -->
+  <div class="payment-card">
+    <h1 class="payment-title">Complete payment</h1>
+    <p class="payment-subtitle">Your seat is reserved but not confirmed until payment is made. All payments are processed securely via Paystack.</p>
+
+    <div class="pay-error" id="pay-error"></div>
+
+    <!-- Success state -->
+    <div class="pay-success" id="pay-success">
+      <div class="pay-success-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2 class="pay-success-title">Payment confirmed!</h2>
+      <p class="pay-success-desc">Your enrolment is confirmed. You'll receive a receipt and onboarding details by email shortly.</p>
+      <p class="pay-success-ref" id="pay-ref-display"></p>
+      <a href="../index.html" class="btn-primary" style="text-decoration:none;">Back to Academy</a>
+    </div>
+
+    <!-- Form -->
+    <div id="pay-form">
+      <div class="pay-field">
+        <label class="pay-label" for="pay-name">Full name</label>
+        <input class="pay-input" id="pay-name" type="text" placeholder="Your full name" autocomplete="name">
+      </div>
+      <div class="pay-field">
+        <label class="pay-label" for="pay-email">Email address</label>
+        <input class="pay-input" id="pay-email" type="email" placeholder="you@example.com" autocomplete="email">
+        <p class="pay-note">Pre-filled from your account. Edit if needed — Paystack will send your receipt here.</p>
+      </div>
+      <div class="pay-field">
+        <label class="pay-label" for="pay-program">Programme</label>
+        <select class="pay-select" id="pay-program" onchange="updateAmount()">
+          <option value="150000">Film &amp; Video Production — ₦150,000</option>
+          <option value="120000">Photography — ₦120,000</option>
+          <option value="100000">Audio Production — ₦100,000</option>
+          <option value="130000">Content Creation &amp; Digital Media — ₦130,000</option>
+        </select>
+      </div>
+
+      <button class="pay-btn" id="pay-btn" type="button" onclick="initiatePayment()">
+        <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        Pay now
+      </button>
+
+      <div class="pay-security-note">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span class="pay-security-note-text">Your payment is processed securely by Paystack. Gateway Academy never sees or stores your card details — all card data is handled entirely on Paystack's servers.</span>
+      </div>
+
+      <div class="pay-poweredby">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Secured by Paystack
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<!-- Paystack inline.js — handles all card data on Paystack's servers -->
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<!-- Config (public keys only — anon key & public payment key are safe for frontend) -->
+<script src="../../assets/js/config.js"></script>
+<!-- Auth & payment modules -->
+<script src="auth.js"></script>
+<script src="../../assets/js/payment.js"></script>
+
+<script>
+  let currentUser = null;
+
+  // ---- Session guard: redirect to login if not authenticated ----
+  (async function init() {
+    const session = await GatewayAuth.requireSession();
+    if (!session) return; // requireSession already redirected
+
+    currentUser = session.user;
+
+    // Pre-fill fields from Supabase session
+    const emailEl = document.getElementById('pay-email');
+    const nameEl  = document.getElementById('pay-name');
+    if (emailEl) emailEl.value = currentUser.email || '';
+    if (nameEl && currentUser.user_metadata && currentUser.user_metadata.full_name) {
+      nameEl.value = currentUser.user_metadata.full_name;
+    }
+
+    // Set initial order summary from selected programme
+    updateAmount();
+  })();
+
+  // ---- Update order summary when programme changes ----
+  function updateAmount() {
+    const sel    = document.getElementById('pay-program');
+    const amount = parseInt(sel.value, 10);
+    const label  = sel.options[sel.selectedIndex].text.split('—')[0].trim();
+
+    const progNameEl   = document.getElementById('order-prog-name');
+    const baseFeeEl    = document.getElementById('order-base-fee');
+    const totalAmountEl = document.getElementById('order-total-amount');
+
+    if (progNameEl)    progNameEl.textContent  = label;
+    if (baseFeeEl)     baseFeeEl.textContent   = '₦' + amount.toLocaleString('en-NG');
+    if (totalAmountEl) totalAmountEl.textContent = amount.toLocaleString('en-NG');
+  }
+
+  // ---- Launch Paystack payment ----
+  function initiatePayment() {
+    const errorEl = document.getElementById('pay-error');
+    errorEl.style.display = 'none';
+
+    const email    = document.getElementById('pay-email').value.trim();
+    const fullName = document.getElementById('pay-name').value.trim();
+    const amount   = parseInt(document.getElementById('pay-program').value, 10);
+
+    if (!email) {
+      errorEl.textContent = 'Email address is missing. Please sign in again.';
+      errorEl.style.display = 'block';
+      return;
+    }
+    if (!fullName) {
+      errorEl.textContent = 'Please enter your full name.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    const btn = document.getElementById('pay-btn');
+    btn.disabled = true;
+    btn.textContent = 'Opening Paystack…';
+
+    GatewayPayment.initiatePayment({
+      email:    email,
+      amount:   amount,
+      fullName: fullName,
+      metadata: {
+        user_id:   currentUser ? currentUser.id : '',
+        programme: document.getElementById('pay-program').options[document.getElementById('pay-program').selectedIndex].text
+      },
+      onSuccess: function(reference) {
+        // Show success state
+        document.getElementById('pay-form').style.display    = 'none';
+        document.getElementById('pay-success').style.display = 'block';
+        const refEl = document.getElementById('pay-ref-display');
+        if (refEl) refEl.textContent = 'Reference: ' + reference;
+      },
+      onClose: function() {
+        btn.disabled    = false;
+        btn.innerHTML   = '<svg viewBox="0 0 24 24" width="16" height="16" style="stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> Pay now';
+      }
+    });
+  }
+</script>
+</body>
+</html>

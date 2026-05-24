@@ -41,13 +41,13 @@
 /* ============================================================
    HERO — admissions
    ============================================================ */
-.hero{min-height:60vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;background:#fff;}
+.hero{min-height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#fff;}
 .hero-image{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1600&q=80&auto=format&fit=crop');background-size:cover;background-position:center 40%;z-index:0;}
 .hero-image::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,rgba(255,255,255,0.96) 0%,rgba(255,255,255,0.85) 50%,rgba(255,255,255,0.45) 100%);}
 .hero-accent-bar{position:absolute;top:0;left:0;width:4px;height:0;background:var(--yellow);animation:barGrow 1.2s .3s cubic-bezier(.23,1,.32,1) forwards;z-index:3;}
 .hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,171,0,.06) 0%,transparent 70%);right:-100px;bottom:-100px;pointer-events:none;z-index:2;}
 .hero-content{position:relative;z-index:5;max-width:1280px;margin:0 auto;padding:0 40px;width:100%;padding-top:var(--nav-h);}
-.hero-inner{min-height:60vh;display:flex;flex-direction:column;justify-content:center;padding:80px 0 60px;}
+.hero-inner{min-height:auto;display:flex;flex-direction:column;justify-content:center;padding:120px 0 60px;}
 
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(229,21,36,.06);border:1px solid rgba(229,21,36,.18);border-radius:2px;padding:6px 14px;margin-bottom:28px;opacity:0;animation:slideUp .6s .3s ease forwards;}
 @keyframes slideUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
@@ -261,7 +261,7 @@
   html,body{overflow-x:hidden;}
   /* Hero */
   .hero-content{padding:var(--nav-h) 24px 0;}
-  .hero-inner{min-height:auto;padding:60px 0;}
+  .hero-inner{min-height:auto;padding:100px 0 48px;}
   .hero-ctas{flex-direction:column;align-items:flex-start;}
   /* Collapse all multi-column grids to single column */
   .steps-grid{grid-template-columns:1fr;}
@@ -273,8 +273,15 @@
   /* Reduce section vertical padding */
   .section-pad{padding:60px 0;}
   .cta-banner{padding:60px 0;}
-  /* Footer */
-  .footer-legal{gap:12px;}
+  /* Footer mobile */
+  footer{padding:40px 0 28px;}
+  footer .container{padding:0 24px;}
+  .footer-top{grid-template-columns:1fr;gap:32px;}
+  .footer-bottom{flex-direction:column;gap:16px;align-items:center;text-align:center;}
+  .footer-legal{flex-wrap:wrap;justify-content:center;gap:12px;}
+  .footer-parent-link{justify-content:center;}
+  .footer-socials{justify-content:flex-start;}
+  .footer-col ul a,.footer-col-title{word-break:break-word;}
   /* Clip any stray overflow at section level */
   .hero,.steps,.requirements,.fees,.faq,.cta-banner{overflow-x:hidden;}
 }
@@ -370,7 +377,7 @@
       </h1>
       <p class="hero-sub">Everything you need to know about our admissions process, requirements, fees and frequently asked questions. Applications for Media Production 2025 are now open.</p>
       <div class="hero-ctas">
-        <a href="#apply" class="btn-yellow">Start Your Application</a>
+        <a href="auth/signup.html" class="btn-yellow">Start Your Application</a>
         <a href="#faq" class="btn-secondary">Read the FAQs</a>
       </div>
     </div>
@@ -669,10 +676,11 @@
     <h2 class="cta-banner-headline reveal reveal-delay-1">Ready to take<br>the first step?</h2>
     <p class="cta-banner-sub reveal reveal-delay-2">Applications for Media Production 2025 are open now. Spaces are limited to 20 students — don't miss your place.</p>
     <div class="cta-banner-actions reveal reveal-delay-3">
-      <a href="mailto:academy@gatewayltd.com?subject=Application%20Enquiry%20—%20Media%20Production%202025" class="btn-yellow">Apply Now</a>
+      <a href="auth/signup.html" class="btn-yellow">Apply Now</a>
       <a href="index.html" class="btn-secondary" style="color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.2);">Back to Academy</a>
     </div>
     <p class="cta-banner-note reveal reveal-delay-4">Application deadline: August 30, 2025 · Program starts: September 2025</p>
+    <p style="margin-top:20px;font-size:12px;color:rgba(255,255,255,.35);">Already applied? <a href="auth/login.html" style="color:rgba(255,255,255,.55);text-decoration:underline;transition:color .2s;">Sign in to check your status</a></p>
   </div>
 </section>
 

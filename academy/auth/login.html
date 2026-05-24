@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Gateway Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <style>
+    /* ============================================================
+       AUTH PAGES — SHARED
+       ============================================================ */
+    html,body{min-height:100vh;overflow-x:hidden;}
+    .auth-page{min-height:100vh;display:flex;background:var(--cream);}
+
+    /* Left panel — branding */
+    .auth-panel-left{
+      width:42%;flex-shrink:0;
+      background:var(--charcoal);
+      position:relative;overflow:hidden;
+      display:flex;flex-direction:column;justify-content:space-between;
+      padding:48px;
+    }
+    .auth-panel-left::before{
+      content:'GATEWAY';
+      position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      font-size:clamp(60px,8vw,120px);font-weight:800;letter-spacing:-.04em;
+      color:rgba(255,255,255,.03);pointer-events:none;user-select:none;white-space:nowrap;
+    }
+    .apl-accent{position:absolute;top:0;left:0;width:4px;height:100%;background:var(--red);}
+    .apl-glow{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(229,21,36,0.08) 0%,transparent 70%);bottom:-100px;right:-100px;pointer-events:none;}
+
+    .apl-logo{position:relative;z-index:2;text-decoration:none;display:flex;align-items:center;gap:10px;}
+    .apl-logo-wordmark{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.9);}
+    .apl-logo-wordmark span{color:var(--red);}
+    .apl-logo-sep{width:1px;height:18px;background:rgba(255,255,255,.15);margin:0 4px;}
+    .apl-logo-sub{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35);}
+
+    .apl-body{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:center;padding:48px 0;}
+    .apl-kicker{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:20px;}
+    .apl-headline{font-size:clamp(28px,3.5vw,48px);font-weight:800;color:var(--white);letter-spacing:-.03em;line-height:1.1;margin-bottom:20px;}
+    .apl-headline em{color:var(--yellow);font-style:normal;}
+    .apl-desc{font-size:14px;color:rgba(255,255,255,.4);line-height:1.75;font-weight:300;max-width:300px;}
+
+    .apl-features{display:flex;flex-direction:column;gap:14px;margin-top:36px;}
+    .apl-feat{display:flex;align-items:flex-start;gap:12px;}
+    .apl-feat-icon{width:28px;height:28px;border-radius:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .apl-feat-icon svg{width:13px;height:13px;stroke:var(--yellow);fill:none;stroke-width:2;}
+    .apl-feat-text{font-size:12px;color:rgba(255,255,255,.45);line-height:1.6;padding-top:4px;}
+
+    .apl-footer{position:relative;z-index:2;}
+    .apl-footer-text{font-size:10px;color:rgba(255,255,255,.18);letter-spacing:.04em;}
+
+    /* Right panel — form */
+    .auth-panel-right{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 40px;overflow-y:auto;}
+    .auth-box{width:100%;max-width:420px;}
+    .auth-back{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);text-decoration:none;margin-bottom:40px;transition:color .2s;}
+    .auth-back:hover{color:var(--charcoal);}
+    .auth-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;}
+
+    .auth-title{font-size:clamp(24px,3vw,36px);font-weight:800;color:var(--charcoal);letter-spacing:-.03em;margin-bottom:8px;}
+    .auth-subtitle{font-size:14px;color:var(--stone);font-weight:300;line-height:1.6;margin-bottom:36px;}
+    .auth-subtitle a{color:var(--red);text-decoration:none;font-weight:500;}
+    .auth-subtitle a:hover{text-decoration:underline;}
+
+    /* Form fields */
+    .auth-field{margin-bottom:20px;}
+    .auth-label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--charcoal);font-weight:600;margin-bottom:8px;}
+    .auth-input{width:100%;background:var(--white);border:1px solid var(--border);border-radius:2px;padding:13px 16px;font-family:'Inter',sans-serif;font-size:14px;color:var(--charcoal);outline:none;transition:border-color .2s;}
+    .auth-input::placeholder{color:var(--stone-light);}
+    .auth-input:focus{border-color:var(--red);}
+
+    .auth-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+    .auth-forgot{font-size:11px;color:var(--stone);text-decoration:none;transition:color .2s;}
+    .auth-forgot:hover{color:var(--red);}
+
+    .auth-btn{width:100%;background:var(--red);color:var(--white);border:none;border-radius:2px;padding:14px 28px;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:background .2s;margin-bottom:24px;}
+    .auth-btn:hover:not(:disabled){background:var(--red-dark);}
+    .auth-btn:disabled{opacity:.55;cursor:not-allowed;}
+
+    .auth-divider{display:flex;align-items:center;gap:16px;margin-bottom:24px;}
+    .auth-divider-line{flex:1;height:1px;background:var(--border);}
+    .auth-divider-text{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone-light);}
+
+    .auth-alt-action{text-align:center;font-size:13px;color:var(--stone);font-weight:300;}
+    .auth-alt-action a{color:var(--red);text-decoration:none;font-weight:600;}
+    .auth-alt-action a:hover{text-decoration:underline;}
+
+    /* Error / success banners */
+    .auth-error{display:none;background:rgba(229,21,36,.06);border:1px solid rgba(229,21,36,.2);border-radius:2px;padding:12px 16px;font-size:13px;color:var(--red);margin-bottom:20px;line-height:1.5;}
+
+    /* Responsive */
+    @media(max-width:800px){
+      .auth-panel-left{display:none;}
+      .auth-panel-right{padding:40px 24px;}
+    }
+    @media(max-width:480px){
+      .auth-panel-right{padding:32px 20px;align-items:flex-start;padding-top:48px;}
+    }
+  </style>
+</head>
+<body>
+<div class="auth-page">
+
+  <!-- LEFT PANEL -->
+  <div class="auth-panel-left">
+    <div class="apl-accent"></div>
+    <div class="apl-glow"></div>
+
+    <a href="../index.html" class="apl-logo">
+      <span class="apl-logo-wordmark">GATEWAY <span>LTD</span></span>
+      <span class="apl-logo-sep"></span>
+      <span class="apl-logo-sub">Academy</span>
+    </a>
+
+    <div class="apl-body">
+      <p class="apl-kicker">Student Portal</p>
+      <h1 class="apl-headline">Welcome<br>back to<br><em>Academy</em></h1>
+      <p class="apl-desc">Log in to access your programme materials, track your progress, and manage your enrolment.</p>
+      <div class="apl-features">
+        <div class="apl-feat">
+          <div class="apl-feat-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <span class="apl-feat-text">Access programme resources and course materials</span>
+        </div>
+        <div class="apl-feat">
+          <div class="apl-feat-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <span class="apl-feat-text">Track attendance and assignment deadlines</span>
+        </div>
+        <div class="apl-feat">
+          <div class="apl-feat-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          </div>
+          <span class="apl-feat-text">View and manage your payment history</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="apl-footer">
+      <p class="apl-footer-text">&copy; 2025 Gateway Ltd. All rights reserved.</p>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="auth-panel-right">
+    <div class="auth-box">
+      <a href="../index.html" class="auth-back">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Academy
+      </a>
+
+      <h1 class="auth-title">Sign in</h1>
+      <p class="auth-subtitle">New to Gateway Academy? <a href="signup.html">Apply to join &rarr;</a></p>
+
+      <div class="auth-error" id="login-error"></div>
+
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="auth-field">
+          <label class="auth-label" for="email">Email address</label>
+          <input class="auth-input" id="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+        </div>
+        <div class="auth-field">
+          <label class="auth-label" for="password">Password</label>
+          <input class="auth-input" id="password" type="password" placeholder="Your password" autocomplete="current-password" required>
+        </div>
+        <div class="auth-row">
+          <span></span>
+          <a href="forgot-password.html" class="auth-forgot">Forgot password?</a>
+        </div>
+        <button class="auth-btn" id="login-btn" type="submit">Sign in</button>
+      </form>
+
+      <div class="auth-divider">
+        <div class="auth-divider-line"></div>
+        <span class="auth-divider-text">or</span>
+        <div class="auth-divider-line"></div>
+      </div>
+
+      <p class="auth-alt-action">Don't have an account? <a href="signup.html">Create one</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- Supabase v2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<!-- Config (anon key — safe for frontend) -->
+<script src="../../assets/js/config.js"></script>
+<!-- Auth module -->
+<script src="auth.js"></script>
+<script>
+  async function handleLogin(e) {
+    e.preventDefault();
+    await GatewayAuth.login({
+      emailId:    'email',
+      passwordId: 'password',
+      btnId:      'login-btn',
+      errorId:    'login-error',
+      onSuccess:  function() {
+        window.location.href = 'payment.html';
+      }
+    });
+  }
+</script>
+</body>
+</html>
