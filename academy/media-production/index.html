@@ -1,12 +1,912 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Gateway Academy — Media Training, Abuja</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RESET & SHARED TOKENS — copied from main.css
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:#F8F6F2;color:#1A1714;overflow-x:hidden;cursor:default;}
+
+:root{
+  --red:#E51524;--red-dark:#8B0A1E;--red-muted:rgba(229,21,36,0.08);
+  --yellow:#FFAB00;--yellow-dark:#CC8800;--yellow-muted:rgba(255,171,0,0.10);
+  --charcoal:#1A1714;--charcoal-soft:#2C2925;
+  --cream:#F8F6F2;--cream-dark:#EDE9E2;
+  --stone:#9B9590;--stone-light:#C8C4BE;
+  --white:#FFFFFF;--border:rgba(26,23,20,0.1);--border-light:rgba(26,23,20,0.06);
+  --border-dark:rgba(255,255,255,0.08);
+  --nav-h:72px;
+}
+
+/* === CURSOR === */
+.cursor{position:fixed;width:8px;height:8px;background:var(--yellow);border-radius:50%;pointer-events:none;z-index:9999;transition:transform .15s ease;mix-blend-mode:multiply;}
+.cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(229,21,36,0.45);border-radius:50%;pointer-events:none;z-index:9998;transition:transform .4s cubic-bezier(.23,1,.32,1),width .3s,height .3s,border-color .3s;}
+body.hovered .cursor{transform:scale(2.5);}
+body.hovered .cursor-ring{width:48px;height:48px;border-color:rgba(229,21,36,0.2);}
+@media(pointer:coarse){.cursor,.cursor-ring{display:none;}}
+
+/* === NAV === */
+nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:1000;transition:background .4s ease,border-color .4s ease;}
+nav.scrolled{background:rgba(255,255,255,0.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.nav-inner{max-width:1280px;margin:0 auto;padding:0 40px;height:100%;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-emblem{width:36px;height:36px;}
+.logo-emblem svg{width:100%;height:100%;}
+.logo-wordmark{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--charcoal);}
+.logo-wordmark span{color:var(--red);}
+.logo-sub{font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--stone);margin-top:1px;}
+.nav-links{display:flex;align-items:center;gap:8px;list-style:none;}
+.nav-links a{font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--charcoal);text-decoration:none;padding:8px 14px;border-radius:2px;transition:color .2s;}
+.nav-links a:hover{color:var(--red);}
+.nav-cta{background:var(--red)!important;color:var(--white)!important;padding:9px 22px!important;border-radius:2px!important;font-weight:600!important;}
+.nav-cta:hover{background:var(--red-dark)!important;}
+.nav-parent-link{display:flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);text-decoration:none;padding:6px 10px;border:1px solid var(--border);border-radius:2px;transition:color .2s,border-color .2s;}
+.nav-parent-link:hover{color:var(--red);border-color:rgba(229,21,36,0.3);}
+.nav-parent-link svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2;}
+
+/* === HAMBURGER === */
+.hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:40px;height:40px;background:none;border:none;cursor:pointer;padding:6px;z-index:1100;}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--charcoal);transition:transform .3s ease,opacity .3s ease;transform-origin:center;}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+
+/* === MOBILE MENU === */
+.mobile-menu{display:none;position:fixed;inset:0;background:var(--cream);z-index:1050;flex-direction:column;overflow-y:auto;opacity:0;transform:translateX(100%);transition:opacity .35s ease,transform .35s cubic-bezier(.23,1,.32,1);}
+.mobile-menu.open{opacity:1;transform:translateX(0);}
+.mobile-menu-header{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:var(--nav-h);border-bottom:1px solid var(--border);flex-shrink:0;}
+.mobile-menu-body{flex:1;padding:28px 24px 48px;display:flex;flex-direction:column;}
+.mob-section{border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:8px;}
+.mob-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--stone);padding:16px 0 8px;font-weight:500;}
+.mob-link{display:flex;align-items:center;justify-content:space-between;padding:13px 0;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--charcoal);text-decoration:none;font-weight:400;border-bottom:1px solid var(--border-light);transition:color .2s;}
+.mob-link:hover{color:var(--red);}
+.mob-link svg{width:12px;height:12px;stroke:var(--stone);fill:none;stroke-width:2;flex-shrink:0;}
+.mob-cta{display:block;margin-top:28px;background:var(--red);color:var(--white);border:none;padding:15px 28px;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:2px;text-align:center;text-decoration:none;}
+
+/* === BUTTONS === */
+.btn-yellow{background:var(--yellow);color:var(--charcoal);border:1px solid var(--yellow);padding:13px 28px;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background .2s;text-decoration:none;display:inline-block;}
+.btn-yellow:hover{background:var(--yellow-dark);border-color:var(--yellow-dark);}
+.btn-secondary{background:transparent;color:var(--charcoal);border:1px solid rgba(26,23,20,.22);padding:13px 28px;font-family:'Inter',sans-serif;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:border-color .2s,color .2s;text-decoration:none;display:inline-block;}
+.btn-secondary:hover{border-color:var(--charcoal);color:var(--charcoal);}
+.btn-primary{background:var(--red);color:var(--white);border:1px solid var(--red);padding:13px 28px;font-family:'Inter',sans-serif;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background .2s;text-decoration:none;display:inline-block;}
+.btn-primary:hover{background:var(--red-dark);border-color:var(--red-dark);}
+
+/* === TICKER === */
+.ticker-wrap{background:var(--yellow);overflow:hidden;padding:13px 0;}
+.ticker-track{display:flex;animation:tickerMove 20s linear infinite;width:max-content;}
+.ticker-item{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(26,23,20,.88);white-space:nowrap;padding:0 48px;font-weight:600;}
+.ticker-sep{color:rgba(26,23,20,.3);padding-right:48px;font-size:10px;}
+
+/* === SHARED UTILITIES === */
+.section-pad{padding:100px 0;}
+.container{max-width:1280px;margin:0 auto;padding:0 40px;}
+.section-kicker{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.sk-line{width:32px;height:1px;background:var(--red);}
+.sk-text{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);font-weight:500;}
+
+/* === SCROLL REVEAL === */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:.1s;}
+.reveal-delay-2{transition-delay:.2s;}
+.reveal-delay-3{transition-delay:.3s;}
+.reveal-delay-4{transition-delay:.4s;}
+
+/* === KEYFRAMES === */
+@keyframes tickerMove{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+@keyframes barGrow{to{height:100%;}}
+@keyframes fadeIn{to{opacity:1;}}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+@keyframes lineReveal{to{opacity:1;transform:translateY(0);}}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(1);}50%{opacity:1;transform:scaleY(.6);}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.8);}}
+
+/* ============================================================
+   URGENCY STRIP — yellow, same as ticker
+   ============================================================ */
+.urgency-strip{
+  background:var(--yellow);color:var(--charcoal);
+  text-align:center;padding:11px 5%;
+  font-size:10px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  margin-top:var(--nav-h);
+}
+.urgency-strip span{
+  display:inline-block;
+  background:var(--charcoal);color:var(--yellow);
+  padding:2px 12px;border-radius:2px;
+  margin-left:10px;font-size:10px;
+}
+
+/* ============================================================
+   HERO — white bg + image + white overlay — exact academy style
+   ============================================================ */
+.hero{min-height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;background:#fff;}
+.hero-image{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&q=80&auto=format&fit=crop');background-size:cover;background-position:center 30%;z-index:0;}
+.hero-image::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,rgba(255,255,255,0.95) 0%,rgba(255,255,255,0.82) 45%,rgba(255,255,255,0.40) 100%);}
+.hero-accent-bar{position:absolute;top:0;left:0;width:4px;height:0;background:var(--yellow);animation:barGrow 1.2s .3s cubic-bezier(.23,1,.32,1) forwards;z-index:3;}
+.hero-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(255,171,0,.06) 0%,transparent 70%);right:-150px;bottom:-150px;pointer-events:none;z-index:2;}
+.hero-glow-red{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(229,21,36,.04) 0%,transparent 70%);left:200px;top:-100px;pointer-events:none;z-index:2;}
+.hero-bg-letter{position:absolute;top:50%;right:-2vw;transform:translateY(-50%);font-size:40vw;font-weight:800;color:rgba(26,23,20,.03);pointer-events:none;user-select:none;letter-spacing:-.05em;line-height:1;z-index:2;}
+.hero-year-tag{position:absolute;right:40px;top:50%;transform:translateY(-50%) rotate(90deg);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,23,20,.25);white-space:nowrap;z-index:5;}
+.hero-content{position:relative;z-index:5;max-width:1280px;margin:0 auto;padding:0 40px;width:100%;padding-top:var(--nav-h);}
+.hero-inner{height:100vh;display:flex;flex-direction:column;justify-content:center;padding:60px 0;}
+
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(229,21,36,.06);border:1px solid rgba(229,21,36,.18);border-radius:2px;padding:6px 14px;margin-bottom:28px;opacity:0;animation:slideUp .6s .4s ease forwards;}
+.hero-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--red);animation:pulse 2s ease-in-out infinite;}
+.hero-badge-text{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:600;}
+
+.hero-headline{font-family:'Inter',sans-serif;font-size:clamp(32px,4vw,58px);font-weight:800;line-height:1.3;color:var(--charcoal);letter-spacing:-.035em;margin-bottom:16px;max-width:780px;}
+.hero-headline-line{display:block;overflow:hidden;}
+.hero-headline-line span{display:block;opacity:0;transform:translateY(100%);}
+.hero-headline-line:nth-child(1) span{animation:lineReveal .9s .5s cubic-bezier(.23,1,.32,1) forwards;}
+.hero-headline-line:nth-child(2) span{animation:lineReveal .9s .65s cubic-bezier(.23,1,.32,1) forwards;}
+.hero-headline-line:nth-child(3) span{animation:lineReveal .9s .8s cubic-bezier(.23,1,.32,1) forwards;}
+.hero-headline em{font-style:normal;color:var(--red);}
+
+.hero-sub{font-size:17px;color:#1A1714;line-height:1.8;max-width:520px;font-weight:300;margin-bottom:20px;opacity:0;animation:slideUp .7s .9s ease forwards;}
+.hero-ctas{display:flex;align-items:center;gap:12px;flex-wrap:wrap;opacity:0;animation:slideUp .7s 1.05s ease forwards;}
+
+.hero-stats{display:flex;gap:0;margin-top:24px;padding-top:20px;border-top:1px solid rgba(26,23,20,.08);opacity:0;animation:slideUp .7s 1.2s ease forwards;}
+.hero-stat{padding-right:40px;margin-right:40px;border-right:1px solid rgba(26,23,20,.08);}
+.hero-stat:last-child{border-right:none;margin-right:0;padding-right:0;}
+.hero-stat-num{font-family:'Inter',sans-serif;font-size:30px;font-weight:800;color:var(--charcoal);line-height:1;margin-bottom:4px;letter-spacing:-.03em;}
+.hero-stat-num span{color:var(--red);}
+.hero-stat-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,23,20,.35);font-weight:400;}
+
+.scroll-indicator{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeIn 1s 2s ease forwards;z-index:6;}
+.scroll-indicator span{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,23,20,.25);}
+.scroll-line{width:1px;height:36px;background:linear-gradient(to bottom,rgba(26,23,20,.3),transparent);animation:scrollPulse 2s 2s ease-in-out infinite;}
+
+/* ============================================================
+   WHO IT'S FOR — white bg, about-card pattern
+   ============================================================ */
+.who-section{background:var(--white);}
+.who-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:52px;}
+.who-card{
+  background:var(--cream);border:1px solid var(--border);border-radius:4px;
+  padding:28px;display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .6s ease,transform .6s ease,border-color .2s;
+}
+.who-card.visible{opacity:1;transform:translateY(0);}
+.who-card:hover{border-color:rgba(229,21,36,.25);}
+.who-card::after{content:attr(data-icon);position:absolute;right:20px;top:20px;font-size:2.4rem;opacity:.06;}
+.who-card h3{font-size:15px;font-weight:700;color:var(--charcoal);margin-bottom:12px;letter-spacing:-.01em;}
+.who-card p{font-size:14px;color:#3A3632;line-height:1.75;font-weight:400;}
+
+/* ============================================================
+   WHY MEDIA — cream bg, prog-card pattern
+   ============================================================ */
+.why-section{background:var(--cream);}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:52px;}
+.why-card{
+  background:var(--white);border:1px solid var(--border);border-radius:4px;padding:28px;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .6s ease,transform .6s ease,border-color .2s;
+}
+.why-card.visible{opacity:1;transform:translateY(0);}
+.why-card:hover{border-color:rgba(26,23,20,.2);}
+.why-icon{font-size:1.4rem;margin-bottom:16px;}
+.why-card h3{font-size:13px;font-weight:700;color:var(--charcoal);margin-bottom:8px;letter-spacing:-.01em;}
+.why-card p{font-size:13px;color:#3A3632;line-height:1.7;font-weight:400;}
+
+/* ============================================================
+   COURSES — charcoal bg, exact prog-featured + prog-card style
+   ============================================================ */
+.courses-section{background:var(--charcoal);}
+.courses-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:52px;}
+.course-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border-dark);
+  border-radius:4px;padding:28px;
+  position:relative;display:flex;flex-direction:column;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .6s ease,transform .6s ease,border-color .2s;
+}
+.course-card.visible{opacity:1;transform:translateY(0);}
+.course-card:hover{border-color:rgba(229,21,36,.3);}
+.course-card.featured{border-color:rgba(229,21,36,.4);}
+.featured-tag{
+  position:absolute;top:-13px;left:24px;
+  background:var(--red);color:var(--white);
+  font-size:9px;font-weight:700;
+  padding:4px 14px;border-radius:2px;
+  letter-spacing:.14em;text-transform:uppercase;
+}
+.course-icon{width:40px;height:40px;border-radius:4px;background:var(--red-muted);display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:18px;}
+.course-card h3{font-size:16px;font-weight:700;color:var(--white);margin-bottom:8px;letter-spacing:-.01em;}
+.course-card p{font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:18px;font-weight:300;flex:1;}
+.benefit-list{list-style:none;padding:0;border-top:1px solid rgba(255,255,255,.07);padding-top:16px;}
+.benefit-list li{font-size:12px;color:var(--stone);padding:4px 0;display:flex;align-items:flex-start;gap:9px;line-height:1.5;}
+.benefit-list li::before{content:'✓';color:rgba(229,21,36,.7);font-weight:700;flex-shrink:0;margin-top:1px;}
+.course-price-row{margin-top:20px;padding-top:14px;border-top:1px solid rgba(255,255,255,.07);}
+.c-price{font-family:'Inter',sans-serif;font-size:20px;font-weight:800;color:var(--white);letter-spacing:-.02em;}
+.c-was{font-size:12px;color:var(--stone);text-decoration:line-through;margin-top:3px;}
+.c-dur{font-size:9px;color:var(--stone);margin-top:3px;letter-spacing:.1em;text-transform:uppercase;}
+
+/* ============================================================
+   GAINS — white bg
+   ============================================================ */
+.gains-section{background:var(--white);}
+.gains-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:52px;}
+.gain-card{
+  background:var(--cream);border:1px solid var(--border);border-radius:4px;padding:28px;
+  border-left:3px solid var(--red);
+  opacity:0;transform:translateY(20px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+.gain-card.visible{opacity:1;transform:translateY(0);}
+.gain-card:hover{border-color:rgba(229,21,36,.25);}
+.gain-icon{font-size:1.3rem;margin-bottom:12px;}
+.gain-card h3{font-size:13px;font-weight:700;color:var(--charcoal);margin-bottom:8px;letter-spacing:-.01em;}
+.gain-card p{font-size:13px;color:#3A3632;line-height:1.7;font-weight:400;}
+
+/* ============================================================
+   TESTIMONIALS — cream bg, trainer-card pattern
+   ============================================================ */
+.testimonials-section{background:var(--cream);}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:52px;}
+.testi-card{
+  background:var(--white);border:1px solid var(--border);border-radius:4px;padding:28px;
+  position:relative;overflow:hidden;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .6s ease,transform .6s ease,border-color .2s;
+}
+.testi-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--yellow);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.23,1,.32,1);}
+.testi-card.visible{opacity:1;transform:translateY(0);}
+.testi-card:hover{border-color:rgba(229,21,36,.2);}
+.testi-card:hover::after{transform:scaleX(1);}
+.quote-mark{font-size:2.8rem;line-height:1;color:var(--red);font-family:Georgia,serif;display:block;opacity:.2;margin-bottom:6px;}
+.testi-text{font-size:14px;color:#3A3632;line-height:1.8;margin-bottom:22px;font-style:italic;font-weight:400;}
+.testi-author{display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid var(--border-light);}
+.testi-avatar{width:38px;height:38px;border-radius:50%;background:var(--cream-dark);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--red);font-weight:800;flex-shrink:0;border:1px solid var(--border);}
+.testi-name{font-weight:700;font-size:13px;color:var(--charcoal);letter-spacing:-.01em;}
+.testi-role{font-size:10px;color:var(--stone);letter-spacing:.08em;text-transform:uppercase;margin-top:2px;}
+
+/* ============================================================
+   ENROLMENT — charcoal bg, prog-featured / bundle card pattern
+   ============================================================ */
+.enrol-section{background:var(--charcoal);}
+.bundle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:52px;}
+.bundle-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border-dark);
+  border-radius:4px;padding:32px 28px;
+  position:relative;display:flex;flex-direction:column;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .6s ease,transform .6s ease,border-color .2s;
+}
+.bundle-card.visible{opacity:1;transform:translateY(0);}
+.bundle-card:hover{border-color:rgba(229,21,36,.3);}
+.bundle-card.highlight{border-color:rgba(229,21,36,.4);}
+.bundle-top-tag{position:absolute;top:-13px;left:24px;background:var(--yellow);color:var(--charcoal);font-size:9px;font-weight:700;padding:4px 14px;border-radius:2px;letter-spacing:.14em;text-transform:uppercase;}
+.bundle-card h3{font-size:16px;font-weight:700;color:var(--white);margin-bottom:8px;letter-spacing:-.01em;}
+.bundle-card > p{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:22px;line-height:1.7;font-weight:300;}
+.bundle-price{font-family:'Inter',sans-serif;font-size:30px;font-weight:800;color:var(--white);line-height:1;letter-spacing:-.03em;}
+.bundle-was{font-size:12px;color:var(--stone);text-decoration:line-through;margin:6px 0 22px;}
+.bundle-includes{list-style:none;padding:0;border-top:1px solid rgba(255,255,255,.07);padding-top:16px;margin-bottom:24px;flex:1;}
+.bundle-includes li{font-size:12px;color:var(--stone);padding:4px 0;display:flex;gap:9px;line-height:1.5;}
+.bundle-includes li::before{content:'✓';color:rgba(229,21,36,.7);font-weight:700;flex-shrink:0;}
+.bundle-includes li.residency{color:var(--yellow);font-weight:500;}
+.bundle-includes li.residency::before{content:'★';color:var(--yellow);}
+.btn-enrol{display:block;text-align:center;background:var(--red);color:var(--white);font-family:'Inter',sans-serif;font-weight:700;font-size:10px;padding:13px 24px;border-radius:2px;text-decoration:none;letter-spacing:.14em;text-transform:uppercase;transition:background .2s;margin-top:auto;border:1px solid var(--red);}
+.btn-enrol:hover{background:var(--red-dark);border-color:var(--red-dark);}
+
+/* ============================================================
+   FAQ — cream bg
+   ============================================================ */
+.faq-section{background:var(--cream);}
+.faq-layout{display:grid;grid-template-columns:1fr 1.7fr;gap:64px;align-items:start;margin-top:52px;}
+.faq-intro h3{font-family:'Inter',sans-serif;font-size:22px;font-weight:800;color:var(--charcoal);margin-bottom:14px;letter-spacing:-.02em;line-height:1.1;}
+.faq-intro p{font-size:14px;color:#3A3632;line-height:1.8;font-weight:400;}
+.faq-cta-link{display:inline-block;margin-top:26px;background:var(--red);color:var(--white);font-family:'Inter',sans-serif;font-weight:700;font-size:10px;padding:12px 24px;border-radius:2px;text-decoration:none;letter-spacing:.14em;text-transform:uppercase;transition:background .2s;}
+.faq-cta-link:hover{background:var(--red-dark);}
+.faq-list{display:flex;flex-direction:column;gap:4px;}
+.faq-item{background:var(--white);border:1px solid var(--border);border-radius:4px;overflow:hidden;transition:border-color .2s;}
+.faq-item.open{border-color:rgba(229,21,36,.25);}
+.faq-question{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:16px 20px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--charcoal);display:flex;justify-content:space-between;align-items:center;gap:12px;line-height:1.4;transition:color .2s;}
+.faq-question:hover{color:var(--red);}
+.faq-chevron{color:var(--red);font-size:.9rem;flex-shrink:0;transition:transform .22s;}
+.faq-answer{font-size:13px;color:#3A3632;line-height:1.8;padding:0 20px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .2s;font-weight:400;}
+.faq-item.open .faq-answer{max-height:260px;padding:0 20px 18px;}
+.faq-item.open .faq-chevron{transform:rotate(180deg);}
+
+/* ============================================================
+   FINAL CTA — exact .cta-banner from academy page
+   ============================================================ */
+.cta-banner{background:var(--charcoal);position:relative;overflow:hidden;padding:100px 0;}
+.cta-banner-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1600&q=70&auto=format&fit=crop');background-size:cover;background-position:center;opacity:.08;z-index:0;}
+.cta-banner-glow{position:absolute;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(229,21,36,.08) 0%,transparent 60%);left:50%;top:50%;transform:translate(-50%,-50%);z-index:0;pointer-events:none;}
+.cta-banner .container{position:relative;z-index:1;text-align:center;}
+.cta-banner-kicker{display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;}
+.cta-banner-kicker-line{width:24px;height:1px;background:var(--yellow);}
+.cta-banner-kicker-text{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--yellow);font-weight:500;}
+.cta-banner-headline{font-family:'Inter',sans-serif;font-size:clamp(28px,4vw,52px);font-weight:800;color:var(--white);letter-spacing:-.03em;line-height:1.08;margin-bottom:16px;}
+.cta-banner-sub{font-size:16px;color:rgba(255,255,255,.88);line-height:1.7;font-weight:400;max-width:440px;margin:0 auto 36px;}
+.cta-banner-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
+.cta-banner-note{font-size:11px;color:rgba(255,255,255,.25);margin-top:14px;letter-spacing:.04em;}
+
+/* ============================================================
+   FOOTER — exact academy footer
+   ============================================================ */
+footer{background:var(--charcoal);padding:56px 0 36px;}
+.footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:32px;}
+.footer-logo-text{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--white);margin-bottom:4px;}
+.footer-logo-text span{color:var(--red);}
+.footer-logo-sub{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);margin-bottom:16px;}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,.3);line-height:1.75;max-width:220px;font-weight:300;}
+.footer-col-title{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:18px;font-weight:500;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-col ul a{font-size:13px;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s;font-weight:300;}
+.footer-col ul a:hover{color:var(--white);}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.2);font-weight:300;}
+.footer-bottom a{font-size:10px;color:rgba(255,255,255,.2);text-decoration:none;text-transform:uppercase;letter-spacing:.06em;transition:color .2s;}
+.footer-bottom a:hover{color:rgba(255,255,255,.6);}
+
+/* ============================================================
+   CREDIBILITY BAR
+   ============================================================ */
+.credibility{background:var(--charcoal);padding:40px 0;text-align:center;border-top:1px solid var(--border-dark);border-bottom:1px solid var(--border-dark);}
+.credibility-label{font-size:9px;font-weight:600;color:var(--stone);letter-spacing:.18em;text-transform:uppercase;margin-bottom:24px;}
+.logo-row{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;max-width:1140px;margin:0 auto;}
+.logo-slot{height:42px;min-width:110px;padding:0 20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:4px;display:flex;align-items:center;justify-content:center;opacity:.55;transition:opacity .2s,border-color .2s;}
+.logo-slot:hover{opacity:.9;border-color:rgba(229,21,36,.25);}
+.logo-slot-text{font-size:9px;font-weight:600;color:var(--white);letter-spacing:.1em;text-transform:uppercase;}
+.logo-note{font-size:10px;color:rgba(255,255,255,.18);margin-top:20px;font-style:italic;}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:960px){
+  .who-grid{grid-template-columns:1fr;}
+  .why-grid{grid-template-columns:repeat(2,1fr);}
+  .courses-grid{grid-template-columns:1fr;}
+  .bundle-grid{grid-template-columns:1fr;}
+  .testi-grid{grid-template-columns:1fr;}
+  .gains-grid{grid-template-columns:repeat(2,1fr);}
+  .faq-layout{grid-template-columns:1fr;gap:36px;}
+  .footer-top{grid-template-columns:1fr;gap:32px;}
+  .hero-stats{flex-wrap:wrap;gap:24px;padding-top:28px;margin-top:40px;}
+  .hero-stat{padding-right:24px;margin-right:0;border-right:none;}
+  .cta-banner{padding:72px 0;}
+}
+@media(max-width:680px){
+  :root{--nav-h:60px;}
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .mobile-menu{display:flex;}
+  .container{padding:0 24px;}
+  .section-pad{padding:72px 0;}
+  .hero-content{padding:var(--nav-h) 24px 0;}
+  .hero-year-tag{display:none;}
+  .hero-inner{height:auto;min-height:calc(100vh - var(--nav-h));padding:calc(var(--nav-h) + 32px) 0 48px;}
+  .hero-headline{font-size:clamp(28px,8vw,42px);}
+  .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px;padding-top:20px;}
+  .hero-stat{border-right:none;margin-right:0;padding-right:0;text-align:left;}
+  .hero-ctas{flex-direction:column;align-items:flex-start;width:100%;}
+  .why-grid{grid-template-columns:1fr;}
+  .gains-grid{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr;}
+  .footer-bottom{flex-direction:column;gap:16px;align-items:center;text-align:center;}
+  html,body{overflow-x:hidden;}
+}
+</style>
 </head>
 <body>
-    <H1>Coming soon</H1>
-        <H1>Coming soon</H1>    <H1>Coming soon</H1>    <H1>Coming soon</H1>    <H1>Coming soon</H1>    <H1>Coming soon</H1>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="logo-emblem">
+        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="36" height="36" rx="4" fill="#E51524"/>
+          <path d="M18 7L28 12.5V23.5L18 29L8 23.5V12.5L18 7Z" stroke="white" stroke-width="1.4" fill="none"/>
+          <path d="M18 13V23M13.5 16L18 13L22.5 16" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="logo-wordmark">Gateway <span>Academy</span></div>
+        <div class="logo-sub">A Gateway Ltd Company</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#courses">Courses</a></li>
+      <li><a href="#register">Enrol</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li>
+        <a href="../index.html" class="nav-parent-link">
+          <svg viewBox="0 0 10 10"><path d="M5 1L1 5l4 4M1 5h8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Gateway Ltd
+        </a>
+      </li>
+      <li><a href="#register" class="nav-cta">Register Now</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-header">
+    <a href="#" class="nav-logo" onclick="closeMobileMenu()">
+      <div class="logo-emblem"><svg viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="4" fill="#E51524"/><path d="M18 7L28 12.5V23.5L18 29L8 23.5V12.5L18 7Z" stroke="white" stroke-width="1.4" fill="none"/><path d="M18 13V23M13.5 16L18 13L22.5 16" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+      <div class="logo-wordmark">Gateway <span>Academy</span></div>
+    </a>
+    <button class="hamburger open" id="hamburgerClose" aria-label="Close menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu-body">
+    <div class="mob-section">
+      <div class="mob-label">Navigate</div>
+      <a class="mob-link" href="#courses" onclick="closeMobileMenu()">Courses <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="mob-link" href="#register" onclick="closeMobileMenu()">Enrol <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="mob-link" href="#contact" onclick="closeMobileMenu()">Contact <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="mob-link" href="../index.html">Gateway Ltd (Parent) <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+    <a href="#register" class="mob-cta" onclick="closeMobileMenu()">Register Now</a>
+  </div>
+</div>
+
+<!-- URGENCY STRIP -->
+<div class="urgency-strip">
+  🎬 July 2025 cohort now open — limited places available
+  <span id="countdown">Loading...</span>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-image"></div>
+  <div class="hero-accent-bar"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow-red"></div>
+  <div class="hero-bg-letter">M</div>
+  <div class="hero-year-tag">Gateway Academy — Abuja, Nigeria</div>
+
+  <div class="hero-content">
+    <div class="hero-inner">
+
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        <span class="hero-badge-text">Abuja · Professional Media Training</span>
+      </div>
+
+      <h1 class="hero-headline">
+        <span class="hero-headline-line"><span>Stop waiting.</span></span>
+        <span class="hero-headline-line"><span>Start building your</span></span>
+        <span class="hero-headline-line"><span><em>media career.</em></span></span>
+      </h1>
+
+      <p class="hero-sub">Professional hands-on training in pre-production, production, and post-production — taught by industry experts. Ideal for school leavers, university students and aspiring creatives.</p>
+
+      <div class="hero-ctas">
+        <a href="#register" class="btn-yellow">Register Now</a>
+        <a href="#courses" class="btn-secondary">↓ View Courses</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">3<span>+</span></div>
+          <div class="hero-stat-label">Professional<br>Course Tracks</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">3<span>mo</span></div>
+          <div class="hero-stat-label">Per course,<br>industry-paced</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">Live</div>
+          <div class="hero-stat-label">Real studio,<br>real projects</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="scroll-indicator"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item">Pre-Production</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Production</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Post-Production</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Gateway Academy</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Abuja, Nigeria</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">July 2025 Cohort</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Pre-Production</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Production</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Post-Production</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Gateway Academy</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Abuja, Nigeria</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">July 2025 Cohort</span><span class="ticker-sep">—</span>
+  </div>
+</div>
+
+<!-- WHO IT'S FOR -->
+<section class="who-section section-pad">
+  <div class="container">
+    <div class="section-kicker reveal"><div class="sk-line"></div><span class="sk-text">Who This Is For</span></div>
+    <h2 class="reveal reveal-delay-1" style="font-family:'Inter',sans-serif;font-size:clamp(28px,3.5vw,46px);font-weight:800;line-height:1.05;color:var(--charcoal);letter-spacing:-.03em;margin-bottom:16px;">Your waiting period is your<br>competitive advantage.</h2>
+    <p class="reveal reveal-delay-2" style="font-size:15px;color:#3A3632;line-height:1.85;max-width:560px;font-weight:400;">Don't spend months waiting for opportunities. Use this time to learn in-demand media skills, build real projects, and prepare for the next stage of your journey.</p>
+    <div class="who-grid">
+      <div class="who-card" data-icon="🎓">
+        <h3>SS3 Graduates & Undergraduates</h3>
+        <p>Instead of sitting at home for months, gain a professional skill that sets you apart before you even arrive on campus. Your peers will wonder how you already know what they're still struggling with in 200 level. For parents — your child is safe, productive, and building a real skill in a professional environment.</p>
+      </div>
+      <div class="who-card" data-icon="🎬">
+        <h3>Aspiring Media Professionals</h3>
+        <p>Content creation, documentary production, and video media are growing industries in Nigeria. Whether you want to freelance, work for an agency, or build your own channel — you'll train in a functioning production studio with working professionals on real briefs. The experience shows in your work.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY MEDIA -->
+<section class="why-section section-pad">
+  <div class="container">
+    <div class="section-kicker reveal"><div class="sk-line"></div><span class="sk-text">Why Media?</span></div>
+    <h2 class="reveal reveal-delay-1" style="font-family:'Inter',sans-serif;font-size:clamp(28px,3.5vw,46px);font-weight:800;line-height:1.05;color:var(--charcoal);letter-spacing:-.03em;margin-bottom:16px;">The Media Industry Needs<br>More Skilled Creatives</h2>
+    <p class="reveal reveal-delay-2" style="font-size:15px;color:#3A3632;line-height:1.85;max-width:560px;font-weight:400;">Nigeria's media and creative economy is growing fast. These are the in-demand skills that open doors.</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">📱</div>
+        <h3>Content Creation</h3>
+        <p>Create content for brands and businesses. Every organisation needs video — and skilled creatives to produce it.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🎞️</div>
+        <h3>Documentary Production</h3>
+        <p>Tell impactful stories that matter. Documentary is one of the fastest growing formats in African media.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🎥</div>
+        <h3>Video Production</h3>
+        <p>Work on commercials, events and corporate projects. Steady demand from businesses of all sizes.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">✂️</div>
+        <h3>Editing & Post-Production</h3>
+        <p>Transform raw footage into compelling stories. Post-production is a high-demand freelance skill globally.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section id="courses" class="courses-section section-pad">
+  <div class="container">
+    <div class="section-kicker reveal"><div class="sk-line" style="background:var(--yellow);"></div><span class="sk-text" style="color:rgba(255,255,255,.4);">The Curriculum</span></div>
+    <h2 class="reveal reveal-delay-1" style="font-family:'Inter',sans-serif;font-size:clamp(28px,3.5vw,46px);font-weight:800;line-height:1.05;color:var(--white);letter-spacing:-.03em;margin-bottom:16px;">Three tracks. One complete skill set.</h2>
+    <p class="reveal reveal-delay-2" style="font-size:15px;color:rgba(255,255,255,.6);line-height:1.85;max-width:560px;font-weight:300;">Each 3-month course is a standalone qualification. Take one or stack all three for end-to-end mastery of the production pipeline.</p>
+    <div class="courses-grid">
+      <div class="course-card">
+        <div class="course-icon">🎬</div>
+        <h3>Pre-Production</h3>
+        <p>The foundation. Ideas become projects here. Every professional production begins before a single camera rolls.</p>
+        <ul class="benefit-list">
+          <li>Ethics and Professionalism</li>
+          <li>Research and Story Development</li>
+          <li>AI for Pre-Production</li>
+          <li>Storyboarding & Shot Planning</li>
+          <li>Location Scouting & Logistics</li>
+          <li>Captioning & Subtitling</li>
+        </ul>
+        <div class="course-price-row">
+          <div class="c-price">₦520,000</div>
+          <div class="c-was">₦600,000</div>
+          <div class="c-dur">3 months · Early Bird</div>
+        </div>
+      </div>
+      <div class="course-card featured">
+        <div class="featured-tag">Most Popular</div>
+        <div class="course-icon">🎥</div>
+        <h3>Production</h3>
+        <p>Hands-on camera, lighting, and direction training. Learn to command a set and capture footage that matters.</p>
+        <ul class="benefit-list">
+          <li>Ethics and Professionalism</li>
+          <li>Camera Operation & Cinematography</li>
+          <li>Lighting Design & Control</li>
+          <li>Sound Recording & Live Capture</li>
+          <li>Directing Talent & Crew</li>
+          <li>Documentary & Narrative Production</li>
+        </ul>
+        <div class="course-price-row">
+          <div class="c-price">₦520,000</div>
+          <div class="c-was">₦600,000</div>
+          <div class="c-dur">3 months · Early Bird</div>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="course-icon">🎞️</div>
+        <h3>Post-Production</h3>
+        <p>Where raw footage becomes finished content. Master the edit suite and the tools that define professional output.</p>
+        <ul class="benefit-list">
+          <li>Ethics and Professionalism</li>
+          <li>Non-Linear Editing Workflow</li>
+          <li>Colour Grading & Correction</li>
+          <li>Sound Design & Mixing</li>
+          <li>Post-Production Workflow</li>
+          <li>Delivery Formats & Export</li>
+        </ul>
+        <div class="course-price-row">
+          <div class="c-price">₦520,000</div>
+          <div class="c-was">₦600,000</div>
+          <div class="c-dur">3 months · Early Bird</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CREDIBILITY -->
+<div class="credibility">
+  <div class="container">
+    <div class="credibility-label">Trained by professionals who have worked with</div>
+    <div class="logo-row">
+      <div class="logo-slot"><span class="logo-slot-text">Gates Foundation</span></div>
+      <div class="logo-slot"><span class="logo-slot-text">Sightsavers</span></div>
+      <div class="logo-slot"><span class="logo-slot-text">Mercy Corps</span></div>
+      <div class="logo-slot"><span class="logo-slot-text">Sasakawa Africa</span></div>
+      <div class="logo-slot"><span class="logo-slot-text">UNHCR</span></div>
+      <div class="logo-slot"><span class="logo-slot-text">UNDP</span></div>
+    </div>
+    <p class="logo-note">Replace with official logos once usage rights are confirmed</p>
+  </div>
+</div>
+
+<!-- GAINS -->
+<section class="gains-section section-pad">
+  <div class="container">
+    <div class="section-kicker reveal"><div class="sk-line"></div><span class="sk-text">What You'll Gain</span></div>
+    <h2 class="reveal reveal-delay-1" style="font-family:'Inter',sans-serif;font-size:clamp(28px,3.5vw,46px);font-weight:800;line-height:1.05;color:var(--charcoal);letter-spacing:-.03em;margin-bottom:16px;">More than a certificate.</h2>
+    <p class="reveal reveal-delay-2" style="font-size:15px;color:#3A3632;line-height:1.85;max-width:560px;font-weight:400;">Everything you take away from the Academy — skills, work, network, and confidence.</p>
+    <div class="gains-grid">
+      <div class="gain-card"><div class="gain-icon">🛠️</div><h3>Practical Skills</h3><p>Learn by doing, not by watching. Every session is hands-on in a real production environment.</p></div>
+      <div class="gain-card"><div class="gain-icon">🗂️</div><h3>Portfolio Projects</h3><p>Graduate with work you can showcase. Real projects, real briefs, real output.</p></div>
+      <div class="gain-card"><div class="gain-icon">🏭</div><h3>Industry Exposure</h3><p>Understand how professional productions actually work — from concept to delivery.</p></div>
+      <div class="gain-card"><div class="gain-icon">💪</div><h3>Confidence</h3><p>Develop skills that create future opportunities. Walk into rooms knowing what you can do.</p></div>
+      <div class="gain-card"><div class="gain-icon">⏱️</div><h3>Productive Waiting Period</h3><p>Use your time strategically. While others wait, you build.</p></div>
+      <div class="gain-card"><div class="gain-icon">🤝</div><h3>Creative Community</h3><p>Learn alongside like-minded creatives who share your ambition and drive.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section section-pad">
+  <div class="container">
+    <div class="section-kicker reveal"><div class="sk-line"></div><span class="sk-text">What People Say</span></div>
+    <h2 class="reveal reveal-delay-1" style="font-family:'Inter',sans-serif;font-size:clamp(28px,3.5vw,46px);font-weight:800;line-height:1.05;color:var(--charcoal);letter-spacing:-.03em;margin-bottom:48px;">Built by people parents<br>and students trust.</h2>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <span class="quote-mark">"</span>
+        <p class="testi-text">I wanted my daughter to use her waiting period productively — a skill she could actually use, not another tutorial certificate. The Gateway Studios' track record with real international clients made the decision easy.</p>
+        <div class="testi-author"><div class="testi-avatar">A</div><div><div class="testi-name">Adaeze O.</div><div class="testi-role">Parent · Abuja</div></div></div>
+      </div>
+      <div class="testi-card">
+        <span class="quote-mark">"</span>
+        <p class="testi-text">The difference between this and everything else I looked at is that these people actually do this work. They film real documentaries. You're learning from people with real clients, not just teachers.</p>
+        <div class="testi-author"><div class="testi-avatar">K</div><div><div class="testi-name">Kemi A.</div><div class="testi-role">Student · Undergraduate</div></div></div>
+      </div>
+      <div class="testi-card">
+        <span class="quote-mark">"</span>
+        <p class="testi-text">After seeing the studio and meeting the instructors, I enrolled my son immediately. Content creation is a real career in Nigeria now, and these are the people to learn it from. Worth every kobo.</p>
+        <div class="testi-author"><div class="testi-avatar">E</div><div><div class="testi-name">Emmanuel T.</div><div class="testi-role">Parent · Port Harcourt</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENROLMENT -->
+<section id="register" class="enrol-section section-pad">
+  <div class="container">
+    <div class="section-kicker reveal"><div class="sk-line" style="background:var(--yellow);"></div><span class="sk-text" style="color:rgba(255,255,255,.4);">Enrolment & Pricing</span></div>
+    <h2 class="reveal reveal-delay-1" style="font-family:'Inter',sans-serif;font-size:clamp(28px,3.5vw,46px);font-weight:800;line-height:1.05;color:var(--white);letter-spacing:-.03em;margin-bottom:16px;">Choose your path.</h2>
+    <p class="reveal reveal-delay-2" style="font-size:15px;color:rgba(255,255,255,.6);line-height:1.85;max-width:560px;font-weight:300;">Start with one course or commit to the full pipeline. Early bird pricing ends soon.</p>
+    <div class="bundle-grid">
+      <div class="bundle-card">
+        <h3>Single Course</h3>
+        <p>One track. Three months. A professional qualification in pre-production, production, or post-production.</p>
+        <div class="bundle-price">₦520,000</div>
+        <div class="bundle-was">₦600,000</div>
+        <ul class="bundle-includes">
+          <li>Choose one course track</li>
+          <li>3-month structured programme</li>
+          <li>Hands-on studio access</li>
+          <li>Certificate of completion</li>
+          <li>Payment plan available</li>
+        </ul>
+        <a href="#register" class="btn-enrol">Register</a>
+      </div>
+      <div class="bundle-card highlight">
+        <div class="bundle-top-tag">Bundle</div>
+        <h3>Bundle Course</h3>
+        <p>Two connected tracks. Pre-Production + Production, or Production + Post-Production. Includes studio residency.</p>
+        <div class="bundle-price">₦940,000</div>
+        <div class="bundle-was">₦1,050,000</div>
+        <ul class="bundle-includes">
+          <li>Choose any 2 course tracks</li>
+          <li>6-month structured programme</li>
+          <li>Hands-on studio access</li>
+          <li>Certificate of completion (×2)</li>
+          <li class="residency">2-Month Studio Residency included</li>
+          <li>Payment plan available</li>
+        </ul>
+        <a href="#register" class="btn-enrol">Register</a>
+      </div>
+      <div class="bundle-card highlight">
+        <div class="bundle-top-tag">Best Value</div>
+        <h3>Full Pipeline</h3>
+        <p>Complete mastery — pre-production through to post. The most employable qualification we offer.</p>
+        <div class="bundle-price">₦1,370,000</div>
+        <div class="bundle-was">₦1,500,000</div>
+        <ul class="bundle-includes">
+          <li>All 3 course tracks included</li>
+          <li>9-month structured programme</li>
+          <li>Priority studio scheduling</li>
+          <li>Certificate of completion (×3)</li>
+          <li class="residency">3-Month Studio Residency included</li>
+          <li>Payment plan available</li>
+        </ul>
+        <a href="#register" class="btn-enrol">Register</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section section-pad">
+  <div class="container">
+    <div class="section-kicker reveal"><div class="sk-line"></div><span class="sk-text">Common Questions</span></div>
+    <h2 class="reveal reveal-delay-1" style="font-family:'Inter',sans-serif;font-size:clamp(28px,3.5vw,46px);font-weight:800;line-height:1.05;color:var(--charcoal);letter-spacing:-.03em;margin-bottom:0;">Before you reach out —</h2>
+    <div class="faq-layout">
+      <div class="faq-intro">
+        <h3>Still thinking it over?</h3>
+        <p>These are the most common questions we get from parents and students. If yours isn't here, find us on Instagram or send us an email and we'll get back to you.</p>
+        <a href="https://www.instagram.com/academy.gatewayltd" target="_blank" class="faq-cta-link">Find Us on Instagram</a>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Do I need previous experience?<span class="faq-chevron">▾</span></button><div class="faq-answer">No. Training starts from the fundamentals. Curiosity and commitment are the only prerequisites.</div></div>
+        <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Will I receive a certificate?<span class="faq-chevron">▾</span></button><div class="faq-answer">Yes. Each completed course earns a certificate of completion from The Gateway Academy.</div></div>
+        <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">What equipment will I use?<span class="faq-chevron">▾</span></button><div class="faq-answer">Students will have access to professional training equipment during all sessions — cameras, lighting rigs, audio gear, and an edit suite.</div></div>
+        <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Can I take more than one course?<span class="faq-chevron">▾</span></button><div class="faq-answer">Yes. Bundle discounts are available for students taking 2 or 3 courses. See the Enrolment section above for full pricing details.</div></div>
+        <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">How many students are in each cohort?<span class="faq-chevron">▾</span></button><div class="faq-answer">Cohorts are intentionally small to ensure every student gets real hands-on time with equipment and direct instructor attention. Places are limited and allocated on a first-registered basis.</div></div>
+        <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Where exactly is the Academy located?<span class="faq-chevron">▾</span></button><div class="faq-answer">The Gateway Academy operates within The Gateway Studios at Suite 203A/204A Bahamas Plaza, Joseph Gomwalk St., Gudu, Abuja. The studio is fully equipped with off-grid solar power, high-speed fibre internet, and professional-grade production equipment.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA — exact .cta-banner -->
+<section class="cta-banner">
+  <div class="cta-banner-bg"></div>
+  <div class="cta-banner-glow"></div>
+  <div class="container">
+    <div class="cta-banner-kicker reveal">
+      <div class="cta-banner-kicker-line"></div>
+      <span class="cta-banner-kicker-text">Begin your journey</span>
+      <div class="cta-banner-kicker-line"></div>
+    </div>
+    <h2 class="cta-banner-headline reveal reveal-delay-1">July starts in weeks.<br>Registration closes soon.</h2>
+    <p class="cta-banner-sub reveal reveal-delay-2">Don't let another term pass without a plan. Secure your place in the July cohort today.</p>
+    <div class="cta-banner-actions reveal reveal-delay-3">
+      <a href="#register" class="btn-yellow">Register Now</a>
+      <a href="#courses" class="btn-secondary" style="color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.2);">View Courses</a>
+    </div>
+    <p class="cta-banner-note reveal reveal-delay-4">Limited places available · Early bird pricing ends soon</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo-text">Gateway <span>Academy</span></div>
+        <div class="footer-logo-sub">A Gateway Ltd Company</div>
+        <p class="footer-tagline">Professional media training in pre-production, production, and post-production. Abuja, Nigeria. Cohorts start July 2025.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Courses</div>
+        <ul>
+          <li><a href="#courses">Pre-Production</a></li>
+          <li><a href="#courses">Production</a></li>
+          <li><a href="#courses">Post-Production</a></li>
+          <li><a href="#register">Pricing & Bundles</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Contact</div>
+        <ul>
+          <li><a href="https://www.instagram.com/academy.gatewayltd" target="_blank">Instagram</a></li>
+          <li><a href="#">Gudu, Abuja · Nigeria</a></li>
+          <li><a href="mailto:thegatewayacademy31@gmail.com">thegatewayacademy31@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 The Gateway Academy · A Gateway Ltd Company. Abuja, Nigeria.</p>
+      <a href="../index.html">← Back to Gateway Ltd</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* cursor */
+  const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+  let mx=-100,my=-100,rx=-100,ry=-100;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=(mx-4)+'px';cursor.style.top=(my-4)+'px';});
+  (function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=(rx-16)+'px';ring.style.top=(ry-16)+'px';requestAnimationFrame(animRing);})();
+  document.querySelectorAll('a,button,.who-card,.why-card,.course-card,.gain-card,.testi-card,.bundle-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('hovered'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('hovered'));
+  });
+
+  /* navbar scroll */
+  const navbar=document.getElementById('navbar');
+  window.addEventListener('scroll',()=>navbar.classList.toggle('scrolled',window.scrollY>40),{passive:true});
+
+  /* mobile menu */
+  const hamburger=document.getElementById('hamburger'),hamburgerClose=document.getElementById('hamburgerClose'),mobileMenu=document.getElementById('mobileMenu');
+  function openMobileMenu(){mobileMenu.classList.add('open');mobileMenu.setAttribute('aria-hidden','false');hamburger.classList.add('open');document.body.style.overflow='hidden';}
+  window.closeMobileMenu=function(){mobileMenu.classList.remove('open');mobileMenu.setAttribute('aria-hidden','true');hamburger.classList.remove('open');document.body.style.overflow='';};
+  hamburger.addEventListener('click',()=>mobileMenu.classList.contains('open')?closeMobileMenu():openMobileMenu());
+  hamburgerClose.addEventListener('click',closeMobileMenu);
+
+  /* scroll reveals */
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+  },{threshold:.1});
+  document.querySelectorAll('.reveal,.who-card,.why-card,.course-card,.gain-card,.testi-card,.bundle-card').forEach(el=>obs.observe(el));
+  document.querySelectorAll('.why-card').forEach((c,i)=>{c.style.transitionDelay=(i*.08)+'s';});
+  document.querySelectorAll('.course-card').forEach((c,i)=>{c.style.transitionDelay=(i*.1)+'s';});
+  document.querySelectorAll('.gain-card').forEach((c,i)=>{c.style.transitionDelay=(i*.08)+'s';});
+  document.querySelectorAll('.testi-card').forEach((c,i)=>{c.style.transitionDelay=(i*.1)+'s';});
+  document.querySelectorAll('.bundle-card').forEach((c,i)=>{c.style.transitionDelay=(i*.1)+'s';});
+
+  /* smooth anchors */
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      const href=a.getAttribute('href');
+      if(href==='#')return;
+      const t=document.querySelector(href);
+      if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+    });
+  });
+
+  /* countdown */
+  function updateCountdown(){
+    const target=new Date('2025-07-24T00:00:00'),now=new Date(),diff=target-now;
+    if(diff<=0){document.getElementById('countdown').textContent='Now Enrolling';return;}
+    const days=Math.floor(diff/(1000*60*60*24)),hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+    document.getElementById('countdown').textContent=days+'d '+hours+'h to start';
+  }
+  updateCountdown();setInterval(updateCountdown,60000);
+
+  /* FAQ */
+  window.toggleFaq=function(btn){
+    const item=btn.closest('.faq-item'),isOpen=item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!isOpen)item.classList.add('open');
+  };
+
+  /* hero parallax */
+  const bgLetter=document.querySelector('.hero-bg-letter');
+  if(bgLetter){window.addEventListener('scroll',()=>{bgLetter.style.transform=`translateY(calc(-50% + ${window.scrollY*.2}px))`;},{passive:true});}
+})();
+</script>
 </body>
 </html>
