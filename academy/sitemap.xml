@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://academy.thegatewayltd.com/</loc>
+  <lastmod>2026-06-18T00:35:20+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://academy.thegatewayltd.com/index.html</loc>
+  <lastmod>2026-06-18T00:35:21+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://academy.thegatewayltd.com/auth/signup.html</loc>
+  <lastmod>2026-06-18T00:35:21+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://academy.thegatewayltd.com/media-production/index.html</loc>
+  <lastmod>2026-06-18T00:35:21+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://academy.thegatewayltd.com/admissions.html</loc>
+  <lastmod>2026-06-18T00:35:21+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://academy.thegatewayltd.com/auth/login.html</loc>
+  <lastmod>2026-06-18T00:35:21+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://academy.thegatewayltd.com/auth/payment.html?course=single</loc>
+  <lastmod>2026-06-18T00:35:22+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://academy.thegatewayltd.com/auth/payment.html?course=bundle</loc>
+  <lastmod>2026-06-18T00:35:22+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://academy.thegatewayltd.com/auth/payment.html?course=fullpipeline</loc>
+  <lastmod>2026-06-18T00:35:22+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://academy.thegatewayltd.com/auth/forgot-password.html</loc>
+  <lastmod>2026-06-18T00:35:22+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+
+
+</urlset>
