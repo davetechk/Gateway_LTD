@@ -120,6 +120,24 @@
 
     .pay-note { font-size: 11px; color: var(--stone); line-height: 1.6; margin-top: 6px; }
 
+    /* "How did you hear about us" selector */
+    .source-tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+    .source-tab {
+      border: 1.5px solid var(--border); border-radius: 3px; padding: 12px 6px;
+      cursor: pointer; text-align: center; transition: all .2s; background: var(--cream);
+      user-select: none;
+    }
+    .source-tab:hover { border-color: var(--red); }
+    .source-tab.active { border-color: var(--red); background: rgba(229,21,36,.05); }
+    .source-tab-icon { font-size: 1.3rem; margin-bottom: 6px; }
+    .source-tab-name { font-size: 10px; font-weight: 700; color: var(--charcoal); letter-spacing: .01em; }
+    .source-tab.active .source-tab-name { color: var(--red); }
+
+    .referral-name-field {
+      display: none; margin-top: 12px;
+    }
+    .referral-name-field.show { display: block; }
+
     .pay-btn {
       width: 100%; background: var(--red); color: var(--white);
       border: none; border-radius: 2px; padding: 15px 28px;
@@ -209,6 +227,7 @@
       .payment-card { padding: 28px 20px; }
       .order-body, .order-header { padding: 24px 20px; }
       .course-tabs { grid-template-columns: 1fr; }
+      .source-tabs { grid-template-columns: repeat(3, 1fr); }
       .success-modal { padding: 36px 24px; }
     }
   </style>
@@ -350,6 +369,35 @@
         <input class="pay-input" id="pay-phone" type="tel" placeholder="+234 800 000 0000" autocomplete="tel">
       </div>
 
+      <div class="pay-field">
+        <label class="pay-label">How did you hear about us?</label>
+        <div class="source-tabs">
+          <div class="source-tab" id="source-tab-facebook" onclick="selectSource('facebook')">
+            <div class="source-tab-icon">📘</div>
+            <div class="source-tab-name">Facebook</div>
+          </div>
+          <div class="source-tab" id="source-tab-instagram" onclick="selectSource('instagram')">
+            <div class="source-tab-icon">📸</div>
+            <div class="source-tab-name">Instagram</div>
+          </div>
+          <div class="source-tab" id="source-tab-linkedin" onclick="selectSource('linkedin')">
+            <div class="source-tab-icon">💼</div>
+            <div class="source-tab-name">LinkedIn</div>
+          </div>
+          <div class="source-tab" id="source-tab-tiktok" onclick="selectSource('tiktok')">
+            <div class="source-tab-icon">🎵</div>
+            <div class="source-tab-name">TikTok</div>
+          </div>
+          <div class="source-tab" id="source-tab-referral" onclick="selectSource('referral')">
+            <div class="source-tab-icon">🤝</div>
+            <div class="source-tab-name">Referral</div>
+          </div>
+        </div>
+        <div class="referral-name-field" id="referral-name-field">
+          <input class="pay-input" id="referral-name" type="text" placeholder="Who referred you?" autocomplete="off">
+        </div>
+      </div>
+
       <button class="pay-btn" id="pay-btn" type="button" onclick="initiatePayment()">
         <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
         Pay ₦<span id="btn-amount">528,000</span> now
@@ -404,6 +452,14 @@
   };
 
   let selectedCourse = 'single';
+  let selectedSource = null;
+  const sourceLabels = {
+    facebook: 'Facebook',
+    instagram: 'Instagram',
+    linkedin: 'LinkedIn',
+    tiktok: 'TikTok',
+    referral: 'Referral'
+  };
 
   // ---- Read ?course= from URL and pre-select ----
   // Valid values: single | bundle | fullpipeline
@@ -419,6 +475,21 @@
   function selectCourse(courseKey) {
     selectedCourse = courseKey;
     updateUI();
+  }
+
+  function selectSource(sourceKey) {
+    selectedSource = sourceKey;
+
+    document.querySelectorAll('.source-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('source-tab-' + sourceKey).classList.add('active');
+
+    const referralField = document.getElementById('referral-name-field');
+    if (sourceKey === 'referral') {
+      referralField.classList.add('show');
+    } else {
+      referralField.classList.remove('show');
+      document.getElementById('referral-name').value = '';
+    }
   }
 
   function updateUI() {
@@ -446,6 +517,7 @@
     const email    = document.getElementById('pay-email').value.trim();
     const fullName = document.getElementById('pay-name').value.trim();
     const phone    = document.getElementById('pay-phone').value.trim();
+    const referrerName = document.getElementById('referral-name').value.trim();
     const course   = COURSES[selectedCourse];
 
     if (!fullName) {
@@ -460,6 +532,16 @@
     }
     if (!phone) {
       errorEl.textContent = 'Please enter your phone number.';
+      errorEl.style.display = 'block';
+      return;
+    }
+    if (!selectedSource) {
+      errorEl.textContent = 'Please let us know how you heard about us.';
+      errorEl.style.display = 'block';
+      return;
+    }
+    if (selectedSource === 'referral' && !referrerName) {
+      errorEl.textContent = 'Please enter the name of the person who referred you.';
       errorEl.style.display = 'block';
       return;
     }
@@ -483,6 +565,8 @@
           { display_name: 'Phone',       variable_name: 'phone',       value: phone },
           { display_name: 'Course',      variable_name: 'course',      value: course.name },
           { display_name: 'Academy',     variable_name: 'academy',     value: 'Gateway Academy' },
+          { display_name: 'How They Heard About Us', variable_name: 'source', value: sourceLabels[selectedSource] },
+          { display_name: 'Referrer Name', variable_name: 'referrer_name', value: selectedSource === 'referral' ? referrerName : '' },
         ]
       },
       callback: function(response) {
