@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="icon" href="../icon/icon (2).png" type="image/x-icon">
+  <link rel="icon" href="../icon/icon (2).png" type="image/x-icon">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -25,7 +25,6 @@
     }
 
     html, body { min-height: 100vh; overflow-x: hidden; font-family: 'Inter', sans-serif; }
-
     .pay-page { min-height: 100vh; background: var(--cream); display: flex; flex-direction: column; }
 
     /* ---- Top bar ---- */
@@ -34,7 +33,7 @@
       display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
     }
     .pay-topbar-logo { text-decoration: none; display: flex; align-items: center; gap: 12px; }
-    .pay-topbar-logo svg { height: 36px; width: auto; }
+    .pay-topbar-logo img { height: 36px; width: auto; object-fit: contain; display: block; }
     .pay-topbar-divider { width: 1px; height: 20px; background: rgba(255,255,255,.15); }
     .pay-topbar-sub {
       font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
@@ -76,83 +75,70 @@
     .order-line-label { font-size: 12px; color: var(--stone); font-weight: 400; }
     .order-line-value { font-size: 12px; color: var(--charcoal); font-weight: 500; text-align: right; }
 
-    .order-total {
-      margin-top: 20px; padding-top: 20px; border-top: 2px solid var(--border);
-      display: flex; justify-content: space-between; align-items: baseline;
-    }
-    .order-total-label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--stone); font-weight: 600; }
-    .order-total-amount { font-size: 28px; font-weight: 800; color: var(--charcoal); letter-spacing: -.03em; }
-    .order-total-currency { font-size: 14px; font-weight: 500; color: var(--stone); margin-right: 4px; }
-
     .order-includes { margin-top: 24px; padding: 18px 20px; background: var(--cream); border-radius: 2px; }
     .order-includes-title { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--stone); font-weight: 600; margin-bottom: 12px; }
     .order-include-item { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--charcoal); padding: 5px 0; font-weight: 400; }
     .order-include-item svg { width: 13px; height: 13px; stroke: #16a34a; fill: none; stroke-width: 2.5; flex-shrink: 0; }
 
-    /* ---- Payment form (right) ---- */
+    /* ---- Right panel ---- */
     .payment-card { background: var(--white); border: 1px solid var(--border); border-radius: 4px; padding: 36px 32px; }
     .payment-title { font-size: 22px; font-weight: 800; color: var(--charcoal); letter-spacing: -.02em; margin-bottom: 6px; }
     .payment-subtitle { font-size: 13px; color: var(--stone); font-weight: 300; line-height: 1.6; margin-bottom: 32px; }
 
     .pay-field { margin-bottom: 18px; }
-    .pay-label { display: block; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--charcoal); font-weight: 600; margin-bottom: 8px; }
-    .pay-input {
-      width: 100%; background: var(--cream); border: 1px solid var(--border);
-      border-radius: 2px; padding: 12px 16px;
-      font-family: 'Inter', sans-serif; font-size: 14px; color: var(--charcoal);
-      outline: none; transition: border-color .2s;
-    }
-    .pay-input:focus { border-color: var(--red); background: var(--white); }
+    .pay-label { display: block; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--charcoal); font-weight: 600; margin-bottom: 12px; }
 
-    /* Course selector tabs */
-    .course-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
-    .course-tab {
-      border: 1.5px solid var(--border); border-radius: 3px; padding: 12px 10px;
-      cursor: pointer; text-align: center; transition: all .2s; background: var(--cream);
-      user-select: none;
-    }
-    .course-tab:hover { border-color: var(--red); }
-    .course-tab.active { border-color: var(--red); background: rgba(229,21,36,.05); }
-    .course-tab-icon { font-size: 1.4rem; margin-bottom: 6px; }
-    .course-tab-name { font-size: 11px; font-weight: 700; color: var(--charcoal); letter-spacing: .02em; }
-    .course-tab-price { font-size: 10px; color: var(--stone); margin-top: 3px; }
-    .course-tab.active .course-tab-name { color: var(--red); }
+    /* ---- Course cards as anchor links ---- */
+    .course-cards { display: flex; flex-direction: column; gap: 12px; }
 
-    .pay-note { font-size: 11px; color: var(--stone); line-height: 1.6; margin-top: 6px; }
-
-    /* "How did you hear about us" selector */
-    .source-tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-    .source-tab {
-      border: 1.5px solid var(--border); border-radius: 3px; padding: 12px 6px;
-      cursor: pointer; text-align: center; transition: all .2s; background: var(--cream);
-      user-select: none;
+    .course-card-link {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px;
+      background: var(--cream);
+      border: 1.5px solid var(--border);
+      border-radius: 4px;
+      padding: 20px 22px;
+      text-decoration: none;
+      transition: border-color .2s, background .2s, transform .15s, box-shadow .2s;
     }
-    .source-tab:hover { border-color: var(--red); }
-    .source-tab.active { border-color: var(--red); background: rgba(229,21,36,.05); }
-    .source-tab-icon { font-size: 1.3rem; margin-bottom: 6px; }
-    .source-tab-name { font-size: 10px; font-weight: 700; color: var(--charcoal); letter-spacing: .01em; }
-    .source-tab.active .source-tab-name { color: var(--red); }
-
-    .referral-name-field {
-      display: none; margin-top: 12px;
+    .course-card-link:hover {
+      border-color: var(--red);
+      background: rgba(229,21,36,.03);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(229,21,36,.1);
     }
-    .referral-name-field.show { display: block; }
-
-    .pay-btn {
-      width: 100%; background: var(--red); color: var(--white);
-      border: none; border-radius: 2px; padding: 15px 28px;
-      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
-      letter-spacing: .14em; text-transform: uppercase; cursor: pointer;
-      transition: background .2s; margin-top: 8px;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
+    .course-card-left { display: flex; align-items: center; gap: 14px; }
+    .course-card-icon {
+      width: 44px; height: 44px; border-radius: 4px;
+      background: rgba(229,21,36,.07);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+      transition: background .2s;
     }
-    .pay-btn:hover:not(:disabled) { background: var(--red-dark); }
-    .pay-btn:disabled { opacity: .55; cursor: not-allowed; }
-    .pay-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
+    .course-card-link:hover .course-card-icon { background: rgba(229,21,36,.12); }
+    .course-card-name { font-size: 14px; font-weight: 700; color: var(--charcoal); margin-bottom: 3px; letter-spacing: -.01em; }
+    .course-card-link:hover .course-card-name { color: var(--red); }
+    .course-card-meta { font-size: 11px; color: var(--stone); line-height: 1.4; }
+
+    .course-card-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .course-card-tag {
+      font-size: 8px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      background: var(--yellow); color: var(--charcoal);
+      padding: 3px 8px; border-radius: 2px; white-space: nowrap;
+    }
+    .course-card-price { font-size: 16px; font-weight: 800; color: var(--charcoal); letter-spacing: -.02em; white-space: nowrap; }
+    .course-card-arrow {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--red);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background .2s, transform .2s;
+    }
+    .course-card-link:hover .course-card-arrow { background: var(--red-dark); transform: translateX(2px); }
+    .course-card-arrow svg { width: 12px; height: 12px; stroke: var(--white); fill: none; stroke-width: 2.5; }
 
     .pay-security-note {
       display: flex; align-items: flex-start; gap: 10px;
-      margin-top: 20px; padding: 14px 16px; background: var(--cream); border-radius: 2px;
+      margin-top: 28px; padding: 14px 16px; background: var(--cream); border-radius: 2px;
     }
     .pay-security-note svg { width: 14px; height: 14px; stroke: var(--stone); fill: none; stroke-width: 1.8; flex-shrink: 0; margin-top: 1px; }
     .pay-security-note-text { font-size: 11px; color: var(--stone); line-height: 1.6; font-weight: 300; }
@@ -163,60 +149,9 @@
     }
     .pay-poweredby svg { width: 14px; height: 14px; stroke: var(--stone-light); fill: none; stroke-width: 1.8; }
 
-    .pay-error {
-      display: none; background: rgba(229,21,36,.06); border: 1px solid rgba(229,21,36,.2);
-      border-radius: 2px; padding: 12px 16px; font-size: 13px; color: var(--red);
-      margin-bottom: 16px; line-height: 1.5;
-    }
-
-    /* ---- SUCCESS OVERLAY (full-page popup) ---- */
-    .success-overlay {
-      display: none; position: fixed; inset: 0; z-index: 9999;
-      background: rgba(26,23,20,.72); backdrop-filter: blur(6px);
-      align-items: center; justify-content: center; padding: 24px;
-    }
-    .success-overlay.show { display: flex; }
-    .success-modal {
-      background: var(--white); border-radius: 6px; padding: 48px 40px;
-      max-width: 480px; width: 100%; text-align: center;
-      box-shadow: 0 32px 80px rgba(0,0,0,.25);
-      animation: modalPop .4s cubic-bezier(.23,1,.32,1) both;
-    }
-    @keyframes modalPop {
-      from { opacity: 0; transform: scale(.88) translateY(20px); }
-      to   { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    .success-glow-ring {
-      width: 80px; height: 80px; border-radius: 50%;
-      background: rgba(22,163,74,.08);
-      border: 2px solid rgba(22,163,74,.2);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 24px;
-      /* pulsing glow */
-      box-shadow: 0 0 0 0 rgba(22,163,74,.35);
-      animation: glowPulse 2s ease-in-out infinite;
-    }
-    @keyframes glowPulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(22,163,74,.35); }
-      50%       { box-shadow: 0 0 0 14px rgba(22,163,74,.0); }
-    }
-    .success-glow-ring svg { width: 36px; height: 36px; stroke: #16a34a; fill: none; stroke-width: 2.2; }
-    .success-title { font-size: 24px; font-weight: 800; color: var(--charcoal); letter-spacing: -.02em; margin-bottom: 12px; }
-    .success-desc { font-size: 14px; color: var(--stone); line-height: 1.75; font-weight: 300; margin-bottom: 10px; }
-    .success-course-name { font-size: 13px; font-weight: 700; color: var(--charcoal); margin-bottom: 20px; }
-    .success-ref { font-size: 11px; color: var(--stone-light); font-family: monospace; margin-bottom: 28px; }
-    .success-back-btn {
-      display: inline-block; background: var(--red); color: var(--white);
-      padding: 13px 32px; border-radius: 2px; font-size: 11px; font-weight: 700;
-      letter-spacing: .14em; text-transform: uppercase; text-decoration: none;
-      transition: background .2s;
-    }
-    .success-back-btn:hover { background: var(--red-dark); }
-    .success-tagline { margin-top: 20px; font-size: 11px; color: var(--stone-light); }
-
     @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: scale(.8); } }
 
-    /* Responsive */
+    /* ---- Responsive ---- */
     @media(max-width: 820px) {
       .pay-main { grid-template-columns: 1fr; padding: 36px 24px; }
       .order-card { position: static; }
@@ -226,42 +161,17 @@
       .pay-topbar-divider, .pay-topbar-sub { display: none; }
       .payment-card { padding: 28px 20px; }
       .order-body, .order-header { padding: 24px 20px; }
-      .course-tabs { grid-template-columns: 1fr; }
-      .source-tabs { grid-template-columns: repeat(3, 1fr); }
-      .success-modal { padding: 36px 24px; }
+      .course-card-link { flex-wrap: wrap; gap: 12px; }
+      .course-card-right { width: 100%; justify-content: flex-end; }
     }
   </style>
 </head>
 <body class="pay-page">
 
-<!-- SUCCESS OVERLAY -->
-<div class="success-overlay" id="successOverlay">
-  <div class="success-modal">
-    <div class="success-glow-ring">
-      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <h2 class="success-title">You're registered! 🎉</h2>
-    <p class="success-desc">Your enrolment for <strong id="success-course-label"></strong> is confirmed.</p>
-    <p class="success-desc" style="margin-top:8px;">Our team will be in touch shortly with your onboarding details and next steps.</p>
-    <p class="success-ref" id="success-ref"></p>
-    <a href="index.html" class="success-back-btn">Back to Academy</a>
-    <p class="success-tagline">Check your inbox — a receipt is on its way.</p>
-  </div>
-</div>
-
 <!-- TOP BAR -->
 <div class="pay-topbar">
   <a href="index.html" class="pay-topbar-logo">
-    <!-- Full Gateway Ltd SVG logo -->
-    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 553.766 124.767">
-      <path fill="#FBAA19" d="M332.886,101.399l-20.864-71.353H330.8l8.624,33.102l3.198,13.354h0.28c1.018-5.098,2.039-9.598,3.059-13.492l8.902-32.963h16.135l9.319,32.963l3.338,13.492h0.279c1.113-5.006,2.179-9.458,3.199-13.354l9.04-33.102h18.362l-21.281,71.353h-17.248l-9.46-35.052l-3.199-12.378h-0.278c-1.207,4.45-2.319,8.577-3.339,12.378l-9.735,35.052H332.886z"/>
-      <path fill="#FBAA19" d="M464.051,101.399c-0.929-1.202-1.669-3.845-2.226-7.928h-0.279c-2.041,3.061-4.638,5.425-7.789,7.094c-3.155,1.668-7.559,2.504-13.215,2.504c-7.512,0-13.539-1.899-18.081-5.703c-4.544-3.802-6.818-9.18-6.818-16.135c0-7.233,2.505-12.541,7.513-15.927c5.006-3.381,12.054-5.725,21.143-7.022c6.677-0.927,11.218-1.879,13.63-2.853c2.412-0.975,3.617-2.713,3.617-5.215c0-2.594-1.022-4.659-3.059-6.191c-2.041-1.528-5.007-2.294-8.902-2.294c-8.624,0-13.214,3.338-13.771,10.015h-16.829c0.276-6.768,3.012-12.379,8.205-16.831c5.192-4.449,12.702-6.677,22.533-6.677c20.028,0,30.045,8.765,30.045,26.291v36.301c0,5.38,0.834,8.673,2.502,9.878v0.694H464.051z M445.134,89.855c5.192,0,9.295-1.343,12.309-4.033c3.014-2.69,4.522-5.889,4.522-9.598V65.513c-2.041,1.208-6.447,2.596-13.215,4.172c-5.379,1.208-9.179,2.575-11.405,4.106c-2.227,1.528-3.339,3.871-3.339,7.023C434.006,86.843,437.715,89.855,445.134,89.855"/>
-      <path fill="#FBAA19" d="M492.566,124.767v-14.882h6.676c7.047,0,10.572-3.247,10.572-9.737c0-3.151-1.808-9.598-5.425-19.334l-19.196-50.768h19.889l10.572,32.13l4.591,15.578h0.279c1.297-6.027,2.687-11.219,4.172-15.578l10.014-32.13h19.057l-24.897,73.164c-2.783,8.157-5.911,13.791-9.39,16.897c-3.477,3.107-8.74,4.66-15.787,4.66H492.566z"/>
-      <path fill="#E41E27" d="M76.78,101.399l-0.696-13.353h-0.279c-6.12,10.293-15.439,15.441-27.958,15.441c-14.559,0-26.197-4.822-34.911-14.466C4.311,79.377,0,67.043,0,52.021c0-17.06,5.425-30.601,16.274-40.616C24.619,3.804,35.282,0,48.265,0c12.147,0,21.859,3.014,29.141,9.042c7.278,6.027,11.753,14.096,13.423,24.202H71.077c-1.205-5.008-3.711-9.017-7.511-12.031c-3.804-3.013-8.763-4.522-14.883-4.522c-8.995,0-15.926,3.292-20.794,9.877c-4.869,6.585-7.303,15.069-7.303,25.453c0,10.293,2.526,18.732,7.581,25.315c5.052,6.585,11.799,9.875,20.238,9.875c7.418,0,13.538-2.294,18.359-6.884c4.821-4.591,7.233-9.806,7.233-15.647v-0.557H50.073V48.545h41.868v52.855H76.78z"/>
-      <path fill="#E41E27" d="M149.388,101.399c-0.93-1.202-1.67-3.845-2.227-7.928h-0.279c-2.041,3.061-4.638,5.425-7.789,7.094c-3.155,1.668-7.559,2.504-13.215,2.504c-7.511,0-13.539-1.899-18.081-5.703c-4.544-3.802-6.817-9.18-6.817-16.135c0-7.233,2.504-12.541,7.511-15.927c5.007-3.381,12.054-5.725,21.143-7.022c6.677-0.927,11.218-1.879,13.63-2.853c2.412-0.975,3.617-2.713,3.617-5.215c0-2.594-1.022-4.659-3.059-6.191c-2.041-1.528-5.007-2.294-8.902-2.294c-8.624,0-13.214,3.338-13.771,10.015h-16.829c0.277-6.768,3.012-12.379,8.206-16.831c5.192-4.449,12.701-6.677,22.533-6.677c20.028,0,30.044,8.765,30.044,26.291v36.301c0,5.38,0.834,8.673,2.502,9.878v0.694H149.388z M130.471,89.855c5.191,0,9.295-1.343,12.309-4.033c3.014-2.69,4.521-5.889,4.521-9.598V65.513c-2.041,1.208-6.447,2.596-13.215,4.172c-5.379,1.208-9.179,2.575-11.404,4.106c-2.227,1.528-3.339,3.871-3.339,7.023C119.342,86.843,123.05,89.855,130.471,89.855"/>
-      <path fill="#E41E27" d="M171.501,42.563V30.046h9.875V7.789h18.501v22.257h12.24v12.517h-12.24v37.833c0,4.73,2.364,7.093,7.092,7.093l5.565-0.138v13.909c-2.875,0.187-6.816,0.279-11.823,0.279c-5.472,0-10.062-1.321-13.77-3.962c-3.711-2.644-5.565-7.027-5.565-13.146V42.563H171.501z"/>
-      <path fill="#E41E27" d="M304.419,78.839c-6.895,3.066-14.236,5.024-21.606,5.802c-7.372,0.775-14.758,0.419-21.839-0.986l-2.641-0.58l-2.61-0.662c-1.727-0.493-3.433-1.028-5.112-1.631c-3.345-1.226-6.622-2.638-9.629-4.49c6.892,1.333,13.761,1.805,20.498,1.634c6.735-0.15,13.326-1.134,19.607-2.786c3.145-0.827,6.181-1.949,9.149-3.138l2.2-0.96c0.728-0.325,1.433-0.706,2.149-1.054c1.449-0.657,2.811-1.498,4.21-2.236c4.048-2.393,7.838-5.152,11.438-8.165c1.133-0.948,1.662-2.45,1.395-3.902c-2.56-13.943-14.774-24.506-29.458-24.506h-35.705c-16.543,0-29.953,13.409-29.953,29.952v12.388c0,16.542,13.409,29.953,29.953,29.953h35.705c16.113,0,29.248-12.723,29.921-28.671C309.612,76.292,307.049,77.642,304.419,78.839 M281.286,49.607c3.346,0,6.06,2.713,6.06,6.06c0,3.347-2.713,6.061-6.06,6.061c-3.347,0-6.061-2.713-6.061-6.061C275.225,52.321,277.939,49.607,281.286,49.607 M247.35,49.607c3.346,0,6.061,2.713,6.061,6.06c0,3.347-2.714,6.061-6.061,6.061c-3.346,0-6.061-2.713-6.061-6.061C241.29,52.321,244.004,49.607,247.35,49.607"/>
-    </svg>
+    <img src="../logo/THE GATE WAY ACADEMNY LOGO-01.png" alt="Gateway Academy">
     <div class="pay-topbar-divider"></div>
     <span class="pay-topbar-sub">Academy · Secure Checkout</span>
   </a>
@@ -281,28 +191,25 @@
         <span class="order-badge-dot"></span>
         <span class="order-badge-text">Enrolment Open</span>
       </div>
-      <h2 class="order-prog-name" id="order-prog-name">Single Course</h2>
-      <p class="order-prog-meta" id="order-prog-meta">One track · 3 months · Gateway Academy 2026</p>
+      <h2 class="order-prog-name">Gateway Academy</h2>
+      <p class="order-prog-meta">Media Production · 2026 Cohort · Abuja</p>
     </div>
     <div class="order-body">
       <div class="order-line">
-        <span class="order-line-label">Programme fee</span>
-        <span class="order-line-value" id="order-base-fee">₦528,000</span>
+        <span class="order-line-label">Start date</span>
+        <span class="order-line-value">July 24, 2026</span>
+      </div>
+      <div class="order-line">
+        <span class="order-line-label">Location</span>
+        <span class="order-line-value">Gudu, Abuja</span>
       </div>
       <div class="order-line">
         <span class="order-line-label">Processing fee</span>
         <span class="order-line-value">₦0</span>
       </div>
-      <div class="order-total">
-        <span class="order-total-label">Total due</span>
-        <div>
-          <span class="order-total-currency">₦</span>
-          <span class="order-total-amount" id="order-total-amount">528,000</span>
-        </div>
-      </div>
 
       <div class="order-includes">
-        <p class="order-includes-title">What's included</p>
+        <p class="order-includes-title">All packages include</p>
         <div class="order-include-item">
           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
           Practical, industry-led curriculum
@@ -323,273 +230,83 @@
     </div>
   </div>
 
-  <!-- PAYMENT FORM -->
+  <!-- PAYMENT OPTIONS -->
   <div class="payment-card">
-    <h1 class="payment-title">Complete payment</h1>
-    <p class="payment-subtitle">Select your course, fill in your details, and pay securely via Paystack. Your seat is reserved only after payment is confirmed.</p>
+    <h1 class="payment-title">Choose your package</h1>
+    <p class="payment-subtitle">Select a course below. You'll be taken to a secure Paystack checkout page to complete your payment and registration.</p>
 
-    <div class="pay-error" id="pay-error"></div>
+    <div class="pay-field">
+      <label class="pay-label">Select your enrolment</label>
+      <div class="course-cards">
 
-    <div id="pay-form">
-      <!-- Course selector -->
-      <div class="pay-field">
-        <label class="pay-label">Select your enrolment</label>
-        <div class="course-tabs">
-          <div class="course-tab" id="tab-single" onclick="selectCourse('single')">
-            <div class="course-tab-icon">🎬</div>
-            <div class="course-tab-name">Single Course</div>
-            <div class="course-tab-price">₦528,000</div>
+        <!-- =====================================================
+             REPLACE href VALUES WITH YOUR PAYSTACK PAYMENT LINKS
+             ===================================================== -->
+
+        <a href="https://paystack.com/buy/academy-single-course" class="course-card-link" target="_blank" rel="noopener">
+          <div class="course-card-left">
+            <div class="course-card-icon">🎬</div>
+            <div>
+              <div class="course-card-name">Single Course</div>
+              <div class="course-card-meta">One track · 3 months</div>
+            </div>
           </div>
-          <div class="course-tab" id="tab-bundle" onclick="selectCourse('bundle')">
-            <div class="course-tab-icon">🎥</div>
-            <div class="course-tab-name">Bundle Course</div>
-            <div class="course-tab-price">₦955,000</div>
+          <div class="course-card-right">
+            <div class="course-card-price">₦528,000</div>
+            <div class="course-card-arrow">
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
           </div>
-          <div class="course-tab" id="tab-fullpipeline" onclick="selectCourse('fullpipeline')">
-            <div class="course-tab-icon">🎞️</div>
-            <div class="course-tab-name">Full Pipeline</div>
-            <div class="course-tab-price">₦1,391,000</div>
+        </a>
+
+        <a href="https://paystack.com/buy/academy-bundle-course" class="course-card-link" target="_blank" rel="noopener">
+          <div class="course-card-left">
+            <div class="course-card-icon">🎥</div>
+            <div>
+              <div class="course-card-name">Bundle Course</div>
+              <div class="course-card-meta">Two tracks · 6 months + Studio Residency</div>
+            </div>
           </div>
-        </div>
+          <div class="course-card-right">
+            <div class="course-card-price">₦955,000</div>
+            <div class="course-card-arrow">
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </a>
+
+        <a href="https://paystack.com/buy/academy-full-pipeline" class="course-card-link" target="_blank" rel="noopener">
+          <div class="course-card-left">
+            <div class="course-card-icon">🎞️</div>
+            <div>
+              <div class="course-card-name">Full Pipeline</div>
+              <div class="course-card-meta">All 3 tracks · 9 months + Studio Residency</div>
+            </div>
+          </div>
+          <div class="course-card-right">
+            <span class="course-card-tag">Best Value</span>
+            <div class="course-card-price">₦1,391,000</div>
+            <div class="course-card-arrow">
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </a>
+
       </div>
+    </div>
 
-      <div class="pay-field">
-        <label class="pay-label" for="pay-name">Full name</label>
-        <input class="pay-input" id="pay-name" type="text" placeholder="Your full name" autocomplete="name">
-      </div>
+    <div class="pay-security-note">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span class="pay-security-note-text">Your payment is processed securely by Paystack. Gateway Academy never sees or stores your card details — all card data is handled entirely on Paystack's servers.</span>
+    </div>
 
-      <div class="pay-field">
-        <label class="pay-label" for="pay-email">Email address</label>
-        <input class="pay-input" id="pay-email" type="email" placeholder="you@example.com" autocomplete="email">
-        <p class="pay-note">Paystack will send your receipt and confirmation to this email.</p>
-      </div>
-
-      <div class="pay-field">
-        <label class="pay-label" for="pay-phone">Phone number</label>
-        <input class="pay-input" id="pay-phone" type="tel" placeholder="+234 800 000 0000" autocomplete="tel">
-      </div>
-
-      <div class="pay-field">
-        <label class="pay-label">How did you hear about us?</label>
-        <div class="source-tabs">
-          <div class="source-tab" id="source-tab-facebook" onclick="selectSource('facebook')">
-            <div class="source-tab-icon">📘</div>
-            <div class="source-tab-name">Facebook</div>
-          </div>
-          <div class="source-tab" id="source-tab-instagram" onclick="selectSource('instagram')">
-            <div class="source-tab-icon">📸</div>
-            <div class="source-tab-name">Instagram</div>
-          </div>
-          <div class="source-tab" id="source-tab-linkedin" onclick="selectSource('linkedin')">
-            <div class="source-tab-icon">💼</div>
-            <div class="source-tab-name">LinkedIn</div>
-          </div>
-          <div class="source-tab" id="source-tab-tiktok" onclick="selectSource('tiktok')">
-            <div class="source-tab-icon">🎵</div>
-            <div class="source-tab-name">TikTok</div>
-          </div>
-          <div class="source-tab" id="source-tab-referral" onclick="selectSource('referral')">
-            <div class="source-tab-icon">🤝</div>
-            <div class="source-tab-name">Referral</div>
-          </div>
-        </div>
-        <div class="referral-name-field" id="referral-name-field">
-          <input class="pay-input" id="referral-name" type="text" placeholder="Who referred you?" autocomplete="off">
-        </div>
-      </div>
-
-      <button class="pay-btn" id="pay-btn" type="button" onclick="initiatePayment()">
-        <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-        Pay ₦<span id="btn-amount">528,000</span> now
-      </button>
-
-      <div class="pay-security-note">
-        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        <span class="pay-security-note-text">Your payment is processed securely by Paystack. Gateway Academy never sees or stores your card details — all card data is handled entirely on Paystack's servers.</span>
-      </div>
-
-      <div class="pay-poweredby">
-        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        Secured by Paystack
-      </div>
+    <div class="pay-poweredby">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Secured by Paystack
     </div>
   </div>
 
 </div>
 
-<!-- Paystack inline.js -->
-<script src="https://js.paystack.co/v1/inline.js"></script>
-
-<script>
-  // -------------------------------------------------------
-  // COURSE DATA
-  // Replace pk_live_REPLACE_WITH_YOUR_PAYSTACK_KEY with your
-  // actual Paystack public key. Amount is in Naira (converted
-  // to kobo when sent to Paystack).
-  // -------------------------------------------------------
-  const COURSES = {
-    single: {
-      name: 'Single Course',
-      label: 'One track · 3 months',
-      icon: '🎬',
-      amount: 528000,
-      paystackKey: 'pk_live_REPLACE_WITH_YOUR_PAYSTACK_KEY', // ← replace
-    },
-    bundle: {
-      name: 'Bundle Course',
-      label: 'Two tracks · 6 months + Studio Residency',
-      icon: '🎥',
-      amount: 955000,
-      paystackKey: 'pk_live_REPLACE_WITH_YOUR_PAYSTACK_KEY', // ← replace
-    },
-    fullpipeline: {
-      name: 'Full Pipeline',
-      label: 'All 3 tracks · 9 months + Studio Residency',
-      icon: '🎞️',
-      amount: 1391000,
-      paystackKey: 'pk_live_REPLACE_WITH_YOUR_PAYSTACK_KEY', // ← replace
-    }
-  };
-
-  let selectedCourse = 'single';
-  let selectedSource = null;
-  const sourceLabels = {
-    facebook: 'Facebook',
-    instagram: 'Instagram',
-    linkedin: 'LinkedIn',
-    tiktok: 'TikTok',
-    referral: 'Referral'
-  };
-
-  // ---- Read ?course= from URL and pre-select ----
-  // Valid values: single | bundle | fullpipeline
-  (function init() {
-    const params = new URLSearchParams(window.location.search);
-    const courseParam = params.get('course');
-    if (courseParam && COURSES[courseParam]) {
-      selectedCourse = courseParam;
-    }
-    updateUI();
-  })();
-
-  function selectCourse(courseKey) {
-    selectedCourse = courseKey;
-    updateUI();
-  }
-
-  function selectSource(sourceKey) {
-    selectedSource = sourceKey;
-
-    document.querySelectorAll('.source-tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('source-tab-' + sourceKey).classList.add('active');
-
-    const referralField = document.getElementById('referral-name-field');
-    if (sourceKey === 'referral') {
-      referralField.classList.add('show');
-    } else {
-      referralField.classList.remove('show');
-      document.getElementById('referral-name').value = '';
-    }
-  }
-
-  function updateUI() {
-    const course = COURSES[selectedCourse];
-
-    // Tabs
-    document.querySelectorAll('.course-tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('tab-' + selectedCourse).classList.add('active');
-
-    // Order summary
-    document.getElementById('order-prog-name').textContent = course.icon + ' ' + course.name;
-    document.getElementById('order-prog-meta').textContent = course.label + ' · Gateway Academy 2026';
-    document.getElementById('order-base-fee').textContent = '₦' + course.amount.toLocaleString('en-NG');
-    document.getElementById('order-total-amount').textContent = course.amount.toLocaleString('en-NG');
-
-    // Button
-    document.getElementById('btn-amount').textContent = course.amount.toLocaleString('en-NG');
-  }
-
-  // ---- Launch Paystack ----
-  function initiatePayment() {
-    const errorEl = document.getElementById('pay-error');
-    errorEl.style.display = 'none';
-
-    const email    = document.getElementById('pay-email').value.trim();
-    const fullName = document.getElementById('pay-name').value.trim();
-    const phone    = document.getElementById('pay-phone').value.trim();
-    const referrerName = document.getElementById('referral-name').value.trim();
-    const course   = COURSES[selectedCourse];
-
-    if (!fullName) {
-      errorEl.textContent = 'Please enter your full name.';
-      errorEl.style.display = 'block';
-      return;
-    }
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      errorEl.textContent = 'Please enter a valid email address.';
-      errorEl.style.display = 'block';
-      return;
-    }
-    if (!phone) {
-      errorEl.textContent = 'Please enter your phone number.';
-      errorEl.style.display = 'block';
-      return;
-    }
-    if (!selectedSource) {
-      errorEl.textContent = 'Please let us know how you heard about us.';
-      errorEl.style.display = 'block';
-      return;
-    }
-    if (selectedSource === 'referral' && !referrerName) {
-      errorEl.textContent = 'Please enter the name of the person who referred you.';
-      errorEl.style.display = 'block';
-      return;
-    }
-
-    const btn = document.getElementById('pay-btn');
-    btn.disabled = true;
-    btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" style="stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Opening Paystack…';
-
-    // Amount in kobo
-    const amountKobo = course.amount * 100;
-
-    const handler = PaystackPop.setup({
-      key:    course.paystackKey,
-      email:  email,
-      amount: amountKobo,
-      currency: 'NGN',
-      ref: 'GA-' + selectedCourse.toUpperCase().slice(0,3) + '-' + Date.now(),
-      metadata: {
-        custom_fields: [
-          { display_name: 'Full Name',   variable_name: 'full_name',   value: fullName },
-          { display_name: 'Phone',       variable_name: 'phone',       value: phone },
-          { display_name: 'Course',      variable_name: 'course',      value: course.name },
-          { display_name: 'Academy',     variable_name: 'academy',     value: 'Gateway Academy' },
-          { display_name: 'How They Heard About Us', variable_name: 'source', value: sourceLabels[selectedSource] },
-          { display_name: 'Referrer Name', variable_name: 'referrer_name', value: selectedSource === 'referral' ? referrerName : '' },
-        ]
-      },
-      callback: function(response) {
-        // Show success overlay
-        document.getElementById('success-course-label').textContent = course.icon + ' ' + course.name;
-        document.getElementById('success-ref').textContent = 'Reference: ' + response.reference;
-        document.getElementById('successOverlay').classList.add('show');
-        // Reset button
-        resetBtn();
-      },
-      onClose: function() {
-        resetBtn();
-      }
-    });
-
-    handler.openIframe();
-  }
-
-  function resetBtn() {
-    const btn = document.getElementById('pay-btn');
-    btn.disabled = false;
-    btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" style="stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> Pay ₦<span id="btn-amount">' + COURSES[selectedCourse].amount.toLocaleString('en-NG') + '</span> now';
-  }
-</script>
 </body>
 </html>
