@@ -1,0 +1,340 @@
+/* ============================================================
+   GATEWAY SPACES — PAGE STYLES
+   spaces/css/spaces.css
+   Loaded AFTER css/main.css (a copy of the shared Gateway
+   stylesheet), so the tokens (--red, --yellow, --charcoal,
+   --cream …) come from there. Everything here is Spaces-specific:
+   a warm, architectural, calm skin on the same design system,
+   with yellow playing a bigger role than on the other sites.
+
+   Contrast notes (WCAG AA):
+   - Yellow (#FFAB00) is used as a FILL only (ticker, icon tiles,
+     chips, step numbers, accent blocks) with charcoal marks on it
+     (~9.4:1). Yellow is never small text on a light background
+     (~1.7:1). On the charcoal section it is also used as text.
+   - #E51524 is 4.7:1 on white but only 4.36:1 on cream, so it is
+     used for fills and LARGE type only. Small red text on light
+     backgrounds uses --red-ink (#D01220, ~5.1:1 on cream).
+   - --stone (#9B9590) fails on cream. Muted text uses --ink-3
+     (#6B655F, ~5.3:1 on cream).
+   ============================================================ */
+
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --ink:#1A1714;
+  --ink-2:#3A3632;
+  --ink-3:#6B655F;
+  --red-ink:#D01220;
+  --line:rgba(26,23,20,.16);
+  --line-soft:rgba(26,23,20,.09);
+  --chip-bg:rgba(255,171,0,.18);
+  --chip-line:rgba(255,171,0,.55);
+  --ease:cubic-bezier(.23,1,.32,1);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+[hidden]{display:none!important;}
+html{scroll-padding-top:var(--nav-h);}
+body{background:var(--cream);color:var(--ink-2);}
+::selection{background:var(--yellow);color:var(--charcoal);}
+img{max-width:100%;}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}
+footer :focus-visible,.s-amen :focus-visible{outline-color:var(--yellow);}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+.skip-link{position:absolute;left:16px;top:-72px;z-index:4000;background:var(--yellow);color:var(--charcoal);padding:12px 18px;border-radius:2px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;transition:top .2s ease;}
+.skip-link:focus{top:12px;}
+main:focus{outline:none;}
+html.is-locked{overflow:hidden;}
+
+/* buttons: design-system look, tuned for touch size and light backgrounds */
+.btn-primary,.btn-secondary,.btn-yellow{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:44px;line-height:1.2;}
+.btn-secondary{color:var(--ink);border-color:rgba(26,23,20,.4);font-weight:500;}
+.btn-secondary:hover{color:var(--ink);border-color:var(--ink);background:rgba(26,23,20,.04);}
+
+/* section scaffolding shared by every block */
+.sk-line{background:var(--yellow);height:2px;}
+.sk-text{color:var(--red-ink);}
+.s-title{font-family:'Inter',sans-serif;font-size:clamp(32px,4vw,52px);font-weight:800;line-height:1.03;letter-spacing:-.03em;color:var(--ink);}
+.s-title em{font-style:italic;font-weight:300;color:var(--red);}
+.s-sub{font-size:16px;line-height:1.75;color:var(--ink-2);max-width:520px;margin-top:18px;}
+.s-head{margin-bottom:48px;}
+
+/* ============================================================
+   NAV — same pattern as the parent / Academy / Studios / Photography
+   ============================================================ */
+.logo-emblem{display:flex;align-items:center;}
+.logo-emblem img{width:36px;height:36px;display:block;border-radius:8px;}
+.logo-wordmark span{color:var(--red-ink);}
+.nav-links a:hover{color:var(--red-ink);}
+.nav-links .nav-parent-link{gap:6px;font-size:10px;letter-spacing:.1em;padding:6px 10px;border:1px solid var(--line);border-radius:2px;color:var(--ink-3);transition:color .2s,border-color .2s;}
+.nav-links .nav-parent-link:hover{color:var(--red-ink);border-color:rgba(208,18,32,.4);}
+.nav-parent-link svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2;}
+.nav-links .nav-cta:hover{color:#fff!important;}
+
+/* mobile menu: removed from the tab order while closed */
+.mobile-menu{visibility:hidden;transition:opacity .35s ease,transform .35s var(--ease),visibility 0s linear .35s;}
+.mobile-menu.open{visibility:visible;transition-delay:0s;}
+.mob-label{color:var(--ink-3);}
+.mob-link:hover{color:var(--red-ink);}
+.mob-link svg{stroke:var(--ink-3);}
+
+/* ============================================================
+   TICKER — yellow band from the shared kit, doubled for a seamless loop
+   ============================================================ */
+.ticker-track{animation-duration:28s;}
+.ticker-group{display:flex;flex-shrink:0;}
+.ticker-sep{color:rgba(26,23,20,.75);}
+
+/* ============================================================
+   HERO — warm, light, one large interior photo
+   ============================================================ */
+.s-hero{background:var(--cream);padding:calc(var(--nav-h) + 56px) 0 88px;overflow:hidden;}
+.s-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:26px;animation:sxRise .7s .3s var(--ease) both;}
+.s-eyebrow-line{width:40px;height:2px;background:var(--yellow);}
+.s-eyebrow-text{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:var(--ink-2);}
+.s-headline{font-family:'Inter',sans-serif;font-size:clamp(40px,6vw,88px);font-weight:800;line-height:.98;letter-spacing:-.035em;color:var(--ink);max-width:900px;margin-bottom:26px;}
+.s-headline-line{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em;}
+.s-headline-line>span{display:block;animation:sxLine .9s var(--ease) both;}
+.s-headline-line:nth-child(1)>span{animation-delay:.45s;}
+.s-headline-line:nth-child(2)>span{animation-delay:.6s;}
+.s-headline em{font-style:italic;font-weight:300;color:var(--red);}
+.s-hero-sub{font-size:17px;line-height:1.7;color:var(--ink-2);max-width:480px;margin-bottom:34px;animation:sxRise .7s .85s var(--ease) both;}
+.s-ctas{display:flex;flex-wrap:wrap;gap:12px;animation:sxRise .7s 1s var(--ease) both;}
+/* the photo sits on an offset yellow block: a warm, architectural detail */
+.s-hero-photo{position:relative;margin:56px 18px 18px 0;animation:sxFade 1s .5s var(--ease) both;}
+.s-hero-photo::before{content:'';position:absolute;right:-18px;bottom:-18px;width:38%;height:46%;background:var(--yellow);border-radius:4px;}
+.s-hero-photo img{position:relative;display:block;width:100%;height:auto;aspect-ratio:21/9;object-fit:cover;border-radius:4px;background:var(--cream-dark);}
+
+@keyframes sxRise{from{opacity:0;transform:translateY(20px);}}
+@keyframes sxLine{from{opacity:0;transform:translateY(100%);}}
+@keyframes sxFade{from{opacity:0;transform:translateY(16px);}}
+
+/* ============================================================
+   SPACES — cards
+   ============================================================ */
+.s-spaces{background:var(--white);}
+.space-grid{list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:32px;transition:opacity .18s ease,transform .18s ease;}
+.space-item{min-width:0;}
+.space-box{display:flex;flex-direction:column;width:100%;height:100%;padding:0;margin:0;background:var(--cream);border:1px solid var(--line-soft);border-radius:4px;overflow:hidden;text-align:left;font:inherit;color:inherit;cursor:pointer;transition:border-color .25s,transform .35s var(--ease);}
+.space-box:hover{border-color:rgba(255,171,0,.8);transform:translateY(-4px);}
+.space-cover{position:relative;aspect-ratio:3/2;overflow:hidden;background:var(--cream-dark);}
+.space-cover img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease);}
+.space-box:hover .space-cover img,.space-box:focus-visible .space-cover img{transform:scale(1.04);}
+.space-cover::after{content:'';position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--yellow);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease);}
+.space-box:hover .space-cover::after,.space-box:focus-visible .space-cover::after{transform:scaleX(1);}
+.space-body{display:flex;flex-direction:column;flex:1;padding:22px 24px 24px;}
+.space-type{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--red-ink);margin-bottom:8px;}
+.space-type::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--yellow);}
+.space-name{font-family:'Inter',sans-serif;font-size:22px;font-weight:700;line-height:1.2;letter-spacing:-.01em;color:var(--ink);margin-bottom:8px;}
+.space-desc{font-size:14px;line-height:1.65;color:var(--ink-2);}
+.space-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--chip-bg);border:1px solid var(--chip-line);color:var(--ink);font-size:12px;font-weight:600;line-height:1.2;padding:6px 10px;border-radius:2px;}
+.chip svg{width:12px;height:12px;stroke:var(--ink);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+.space-more{display:inline-flex;align-items:center;gap:8px;margin-top:auto;padding-top:20px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);transition:gap .2s,color .2s;}
+.space-more svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.2;}
+.space-box:hover .space-more{gap:12px;color:var(--red-ink);}
+.space-empty,.space-noscript{font-size:15px;line-height:1.8;color:var(--ink-2);padding:32px 0;}
+.space-empty a,.space-noscript a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;}
+
+/* ============================================================
+   SPACE DETAIL PANEL (dialog) — the carousel logic is shared with
+   the Photography lightbox; here it sits inside a light panel.
+   ============================================================ */
+html.sp-open .cursor,html.sp-open .cursor-ring{display:none;}
+.sp{position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(26,23,20,.78);opacity:0;transition:opacity .2s ease;}
+.sp.is-open{opacity:1;}
+.sp-panel{position:relative;width:min(100%,780px);max-height:100%;overflow-y:auto;overscroll-behavior:contain;background:var(--white);border-radius:6px;}
+.sp-carousel{position:relative;aspect-ratio:3/2;background:var(--cream-dark);overflow:hidden;touch-action:pan-y pinch-zoom;}
+/* fixed 3:2 frame; the image covers it (uniform listings) */
+.sp-imgwrap{position:absolute;inset:0;}
+.sp-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none;transition:filter .3s ease;}
+.sp-img.is-loading{filter:blur(6px);}
+.sp-imgwrap.is-anim-next{animation:spNext .3s var(--ease);}
+.sp-imgwrap.is-anim-prev{animation:spPrev .3s var(--ease);}
+.sp-imgwrap.is-snap{transition:transform .22s var(--ease);}
+.sp-spinner{position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;border:2px solid rgba(255,255,255,.55);border-top-color:#fff;animation:spSpin .8s linear infinite;pointer-events:none;}
+.sp-nav,.sp-close{z-index:3;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;border:0;background:var(--white);color:var(--ink);cursor:pointer;transition:background .2s,color .2s;}
+.sp-nav{position:absolute;top:50%;margin-top:-22px;}
+.sp-nav:hover,.sp-close:hover{background:var(--red);color:#fff;}
+.sp-nav svg,.sp-close svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.sp-prev{left:14px;}
+.sp-next{right:14px;}
+/* sticky: stays reachable while the panel scrolls; overlaps the photo below it */
+.sp-close{position:sticky;top:14px;z-index:5;margin:14px 14px -58px auto;box-shadow:0 2px 10px rgba(26,23,20,.18);}
+.sp-count{position:absolute;left:14px;bottom:14px;z-index:3;background:var(--charcoal);color:#fff;font-size:12px;font-weight:500;letter-spacing:.12em;font-variant-numeric:tabular-nums;padding:6px 10px;border-radius:2px;}
+.sp-body{padding:28px 32px 34px;}
+.sp-type{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--red-ink);margin-bottom:8px;}
+.sp-type::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--yellow);}
+.sp-title{font-family:'Inter',sans-serif;font-size:clamp(24px,3vw,32px);font-weight:800;line-height:1.1;letter-spacing:-.03em;color:var(--ink);margin-bottom:12px;}
+.sp-desc{font-size:15px;line-height:1.75;color:var(--ink-2);max-width:560px;}
+.sp-facts{display:flex;flex-wrap:wrap;gap:12px 40px;margin-top:24px;padding:18px 0;border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);}
+.sp-fact dt{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px;}
+.sp-fact dd{font-size:17px;font-weight:700;color:var(--ink);letter-spacing:-.01em;}
+.sp-includes{margin-top:24px;}
+.sp-includes h3{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin-bottom:12px;}
+.sp-includes ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;}
+.sp-includes li{display:flex;align-items:flex-start;gap:10px;font-size:14px;line-height:1.5;color:var(--ink-2);}
+.sp-tick{width:20px;height:20px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;flex-shrink:0;margin-top:1px;}
+.sp-tick svg{width:10px;height:10px;stroke:var(--charcoal);fill:none;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round;}
+.sp-cta{margin-top:28px;}
+
+@keyframes spNext{from{opacity:0;transform:translateX(28px);}}
+@keyframes spPrev{from{opacity:0;transform:translateX(-28px);}}
+@keyframes spSpin{to{transform:rotate(360deg);}}
+
+/* ============================================================
+   AMENITIES — the charcoal section (yellow does the talking)
+   ============================================================ */
+.s-amen{background:var(--charcoal);}
+.s-amen .sk-text{color:var(--yellow);}
+.s-amen .s-title{color:#fff;}
+.s-amen .s-title em{color:var(--yellow);}
+.amen-grid{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.amen-item{display:flex;align-items:center;gap:16px;padding:20px 22px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);border-radius:4px;transition:border-color .25s,transform .35s var(--ease);}
+.amen-item:hover{border-color:rgba(255,171,0,.7);transform:translateY(-3px);}
+.amen-icon{width:44px;height:44px;border-radius:4px;background:var(--yellow);display:grid;place-items:center;flex-shrink:0;}
+.amen-icon svg{width:22px;height:22px;stroke:var(--charcoal);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.amen-label{font-size:15px;font-weight:600;line-height:1.3;color:#fff;}
+
+/* ============================================================
+   HOW IT WORKS
+   ============================================================ */
+.s-how{background:var(--white);}
+.steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.step{height:100%;padding:32px 28px 30px;background:var(--cream);border:1px solid var(--line-soft);border-top:4px solid var(--yellow);border-radius:4px;}
+.step-num{width:44px;height:44px;border-radius:50%;background:var(--yellow);color:var(--charcoal);font-size:18px;font-weight:800;display:grid;place-items:center;margin-bottom:22px;}
+.step-title{font-family:'Inter',sans-serif;font-size:20px;font-weight:700;letter-spacing:-.01em;color:var(--ink);margin-bottom:8px;}
+.step-text{font-size:15px;line-height:1.7;color:var(--ink-2);}
+
+/* ============================================================
+   FAQ — accordion (button + aria-expanded + aria-controls)
+   ============================================================ */
+.s-faq{background:var(--cream);}
+.faq-layout{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px;align-items:start;}
+.faq-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.faq-item{background:var(--white);border:1px solid var(--line-soft);border-radius:4px;transition:border-color .2s;}
+.faq-item.is-open{border-color:rgba(255,171,0,.8);}
+.faq-heading{margin:0;font-size:inherit;font-weight:inherit;}
+.faq-q{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;padding:20px 22px;background:none;border:0;text-align:left;font-family:'Inter',sans-serif;font-size:16px;font-weight:600;line-height:1.4;color:var(--ink);cursor:pointer;}
+.faq-q:hover{color:var(--red-ink);}
+.faq-icon{position:relative;width:28px;height:28px;border-radius:50%;background:var(--yellow);flex-shrink:0;transition:transform .3s var(--ease);}
+.faq-icon::before,.faq-icon::after{content:'';position:absolute;left:50%;top:50%;width:12px;height:2px;margin:-1px 0 0 -6px;background:var(--charcoal);}
+.faq-icon::after{transform:rotate(90deg);}
+.faq-item.is-open .faq-icon{transform:rotate(45deg);}
+/* closed answers are removed from the accessibility tree and tab order via visibility */
+.faq-panel{display:grid;grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .3s var(--ease),visibility 0s linear .3s;}
+.faq-item.is-open .faq-panel{grid-template-rows:1fr;visibility:visible;transition-delay:0s;}
+.faq-panel-inner{overflow:hidden;min-height:0;}
+.faq-a{padding:0 22px 22px;font-size:15px;line-height:1.75;color:var(--ink-2);}
+
+/* ============================================================
+   CTA BANNER
+   ============================================================ */
+.s-cta{background:var(--white);padding:110px 0;text-align:center;border-top:4px solid var(--yellow);}
+.cta-kicker{display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;}
+.cta-kicker-line{width:24px;height:2px;background:var(--yellow);}
+.cta-kicker-text{font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--red-ink);}
+.cta-title{font-family:'Inter',sans-serif;font-size:clamp(30px,4.4vw,56px);font-weight:800;line-height:1.06;letter-spacing:-.03em;color:var(--ink);margin-bottom:16px;}
+.cta-title em{font-style:italic;font-weight:300;color:var(--red);}
+.cta-sub{font-size:16px;line-height:1.7;color:var(--ink-2);max-width:440px;margin:0 auto 36px;}
+
+/* ============================================================
+   FOOTER — same layout as the other builds (charcoal), contrast-corrected
+   ============================================================ */
+footer{border-top:1px solid rgba(255,255,255,.08);}
+.footer-top{grid-template-columns:1.6fr 1fr 1fr;}
+.footer-logo{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.footer-logo img{width:36px;height:36px;border-radius:8px;display:block;}
+.footer-logo-text{margin-bottom:0;}
+.footer-logo-text span{color:var(--yellow);}
+.footer-logo-sub{display:inline-block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7);text-decoration:none;margin-bottom:16px;transition:color .2s;}
+a.footer-logo-sub:hover{color:#fff;}
+.footer-tagline{color:rgba(255,255,255,.7);font-size:13px;max-width:260px;}
+.footer-col-title{color:rgba(255,255,255,.7);}
+.footer-col ul a{font-size:13px;color:rgba(255,255,255,.82);font-weight:400;}
+.footer-col ul a:hover{color:#fff;}
+.footer-col-title+ul+.footer-col-title{margin-top:24px;}
+.footer-contact li{display:flex;align-items:flex-start;gap:10px;}
+.footer-contact svg{width:13px;height:13px;stroke:rgba(255,255,255,.7);fill:none;stroke-width:1.8;flex-shrink:0;margin-top:3px;}
+.footer-follow{margin-top:20px;}
+.footer-socials{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px;}
+.social-link{width:36px;height:36px;border-radius:2px;border:1px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:background .2s,border-color .2s;}
+.social-link:hover{background:var(--red);border-color:var(--red);}
+.social-link svg{width:15px;height:15px;stroke:rgba(255,255,255,.85);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s;}
+.social-link:hover svg{stroke:#fff;}
+.footer-copy{color:rgba(255,255,255,.7);}
+.footer-parent-link{display:flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.82);text-decoration:none;transition:color .2s;}
+.footer-parent-link:hover{color:#fff;}
+.footer-parent-link svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2;}
+
+/* ============================================================
+   SCROLL REVEAL — content is visible by default; main.js adds
+   .reveal-pending only to below-the-fold blocks, then .is-in.
+   ============================================================ */
+.reveal-pending{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+.reveal-pending.is-in{opacity:1;transform:none;}
+
+/* ============================================================
+   RESPONSIVE — 960 / 680
+   ============================================================ */
+@media(max-width:960px){
+  /* hamburger at 960 like the other sites (Contact lives in the mobile menu + footer) */
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .mobile-menu{display:flex;}
+  .nav-inner{padding:0 24px;}
+
+  .s-hero{padding:calc(var(--nav-h) + 32px) 0 64px;}
+  .s-hero-photo{margin-top:44px;}
+  .s-hero-photo img{aspect-ratio:16/9;}
+  .amen-grid{grid-template-columns:1fr 1fr;}
+  .faq-layout{grid-template-columns:1fr;gap:36px;}
+  .footer-top{grid-template-columns:1fr 1fr;gap:36px;}
+}
+@media(max-width:680px){
+  .s-ctas{flex-direction:column;align-items:stretch;}
+  .s-ctas>*{width:100%;}
+  .s-hero-photo{margin:36px 12px 12px 0;}
+  .s-hero-photo::before{right:-12px;bottom:-12px;}
+  .s-hero-photo img{aspect-ratio:4/3;}
+  .space-grid{grid-template-columns:1fr;gap:24px;}
+  .amen-grid{grid-template-columns:1fr;}
+  .steps{grid-template-columns:1fr;}
+  .s-cta{padding:72px 0;}
+  .footer-top{grid-template-columns:1fr;gap:32px;}
+
+  /* the panel becomes a full-screen sheet */
+  .sp{padding:0;}
+  .sp-panel{width:100%;height:100%;border-radius:0;}
+  .sp-body{padding:22px 20px 28px;}
+  .sp-includes ul{grid-template-columns:1fr;}
+  .sp-cta{display:flex;}
+  .sp-cta .btn-primary{width:100%;}
+}
+@media(max-width:960px) and (min-width:681px){
+  .steps{gap:16px;}
+  .step{padding:26px 22px;}
+}
+/* touch screens have no hover: keep the card affordance visible but quiet */
+@media(hover:none){
+  .space-cover::after{transform:scaleX(1);}
+}
+
+/* ============================================================
+   REDUCED MOTION — no cursor, ticker travel, reveal transitions,
+   hero entrances, slide or accordion animation. (main.js also skips
+   the cursor and the reveal setup; the carousel changes instantly and
+   video-free panel opens without a fade.)
+   ============================================================ */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important;}
+  .cursor,.cursor-ring{display:none!important;}
+  .ticker-track{width:auto;flex-wrap:wrap;justify-content:center;}
+  .ticker-dup{display:none;}
+  .reveal-pending{opacity:1;transform:none;}
+}
