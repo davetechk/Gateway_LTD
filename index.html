@@ -120,6 +120,17 @@
 .sub-card-link svg{width:12px;height:12px;stroke:var(--red);fill:none;stroke-width:2.2;}
 .sub-domain{font-size:9px;color:var(--stone-light);letter-spacing:.06em;}
 
+/* Whole card clickable: the existing Explore link's ::after stretches over the card.
+   The footer and link stay unpositioned so the card is the ::after's containing block;
+   the faint bg drops to z-index:-1 inside the card's own stacking context. */
+.sub-card{cursor:pointer;isolation:isolate;}
+.sub-card-bg{z-index:-1;}
+.sub-card-footer{position:static;}
+.sub-card-link::after{content:"";position:absolute;inset:0;z-index:3;}
+.sub-card-link:focus-visible{outline:none;}
+.sub-card:has(.sub-card-link:focus-visible){outline:2px solid var(--red);outline-offset:2px;}
+@supports not selector(:has(*)){.sub-card:focus-within{outline:2px solid var(--red);outline-offset:2px;}}
+
 /* ============================================================
    MISSION
    ============================================================ */
@@ -180,7 +191,7 @@
       </li>
       <li><a href="#about">Experiences</a></li>
       <li><a href="#mission">Our story</a></li>
-      <li><a href="#contact" class="nav-cta">Contact</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact</a></li>
     </ul>
     <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
   </div>
@@ -203,13 +214,13 @@
     </div>
     <div class="mob-section">
       <div class="mob-label">Our subsidiaries</div>
-      <a class="mob-sub-item" href="comms/index.html"><div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><span class="msi-name">Gateway Communications</span><span class="msi-domain">comms.gatewayltd.com</span></div></a>
-      <a class="mob-sub-item" href="studios/index.html"><div class="msi-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div><span class="msi-name">Gateway Studios</span><span class="msi-domain">studios.gatewayltd.com</span></div></a>
-      <a class="mob-sub-item" href="academy/index.html"><div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div><div><span class="msi-name">Gateway Academy</span><span class="msi-domain">academy.gatewayltd.com</span></div></a>
-      <a class="mob-sub-item" href="spaces/index.html"><div class="msi-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div><div><span class="msi-name">Gateway Spaces</span><span class="msi-domain">spaces.gatewayltd.com</span></div></a>
-      <a class="mob-sub-item" href="photography/index.html"><div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div><div><span class="msi-name">Gateway Photography</span><span class="msi-domain">photography.gatewayltd.com</span></div></a>
+      <a class="mob-sub-item" href="https://comms.thegatewayltd.com/"><div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><span class="msi-name">Gateway Communications</span><span class="msi-domain">comms.thegatewayltd.com</span></div></a>
+      <a class="mob-sub-item" href="https://studios.thegatewayltd.com/"><div class="msi-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div><span class="msi-name">Gateway Studios</span><span class="msi-domain">studios.thegatewayltd.com</span></div></a>
+      <a class="mob-sub-item" href="https://academy.thegatewayltd.com/"><div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div><div><span class="msi-name">Gateway Academy</span><span class="msi-domain">academy.thegatewayltd.com</span></div></a>
+      <a class="mob-sub-item" href="https://spaces.thegatewayltd.com/"><div class="msi-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div><div><span class="msi-name">Gateway Spaces</span><span class="msi-domain">spaces.thegatewayltd.com</span></div></a>
+      <a class="mob-sub-item" href="https://photography.thegatewayltd.com/"><div class="msi-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div><div><span class="msi-name">Gateway Photography</span><span class="msi-domain">photography.thegatewayltd.com</span></div></a>
     </div>
-    <a href="#contact" class="mob-cta" onclick="closeMobileMenu()">Contact us</a>
+    <a href="contact.html" class="mob-cta" onclick="closeMobileMenu()">Contact us</a>
   </div>
 </div>
 
@@ -245,7 +256,7 @@
           </div>
           <div class="hero-ctas">
             <a href="#subsidiaries" class="btn-primary">Explore Ecosystem</a>
-            <a href="#contact" class="btn-secondary">Contact Us</a>
+            <a href="contact.html" class="btn-secondary">Contact Us</a>
           </div>
         </div>
       </div>
@@ -282,7 +293,7 @@
           <p>The Gateway Ltd exists to design and operate systems that allow individuals, teams, and organizations to think clearly, create freely, and execute effectively.</p>
           <p>From Abuja to the rest of Africa — we bring structure to creativity, clarity to communication, and direction to growth across every company in the Gateway ecosystem.</p>
         </div>
-        <a href="#contact" class="btn-primary reveal reveal-delay-3" style="display:inline-block;">Start a conversation</a>
+        <a href="contact.html" class="btn-primary reveal reveal-delay-3" style="display:inline-block;">Start a conversation</a>
       </div>
       <div class="mission-pillars">
         <div class="mp-item"><div class="mp-num">01</div><div class="mp-content"><div class="mp-title">Structure</div><div class="mp-body">Discipline and clarity applied to creative work — so ideas move from vision to execution without losing their power.</div></div></div>
@@ -314,7 +325,7 @@
         <p class="sub-card-tag">Education</p>
         <h3 class="sub-card-name">Gateway Academy</h3>
         <p class="sub-card-desc">Equipping the next generation of creatives with practical, industry-relevant skills.</p>
-        <div class="sub-card-footer"><a href="https://academy.thegatewayltd.com/" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">academy.gatewayltd.com</span></div>
+        <div class="sub-card-footer"><a href="https://academy.thegatewayltd.com/" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">academy.thegatewayltd.com</span></div>
       </div>
 
 
@@ -326,7 +337,7 @@
         <p class="sub-card-tag">Creative production</p>
         <h3 class="sub-card-name">Gateway Studios</h3>
         <p class="sub-card-desc">Capturing authentic stories through cinematic documentary &amp; filmmaking.</p>
-        <div class="sub-card-footer"><a href="studios/index.html" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">studios.gatewayltd.com</span></div>
+        <div class="sub-card-footer"><a href="https://studios.thegatewayltd.com/" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">studios.thegatewayltd.com</span></div>
       </div>
 
       <!-- 03 Communications -->
@@ -337,7 +348,7 @@
         <p class="sub-card-tag">Communications</p>
         <h3 class="sub-card-name">Gateway Communications</h3>
         <p class="sub-card-desc">Strategic corporate communications delivered by experts.</p>
-        <div class="sub-card-footer"><a href="comms/index.html" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">comms.gatewayltd.com</span></div>
+        <div class="sub-card-footer"><a href="https://comms.thegatewayltd.com/" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">comms.thegatewayltd.com</span></div>
       </div>
 
       <!-- 04 Spaces -->
@@ -348,7 +359,7 @@
         <p class="sub-card-tag">Spaces</p>
         <h3 class="sub-card-name">Gateway Spaces</h3>
         <p class="sub-card-desc">Creative spaces designed for collaboration, focus, and inspiration.</p>
-        <div class="sub-card-footer"><a href="spaces/index.html" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">spaces.gatewayltd.com</span></div>
+        <div class="sub-card-footer"><a href="https://spaces.thegatewayltd.com/" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">spaces.thegatewayltd.com</span></div>
       </div>
 
       <!-- 05 Photography -->
@@ -359,7 +370,7 @@
         <p class="sub-card-tag">Visual arts</p>
         <h3 class="sub-card-name">Gateway Photography</h3>
         <p class="sub-card-desc">Authentic visual storytelling — capturing the moments, people, and ideas that define our culture.</p>
-        <div class="sub-card-footer"><a href="photography/index.html" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">photography.gatewayltd.com</span></div>
+        <div class="sub-card-footer"><a href="https://photography.thegatewayltd.com/" class="sub-card-link">Explore <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="sub-domain">photography.thegatewayltd.com</span></div>
       </div>
 
       <div class="sub-grid-spacer" aria-hidden="true"></div>
@@ -395,11 +406,11 @@
       <div class="footer-col">
         <div class="footer-col-title">Subsidiaries</div>
         <ul>
-          <li><a href="comms/index.html">Gateway Communications</a></li>
-          <li><a href="studios/index.html">Gateway Studios</a></li>
-          <li><a href="academy/index.html">Gateway Academy</a></li>
-          <li><a href="spaces/index.html">Gateway Spaces</a></li>
-          <li><a href="photography/index.html">Gateway Photography</a></li>
+          <li><a href="https://comms.thegatewayltd.com/">Gateway Communications</a></li>
+          <li><a href="https://studios.thegatewayltd.com/">Gateway Studios</a></li>
+          <li><a href="https://academy.thegatewayltd.com/">Gateway Academy</a></li>
+          <li><a href="https://spaces.thegatewayltd.com/">Gateway Spaces</a></li>
+          <li><a href="https://photography.thegatewayltd.com/">Gateway Photography</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -412,7 +423,7 @@
       <div class="footer-col">
         <div class="footer-col-title">Contact</div>
         <ul>
-          <li><a href="mailto:hello@gatewayltd.com">hello@gatewayltd.com</a></li>
+          <li><a href="mailto:hello@thegatewayltd.com">hello@thegatewayltd.com</a></li>
           <li><a href="https://maps.app.goo.gl/7uZ9m9jh6bGJCdau7">Suite 203A, Bahamas Plaza, Joseph Gomwalk St, Gudu, Abuja.</a></li>
           <li><a href="#">Media enquiries</a></li>
           <li><a href="#">Partnerships</a></li>

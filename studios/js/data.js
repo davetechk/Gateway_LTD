@@ -33,10 +33,10 @@
    ===================================================================== */
 
 window.SITE = {
-  // Source: parent index.html footer. NOTE: this address uses the domain
-  // "gatewayltd.com" (no "the"), while the site itself lives on
-  // thegatewayltd.com. Confirm the mailbox exists, or change it here.
-  email: "hello@gatewayltd.com",
+  // Source: parent index.html footer, with the domain corrected to
+  // thegatewayltd.com to match the site. Confirm the mailbox exists,
+  // or change it here.
+  email: "hello@thegatewayltd.com",
 
   // Source: parent index.html footer (address text and Google Maps link).
   address: "Suite 203A, Bahamas Plaza, Joseph Gomwalk St, Gudu, Abuja",
