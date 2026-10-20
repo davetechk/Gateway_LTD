@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
 Sitemap: https://spaces.thegatewayltd.com/sitemap.xml
