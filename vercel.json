@@ -2,14 +2,19 @@
   "redirects": [
     { "source": "/index.html", "destination": "/", "permanent": true },
     { "source": "/academy", "destination": "https://academy.thegatewayltd.com/", "permanent": true },
+    { "source": "/academy/", "destination": "https://academy.thegatewayltd.com/", "permanent": true },
     { "source": "/academy/:path*", "destination": "https://academy.thegatewayltd.com/:path*", "permanent": true },
     { "source": "/studios", "destination": "https://studios.thegatewayltd.com/", "permanent": true },
+    { "source": "/studios/", "destination": "https://studios.thegatewayltd.com/", "permanent": true },
     { "source": "/studios/:path*", "destination": "https://studios.thegatewayltd.com/:path*", "permanent": true },
     { "source": "/photography", "destination": "https://photography.thegatewayltd.com/", "permanent": true },
+    { "source": "/photography/", "destination": "https://photography.thegatewayltd.com/", "permanent": true },
     { "source": "/photography/:path*", "destination": "https://photography.thegatewayltd.com/:path*", "permanent": true },
     { "source": "/spaces", "destination": "https://spaces.thegatewayltd.com/", "permanent": true },
+    { "source": "/spaces/", "destination": "https://spaces.thegatewayltd.com/", "permanent": true },
     { "source": "/spaces/:path*", "destination": "https://spaces.thegatewayltd.com/:path*", "permanent": true },
     { "source": "/comms", "destination": "https://comms.thegatewayltd.com/", "permanent": true },
+    { "source": "/comms/", "destination": "https://comms.thegatewayltd.com/", "permanent": true },
     { "source": "/comms/:path*", "destination": "https://comms.thegatewayltd.com/:path*", "permanent": true }
   ]
 }
